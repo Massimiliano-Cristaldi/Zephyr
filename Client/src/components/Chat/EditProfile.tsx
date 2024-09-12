@@ -11,6 +11,8 @@ interface EditProfileProps {
 export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
     const authId = 1;
+    const usernameInputRef = useRef<HTMLInputElement>(null);
+    const usernameH2Ref = useRef<HTMLHeadingElement>(null);
     const statusInputRef = useRef<HTMLInputElement>(null);
     const statusPRef = useRef<HTMLParagraphElement>(null);
 
@@ -18,8 +20,8 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         statusInputRef.current!.style.display = "block";
         statusInputRef.current!.focus();
         statusPRef.current!.style.display = "none";
-        if (user?.customStatus) {
-            statusInputRef.current!.value = user.customStatus;
+        if (user?.custom_status) {
+            statusInputRef.current!.value = user.custom_status;
             statusInputRef.current?.select();
         }
     }
@@ -28,9 +30,29 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         statusInputRef.current!.style.display = "none";
         statusPRef.current!.style.display = "block";
         if (user && statusInputRef.current?.value){
-            const new_status = {status: statusInputRef.current.value, authUserId: authId};
-            axios.post("http://localhost:8800/updatestatus", new_status);
-            statusPRef.current!.textContent = new_status.status;
+            const newStatus = {status: statusInputRef.current.value, authUserId: authId};
+            axios.post("http://localhost:8800/updatestatus", newStatus);
+            statusPRef.current!.textContent = newStatus.status;
+        }
+    }
+
+    function changeUsername(){
+        usernameInputRef.current!.style.display = "block";
+        usernameInputRef.current!.focus();
+        usernameH2Ref.current!.style.display = "none";
+        if (user?.custom_status) {
+            usernameInputRef.current!.value = user.username;
+            usernameInputRef.current?.select();
+        }
+    }
+
+    function submitUsernameChange(){
+        usernameInputRef.current!.style.display = "none";
+        usernameH2Ref.current!.style.display = "block";
+        if (user && usernameInputRef.current?.value){
+            const newUsername = {username: usernameInputRef.current.value, authId: authId};
+            axios.post("http://localhost:8800/updateusername", newUsername);
+            usernameH2Ref.current!.textContent = newUsername.username;
         }
     }
 
@@ -38,17 +60,33 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         editProfileRef.current!.style.display = "none";
     }
 
+    // FIX: h2 and input for username change have inconsistent heights, gap between the modal elements is inconsistent
+    // TODO: add the possibility of changing profile picture
+
     return(
         <div id="editProfileWrapper" ref={editProfileRef}>
             <div id="editProfileModal">
                 <div id="editIcon"></div>
-                <h2>{user?.username}</h2>
+                <h2 
+                {...(isMobile() 
+                    ? {onClick: changeUsername, ref: usernameH2Ref} 
+                    : {onDoubleClick: changeUsername, ref: usernameH2Ref})}
+                >{user?.username}</h2>
+                <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>
+                    <input type="text"
+                    id="newUsernameInput"
+                    ref={usernameInputRef}
+                    onBlur={submitUsernameChange}
+                    maxLength={50}
+                    autoComplete="off"
+                    />
+                </form>
                 <p
                 {...(isMobile() 
                     ? {onClick: changeStatus, ref: statusPRef} 
                     : {onDoubleClick: changeStatus, ref: statusPRef})}
                 >
-                    {user?.customStatus || "This user hasn't chosen a status yet"}
+                    {user?.custom_status || "This user hasn't chosen a status yet"}
                 </p>
                 <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>
                     <input type="text"

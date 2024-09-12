@@ -1,6 +1,6 @@
 /* Global */
 :root{
-    --accents: rgb(119, 70, 164);
+    --accents: hsl(271, 40%, 46%);
     --defaultFontColor: hsl(210, 13%, 94%);
     --iconBg: hsl(300, 33%, 49%);
     --iconHoverBg: hsl(300, 57%, 39%);

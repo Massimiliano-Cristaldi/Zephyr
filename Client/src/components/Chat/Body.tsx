@@ -33,5 +33,6 @@ export async function loader(){
         return response.data;
     } catch (err) {
         console.error(err);
+        return null;
     }
 }

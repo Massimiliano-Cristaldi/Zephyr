@@ -124,13 +124,17 @@
 }
 
 #editProfileModal>h2{
+    height: 38px;
+    width: 70%;
     font-size: 2rem;
     font-weight: 700;
+    text-align: center;
     color: rgb(80, 80, 80);
+    margin-bottom: 0px;
 }
 
-#editProfileModal>h5{
-    color: rgb(80, 80, 80);
+#editProfileModal>h2:hover{
+    background-color: hsl(210, 13%, 84%);
 }
 
 #editProfileModal>p{
@@ -138,7 +142,7 @@
     text-align: center;
     color: rgb(80, 80, 80);
     min-height: 34px;
-    width: 60vw;
+    width: 70% !important;
     margin: 0px;
 }
 
@@ -155,6 +159,10 @@
     margin-bottom: 30px;
     color: rgb(36, 36, 36);
     font-size: 1.2rem;
+}
+
+#newUsernameInput{
+    height: 38px;
 }
 
 #editProfileModal>p:hover{

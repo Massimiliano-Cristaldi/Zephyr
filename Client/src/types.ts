@@ -14,3 +14,7 @@ export interface Message {
     recipient_id: number,
     time_sent?: string
 }
+
+export type StyleProperties = {
+    [key:string]: string
+}

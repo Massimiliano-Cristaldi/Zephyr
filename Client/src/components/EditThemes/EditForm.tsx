@@ -1,38 +1,64 @@
 import { useState } from "react";
-import { hslStringToHex, hexToHsl, hexToHslString } from "../../utils";
+import { defaultTheme, hexToHslString, getLightnessFromHex, formatColorProperty } from "../../ColorTools";
+import { StyleProperties } from "../../types";
+import "./EditForm.css";
 
 export default function EditForm(){
 
-    // TODO: Implement a way to save the property to local storage
-    // const styles = document.documentElement;
-    // const root = styles.style;
-    // console.log(getComputedStyle(styles).getPropertyValue("--default_font_color"));
-    // root.setProperty("--default_font_color", "black");
+    const [colorProperties, setColorProperties] = useState<StyleProperties>(defaultTheme);
 
+    function setProperty(e: React.ChangeEvent<HTMLInputElement>){
+        if (e.target.name === "iconBg") {
+            //This constant calculates the hsl lightness adjustment for button:hovers automatically, giving a darker shade
+            //if the color is light and a lighter shade if the color is dark 
+            const lightnessAdjust = getLightnessFromHex(e.target.value) as number <= 20 ? 10 : -10;
+            setColorProperties({...colorProperties,
+                iconBg: e.target.value,
+                iconHoverBg: hexToHslString(e.target.value, lightnessAdjust) as string
+            });
+        } else {
+            setColorProperties({...colorProperties, [e.target.name]: e.target.value});
+        }
+        console.log("Value of colorProperties changed");
+        
+    }
 
-    // const savedTheme = JSON.parse(window.localStorage.getItem("theme") || "");
+    function saveThemeToLocalStorage(){
+        window.localStorage.setItem("theme", JSON.stringify(colorProperties));
+        console.log("Theme saved to local storage");
+    }
 
-        // function saveTheme(){
-    //     window.localStorage.setItem("theme", JSON.stringify({...newTheme}));
-    // }
-
-    const [newTheme, setNewTheme] = useState({
-        accents: "#7746a4",
-        defaultFontColor: "#eef0f2",
-    });
-
-    function handleColorInputChange(e: React.ChangeEvent<HTMLInputElement>){
-        setNewTheme({...newTheme, [e.target.name]: e.target.value})
-    }    
-
-// rgb(238, 240, 242)
-
+    function resetDefaultTheme(){
+        setColorProperties(defaultTheme);
+        saveThemeToLocalStorage();
+        console.log("Default theme restored");
+    }
+    
     return(
-        <div className="d-flex flex-column gap-3 text-success">
-            Pippo
-            <br />
-                <input type="color" name="accents" id="accents" onBlur={handleColorInputChange} defaultValue={newTheme.accents}/>
-                <input type="color" name="defaultFontColor" id="default-font-color" onBlur={handleColorInputChange}/>
+        <div id="editThemeWrapper">
+            {Object.keys(colorProperties).map((el)=>(
+                el !== "iconHoverBg" &&
+                <div key={el}>
+                    <label htmlFor={el} className="text-black">{formatColorProperty(el)}</label>
+                    <input type="color"
+                    name={el}
+                    id={el}
+                    onBlur={setProperty}
+                    defaultValue={colorProperties[el]}/>
+                </div>
+            ))}
+            <button className="text-black" onClick={saveThemeToLocalStorage}>
+                Apply changes
+            </button>
+            <button className="text-black" onClick={resetDefaultTheme}>
+                Reset default theme
+            </button>
+            <button className="text-black" onClick={()=>{console.log(colorProperties)}}>
+                Log colorProperties
+            </button>
+            <button className="text-black" onClick={()=>{console.log(window.localStorage.getItem("theme"))}}>
+                Log localStorage
+            </button>
         </div>
     )
 }

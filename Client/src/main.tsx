@@ -23,12 +23,12 @@ const router = createBrowserRouter([
         element: <SelectedContact/>,
         loader: contactLoader
       },
+      {
+        path: "themes/edit",
+        element: <EditForm/>
+      }
     ],
   },
-  {
-    path: "themes/edit",
-    element: <EditForm/>
-  }
 ]);
 
 createRoot(document.getElementById('root')!).render(
