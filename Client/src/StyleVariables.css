@@ -1,0 +1,27 @@
+/* Global */
+:root{
+    --accents: rgb(119, 70, 164);
+    --defaultFontColor: hsl(210, 13%, 94%);
+    --iconBg: hsl(300, 33%, 49%);
+    --iconHoverBg: hsl(300, 57%, 39%);
+    /* Sidebar*/
+    --sidebarWrapperBg: hsl(222, 38%, 40%);
+    /* Toolbar */
+    --toolbarOptionsBg: hsl(300, 33%, 49%);
+    --toolbarOptionsBorder: hsl(300, 57%, 44%);
+    --toolbarWrapperBg: hsl(205, 100%, 24%);
+    /* Body */
+    --chatBodyBg: hsl(210, 13%, 94%);
+    --chatInputBg: hsl(210, 13%, 94%);
+    --chatInputWrapperBg: hsl(222, 38%, 40%);
+    --contactListBg: hsl(210, 13%, 94%);
+    --contactListFontColor: hsl(205, 100%, 24%);
+    --scrollbarColor: hsl(300, 33%, 49%);
+    --scrollbarBg: hsl(205, 100%, 24%);
+    --sendButtonPrimary: hsl(210, 13%, 94%);
+    --sendButtonSecondary: transparent;
+    --chatToolbarBg: hsl(222, 38%, 40%);
+    /* Chat Window */
+    --recipientMessageBg: hsl(222, 38%, 60%);
+    --senderMessageBg: hsl(300, 33%, 49%);
+}

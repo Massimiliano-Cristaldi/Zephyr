@@ -1,0 +1,115 @@
+#contactList{
+    height: 100%;
+    overflow-y: scroll;
+    background-color: var(--contactListBg);
+}
+
+#contactList::-webkit-scrollbar{
+    width: 8px;
+    
+}
+
+#contactList::-webkit-scrollbar-track{
+    background: var(--scrollbarBg);
+    border-right: 2px solid var(--accents);
+}
+
+#contactList::-webkit-scrollbar-thumb{
+    background: var(--scrollbarColor);
+}
+
+#contactList>div{
+    height: 12%;
+    min-height: 12%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: var(--contactBg);
+    color: var(--contactListFontColor);
+    border-bottom: 2px solid var(--accents);
+    cursor: pointer;
+}
+
+#chatToolbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px 3px 20px;
+    height: 10%;
+    background-color: var(--chatToolbarBg);
+}
+
+#chatToolbar>div{
+    height: 100%;
+}
+
+#contactInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: white;
+}
+
+.contactIcon{
+    height: 75%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-size: contain;
+    background-position: center;
+}
+
+#nameAndNumber>div{
+    width: 60vw;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.3rem;
+}
+
+#nameAndNumber>small{
+    font-size: 0.8rem;
+}
+
+#chatBody{
+    height: 80%;
+    background-color: var(--chatBodyBg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fa-solid{
+    color: var(--);
+}
+
+#awaitContact{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-size: 15px;
+    text-align: center;
+    color: rgb(116, 116, 116);
+}
+
+#awaitContact>i{
+    font-size: 200px;
+    color: rgb(175, 175, 175);
+}
+
+@media screen and (min-Width: 996px) {
+
+    #contactList>div{
+        height: 8%;
+        min-height: 8%;
+    }
+}
