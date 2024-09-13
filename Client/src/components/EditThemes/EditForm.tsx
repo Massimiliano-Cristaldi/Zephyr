@@ -1,6 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef, RefObject } from "react";
+import ConfirmPopup from "./ConfirmPopup";
 import { defaultTheme, hexToHslString, getLightnessFromHex, formatColorProperty } from "../../ColorTools";
-import { ContactListRefContext, isMobile } from "../../utils";
+import { ContactListRefContext, isMobile, fonts } from "../../utils";
 import { StyleProperties } from "../../types";
 import "./EditForm.css";
 
@@ -11,6 +12,8 @@ export default function EditForm(){
         return savedTheme ? JSON.parse(savedTheme) : defaultTheme;
     });
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
+    const confirmApplyRef = useRef<HTMLDivElement>(null);
+    const confirmResetRef = useRef<HTMLDivElement>(null);
 
     useEffect(()=>{
         if (isMobile()) {
@@ -39,10 +42,8 @@ export default function EditForm(){
         window.location.reload();
     }
 
-    //TODO: Add a popup menu to confirm reset, and maybe one to confirm save
-    function resetDefaultTheme(){
-        setCurrentTheme(defaultTheme);
-        saveTheme(defaultTheme);
+    function showPopup(ref:RefObject<HTMLDivElement>){
+        ref.current!.style.display = "flex";
     }
     
     //TODO: Add the ability to change border radius and font family
@@ -59,19 +60,25 @@ export default function EditForm(){
                     defaultValue={currentTheme[el]}/>
                 </div>
             ))}
+            <div id="editFontAndBorder">
+                Font
+                <select name="fontFamily" id="" aria-placeholder="Choose font">
+                    {fonts.map((el)=>(<option value={el} style={{fontFamily: el}}>{el}</option>))}
+                </select>
+            </div>
             <div id="editThemeButtonWrapper">
-                <button onClick={()=>saveTheme(currentTheme)}>
-                    Apply changes
-                </button>
-                <button onClick={resetDefaultTheme}>
-                    Reset default theme
-                </button>
-                <button onClick={()=>{console.log(currentTheme)}}>
-                    Log currentTheme
-                </button>
-                <button onClick={()=>{console.log(window.localStorage.getItem("theme"))}}>
-                    Log localStorage
-                </button>
+                <div>
+                    <button onClick={()=>{showPopup(confirmApplyRef)}}>
+                        Apply changes
+                    </button>
+                    <ConfirmPopup popupRef={confirmApplyRef} confirmAction={()=>{saveTheme(currentTheme)}}/>
+                </div>
+                <div>
+                    <button onClick={()=>{showPopup(confirmResetRef)}}>
+                        Reset default theme
+                    </button>
+                    <ConfirmPopup popupRef={confirmResetRef} confirmAction={()=>{saveTheme(defaultTheme)}}/>
+                </div>
             </div>
         </div>
     )

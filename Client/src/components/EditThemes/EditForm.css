@@ -5,6 +5,7 @@
     flex-wrap: wrap;
     padding: 2rem 2.5rem;
     overflow-y: scroll;
+    background-color: hsl(210, 13%, 94%);
 }
 
 #editThemeWrapper>div:not(:last-child){
@@ -27,6 +28,10 @@
     width: 20%;
 }
 
+#editFontAndBorder, #editFontAndBorder>select, #editFontAndBorder>select>option{
+    color: rgb(36, 36, 36);
+}
+
 #editThemeButtonWrapper{
     display: flex;
     flex-wrap: wrap;
@@ -36,9 +41,67 @@
     margin-top: 15px;
 }
 
-#editThemeButtonWrapper>button{
+#editThemeButtonWrapper>div{
+    height: 30px;
+}
+
+#editThemeButtonWrapper button{
+    position: relative;
     border: none;
     background-color: var(--iconBg);
-    color: var(--defaultFontColor) !important;
+    color: var(--defaultFontColor);
     min-width: 160px;
+    height: 32px;
+}
+
+#editThemeButtonWrapper button:hover{
+    background-color: var(--iconHoverBg);
+}
+
+.confirmPopup{
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 160px;
+    height: 60px;
+    position: relative;
+    left: 0px;
+    top: -105px;
+    color: rgb(36, 36, 36);
+    background-color: hsl(210, 13%, 94%);
+    border: 1px solid rgb(36, 36, 36);
+    cursor: default;
+}
+
+.confirmPopup>div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50%;
+    width: 100%;
+    margin-bottom: -1px;
+}
+
+.confirmPopup>div>i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 50%;
+    cursor: pointer;
+}
+
+.confirmPopup>div>i:hover{
+    background-color: rgb(201, 201, 201);
+}
+
+.confirmPopup::after{
+    content: '';
+    position: absolute;
+    bottom: -21px;
+    border-top: 14px solid rgb(36, 36, 36);
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
 }

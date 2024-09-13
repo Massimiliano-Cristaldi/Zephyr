@@ -6,7 +6,7 @@ import "./Toolbar.css";
 
 export default function Toolbar(){
 
-    const auth_id = 1;
+    const authId = 1;
     const [authUser, setAuthUser] = useState<User | undefined>();
     const toolbarDropdownRef = useRef<HTMLUListElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
@@ -14,7 +14,7 @@ export default function Toolbar(){
     useEffect(()=>{
         async function getAuthUser(){
             try {
-                const response = await axios.get(`http://localhost:8800/contact/${auth_id}`);
+                const response = await axios.get(`http://localhost:8800/contact/${authId}`);
                 if (response.status !== 200 || response.data.length === 0) {
                     throw new Error("User not found");
                 }
@@ -64,12 +64,12 @@ export default function Toolbar(){
         </div>
         <ul id="toolbarDropdown" style={{display: "none"}} ref={toolbarDropdownRef}>
             <li onClick={showEditProfileModal}>Profile</li>
-            <li>
-                <a href="/themes/edit">Change themes</a>
-            </li>
-            <li>
-                <a href="">Logout</a>
-            </li>
+            <a href="/themes/edit">
+                <li>Change themes</li>
+            </a>
+            <a href="">
+                <li>Logout</li>
+            </a>
         </ul>
         <EditProfile user={authUser} editProfileRef={editProfileRef}/>
         </>

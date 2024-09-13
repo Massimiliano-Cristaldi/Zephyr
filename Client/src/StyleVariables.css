@@ -1,5 +1,6 @@
-/* Global */
 :root{
+    /* Global */
+    --favoriteFont: "Century Gothic Paneuropean"; 
     --accents: hsl(271, 40%, 46%);
     --defaultFontColor: hsl(210, 13%, 94%);
     --iconBg: hsl(300, 33%, 49%);

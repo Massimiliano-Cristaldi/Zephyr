@@ -2,6 +2,7 @@
 
 *{
   color: var(--defaultFontColor);
+  font-family: var(--favoriteFont), Arial, Helvetica, sans-serif;
 }
 
 body{
