@@ -14,7 +14,7 @@ export default function ChatToolbar(contact: User){
                         <div>
                             {contact.username}
                         </div>
-                        <small>
+                        <small id="phoneNumber">
                             +39 {contact.phone_number}
                         </small>
                     </div>

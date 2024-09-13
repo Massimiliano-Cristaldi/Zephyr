@@ -1,7 +1,7 @@
 import { RefObject, useRef } from "react";
-import { isMobile } from "../../utils";
-import { User } from "../../types";
 import axios from "axios";
+import { isMobile } from "../utils";
+import { User } from "../types";
 
 interface EditProfileProps {
     user: User | undefined,
@@ -15,7 +15,45 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
     const usernameH2Ref = useRef<HTMLHeadingElement>(null);
     const statusInputRef = useRef<HTMLInputElement>(null);
     const statusPRef = useRef<HTMLParagraphElement>(null);
+    //This flag allows the discard change functions to execute correctly without firing the submit change functions,
+    //as hiding the inputs causes them to lose focus, and thus normally trigger any onBlur events
+    let discarding = false;
+    
+    //I tried to lump some of these functions together, but it made them extremely verbose and less clear, especially
+    //with Typescript's specific event type requirements, so I ultimately decided to leave them like this
+    function changeUsername(){
+        usernameInputRef.current!.style.display = "block";
+        usernameInputRef.current!.focus();
+        usernameH2Ref.current!.style.display = "none";
+        if (user?.username) {
+            usernameInputRef.current!.value = user.username;
+            usernameInputRef.current?.select();
+        }
+    }
 
+    function submitUsernameChange(){
+        if (discarding){
+            discarding = false;
+            return;
+        }
+        usernameInputRef.current!.style.display = "none";
+        usernameH2Ref.current!.style.display = "block";
+        if (user && usernameInputRef.current?.value){
+            const newUsername = {username: usernameInputRef.current.value, authId: authId};
+            axios.post("http://localhost:8800/updateusername", newUsername);
+            usernameH2Ref.current!.textContent = newUsername.username;
+            user.username = newUsername.username;
+        }
+    }
+    
+    function discardUsernameChange(e:React.KeyboardEvent<HTMLInputElement>){
+        if (e.key === "Escape"){
+            discarding = true;
+            usernameInputRef.current!.style.display = "none";
+            usernameH2Ref.current!.style.display = "block";
+        }
+    }
+    
     function changeStatus(){
         statusInputRef.current!.style.display = "block";
         statusInputRef.current!.focus();
@@ -25,42 +63,35 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
             statusInputRef.current?.select();
         }
     }
-
+    
     function submitStatusChange(){
+        if (discarding){
+            discarding = false;
+            return;
+        }
         statusInputRef.current!.style.display = "none";
         statusPRef.current!.style.display = "block";
         if (user && statusInputRef.current?.value){
             const newStatus = {status: statusInputRef.current.value, authUserId: authId};
             axios.post("http://localhost:8800/updatestatus", newStatus);
             statusPRef.current!.textContent = newStatus.status;
+            user.custom_status = newStatus.status;
         }
     }
 
-    function changeUsername(){
-        usernameInputRef.current!.style.display = "block";
-        usernameInputRef.current!.focus();
-        usernameH2Ref.current!.style.display = "none";
-        if (user?.custom_status) {
-            usernameInputRef.current!.value = user.username;
-            usernameInputRef.current?.select();
+    function discardStatusChange(e:React.KeyboardEvent<HTMLInputElement>){
+        if (e.key === "Escape"){
+            discarding = true;
+            statusInputRef.current!.style.display = "none";
+            statusPRef.current!.style.display = "block";
         }
     }
-
-    function submitUsernameChange(){
-        usernameInputRef.current!.style.display = "none";
-        usernameH2Ref.current!.style.display = "block";
-        if (user && usernameInputRef.current?.value){
-            const newUsername = {username: usernameInputRef.current.value, authId: authId};
-            axios.post("http://localhost:8800/updateusername", newUsername);
-            usernameH2Ref.current!.textContent = newUsername.username;
-        }
-    }
-
+    
     function closeEditProfileModal(){
         editProfileRef.current!.style.display = "none";
+        window.location.reload();
     }
 
-    // FIX: h2 and input for username change have inconsistent heights, gap between the modal elements is inconsistent
     // TODO: add the possibility of changing profile picture
 
     return(
@@ -70,13 +101,14 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 <h2 
                 {...(isMobile() 
                     ? {onClick: changeUsername, ref: usernameH2Ref} 
-                    : {onDoubleClick: changeUsername, ref: usernameH2Ref})}
+                    : {onClick: changeUsername, ref: usernameH2Ref})}
                 >{user?.username}</h2>
                 <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>
                     <input type="text"
                     id="newUsernameInput"
                     ref={usernameInputRef}
                     onBlur={submitUsernameChange}
+                    onKeyDown={discardUsernameChange}
                     maxLength={50}
                     autoComplete="off"
                     />
@@ -84,7 +116,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 <p
                 {...(isMobile() 
                     ? {onClick: changeStatus, ref: statusPRef} 
-                    : {onDoubleClick: changeStatus, ref: statusPRef})}
+                    : {onClick: changeStatus, ref: statusPRef})}
                 >
                     {user?.custom_status || "This user hasn't chosen a status yet"}
                 </p>
@@ -93,11 +125,15 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                     id="newStatusInput"
                     ref={statusInputRef}
                     onBlur={submitStatusChange}
-                    maxLength={50}
+                    onKeyDown={discardStatusChange}
+                    maxLength={100}
                     autoComplete="off"
                     />
                 </form>
-        <i className="fa-solid fa-xmark closeModal" style={{color: "rgb(180, 180, 180)"}} onClick={closeEditProfileModal}/>
+                <i className="fa-solid fa-xmark closeModal" 
+                style={{color: "rgb(180, 180, 180)"}} 
+                onClick={closeEditProfileModal}
+                />
             </div>
         </div>
     )

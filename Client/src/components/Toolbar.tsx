@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import EditProfile from "./Chat/EditProfile";
+import EditProfile from "./EditProfile";
 import { User } from "../types";
 import "./Toolbar.css";
 
@@ -65,7 +65,7 @@ export default function Toolbar(){
         <ul id="toolbarDropdown" style={{display: "none"}} ref={toolbarDropdownRef}>
             <li onClick={showEditProfileModal}>Profile</li>
             <li>
-                <a href="">Change themes</a>
+                <a href="/themes/edit">Change themes</a>
             </li>
             <li>
                 <a href="">Logout</a>

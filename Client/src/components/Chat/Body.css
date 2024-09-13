@@ -71,8 +71,8 @@
     font-size: 1.3rem;
 }
 
-#nameAndNumber>small{
-    font-size: 0.8rem;
+#nameAndNumber>#phoneNumber{
+    font-size: 0.7rem;
 }
 
 #chatBody{
