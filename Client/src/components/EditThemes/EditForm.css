@@ -3,21 +3,42 @@
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    padding: 2rem;
+    padding: 2rem 2.5rem;
+    overflow-y: scroll;
 }
 
-#editThemeWrapper>div{
+#editThemeWrapper>div:not(:last-child){
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    /* font-size: 0.8rem; */
+    padding-bottom: 5px;
+    margin-top: 5px;
+    border-bottom: 1px solid grey;
 }
 
 #editThemeWrapper>div>label{
+    color: rgb(36, 36, 36);
     width: 80%;
+    margin-right: 5px;
 }
 
 #editThemeWrapper>div>input[type="color"]{
     width: 20%;
+}
+
+#editThemeButtonWrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#editThemeButtonWrapper>button{
+    border: none;
+    background-color: var(--iconBg);
+    color: var(--defaultFontColor) !important;
+    min-width: 160px;
 }
