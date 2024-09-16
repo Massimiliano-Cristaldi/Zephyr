@@ -105,10 +105,45 @@
     color: rgb(175, 175, 175);
 }
 
-@media screen and (min-Width: 996px) {
+#userNotAddedWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: calc(100% - 10vh);
+    width: calc(100% - 15vw);
+    background-color: rgba(68, 68, 68, 0.678);
+    z-index: 20;
+    animation-name: modalDarkenBg;
+    animation-duration: 0.5s;
+}
 
+#userNotAddedModal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background-color: white;
+    color: black;
+    height: 80%;
+    width: 80%;
+    border-radius: 10px;
+}
+
+@media screen and (min-Width: 996px) {
     #contactList>div{
         height: 8%;
         min-height: 8%;
     }
+
+    #userNotAddedWrapper{
+        height: calc(100% - 7vh);
+        width: calc(100% - 20vw);
+    }
+}
+
+@keyframes modalDarkenBg {
+    0% {background-color: transparent;}
+    100% {background-color: rgba(68, 68, 68, 0.678);}
 }
