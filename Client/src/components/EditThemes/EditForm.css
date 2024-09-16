@@ -28,7 +28,7 @@
     width: 20%;
 }
 
-#editFontAndBorder, #editFontAndBorder>select, #editFontAndBorder>select>option{
+.editFontAndBorder, .editFontAndBorder>select, .editFontAndBorder>select>option{
     color: rgb(36, 36, 36);
 }
 
@@ -56,6 +56,11 @@
 
 #editThemeButtonWrapper button:hover{
     background-color: var(--iconHoverBg);
+}
+
+#favoriteFont{
+    max-width: 35vw;
+    overflow-y: scroll;
 }
 
 .confirmPopup{

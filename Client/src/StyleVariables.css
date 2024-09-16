@@ -1,10 +1,11 @@
 :root{
     /* Global */
-    --favoriteFont: "Century Gothic Paneuropean"; 
-    --accents: hsl(271, 40%, 46%);
+    --favoriteFont: "Arial"; 
     --defaultFontColor: hsl(210, 13%, 94%);
+    --accents: hsl(271, 40%, 46%);
     --iconBg: hsl(300, 33%, 49%);
     --iconHoverBg: hsl(300, 57%, 39%);
+    --messageBorderRadius: 0px;
     /* Sidebar*/
     --sidebarWrapperBg: hsl(222, 38%, 40%);
     /* Toolbar */

@@ -1,8 +1,10 @@
 export const defaultTheme = {
-    accents: "#7746a4",
+    favoriteFont: "Arial",
     defaultFontColor: "#eef0f2",
+    accents: "#7746a4",
     iconBg: "#a654a6",
     iconHoverBg: "#9c2b9c",
+    messageBorderRadius: "0px",
     sidebarWrapperBg: "#3f568d",
     toolbarOptionsBg: "#a654a6",
     toolbarOptionsBorder: "#b030b0",

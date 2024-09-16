@@ -19,6 +19,7 @@
     padding: 10px 15px 10px 0px;
     background-color: var(--senderMessageBg);
     text-align: justify;
+    border-radius: var(--messageBorderRadius) var(--messageBorderRadius) 0px 0px;
 }
 
 .senderMessage::before{
@@ -39,6 +40,7 @@
     padding: 10px 15px 10px 0px;
     background-color: var(--recipientMessageBg);
     text-align: justify;
+    border-radius: var(--messageBorderRadius) var(--messageBorderRadius) 0px 0px;
 }
 
 .recipientMessage::before {
@@ -61,6 +63,7 @@
     text-align: end;
     background-color: var(--senderMessageBg);
     cursor: default;
+    border-bottom-left-radius: var(--messageBorderRadius);
 }
 
 .timeSentRecipient{
@@ -70,6 +73,7 @@
     margin-bottom: 20px;
     background-color: var(--recipientMessageBg);
     cursor: default;
+    border-bottom-right-radius: var(--messageBorderRadius);
 }
 
 .timeSentSender:last-child, .timeSentRecipient:last-child{

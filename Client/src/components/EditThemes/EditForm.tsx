@@ -23,7 +23,7 @@ export default function EditForm(){
         }
     }, [])
 
-    function setProperty(e: React.ChangeEvent<HTMLInputElement>){
+    function setProperty(e: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>){
         if (e.target.name === "iconBg") {
             //This constant calculates the hsl lightness adjustment for button:hovers automatically, giving
             //a darker shade if the color is light and a lighter shade if the color is dark 
@@ -45,12 +45,13 @@ export default function EditForm(){
     function showPopup(ref:RefObject<HTMLDivElement>){
         ref.current!.style.display = "flex";
     }
+
+    const excludeTheseProperties = ["iconHoverBg", "favoriteFont", "messageBorderRadius"];
     
-    //TODO: Add the ability to change border radius and font family
     return(
         <div id="editThemeWrapper">
             {Object.keys(currentTheme).map((el)=>(
-                el !== "iconHoverBg" &&
+                !excludeTheseProperties.includes(el) &&
                 <div key={el}>
                     <label htmlFor={el}>{formatColorProperty(el)}</label>
                     <input type="color"
@@ -60,10 +61,17 @@ export default function EditForm(){
                     defaultValue={currentTheme[el]}/>
                 </div>
             ))}
-            <div id="editFontAndBorder">
+            <div className="editFontAndBorder">
                 Font
-                <select name="fontFamily" id="" aria-placeholder="Choose font">
-                    {fonts.map((el)=>(<option value={el} style={{fontFamily: el}}>{el}</option>))}
+                <select name="favoriteFont" id="favoriteFont" onChange={setProperty}>
+                    {fonts.map((el)=>(<option value={el} key={el} style={{fontFamily: el}}>{el}</option>))}
+                </select>
+            </div>
+            <div className="editFontAndBorder">
+                Message box borders
+                <select name="messageBorderRadius" onChange={setProperty}>
+                    <option value="0px">Squared</option>
+                    <option value="10px">Rounded</option>
                 </select>
             </div>
             <div id="editThemeButtonWrapper">
