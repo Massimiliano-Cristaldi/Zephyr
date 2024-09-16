@@ -1,16 +1,31 @@
-import { useContext } from "react";
-import { Outlet, useLoaderData } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
 import ContactList from "./ContactList";
-import { ContactListRefContext } from "../../utils";
+import { AuthUserContext, ContactListRefContext } from "../../utils";
 import { User } from "../../types";
 import "./Body.css";
 
 export default function Body(){
 
-    const contacts = useLoaderData() as User[] | [];
-
+    const [contacts, setContacts] = useState<User[] | []>([]);
     const [contactListRef, chatWrapperRef] = useContext(ContactListRefContext);
+    const authId = useContext(AuthUserContext);
+    useEffect(()=>{
+        async function fetchData(){
+            try {
+                const response = await axios.get(`http://localhost:8800/contactlist/${authId}`);
+                if (response.status !== 200) {
+                    throw new Error("Fetch failed");
+                }
+                setContacts(response.data);
+            } catch (err) {
+                console.error(err);
+                return null;
+            }
+        }
+        fetchData();
+    }, [])
 
     return(
         <>
@@ -22,17 +37,4 @@ export default function Body(){
             </div>
         </>
     )
-}
-
-export async function loader(){
-    try {
-        const response = await axios.get("http://localhost:8800/contacts");
-        if (response.status !== 200) {
-            throw new Error("Fetch failed");
-        }
-        return response.data;
-    } catch (err) {
-        console.error(err);
-        return null;
-    }
 }

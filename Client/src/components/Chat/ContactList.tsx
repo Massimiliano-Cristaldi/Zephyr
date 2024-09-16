@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ContactListRefContext, isMobile } from "../../utils";
+import { AuthUserContext, ContactListRefContext, isMobile } from "../../utils";
 import { User } from "../../types";
 import { useContext } from "react";
 interface ContactListProps{
@@ -8,8 +8,8 @@ interface ContactListProps{
 
 export default function ContactList({contactList}: ContactListProps){
 
-    const authId = 1;
     const navigate = useNavigate();
+    const authId = useContext(AuthUserContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 
     function openChat(contactId: number){

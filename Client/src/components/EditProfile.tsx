@@ -1,6 +1,6 @@
-import { RefObject, useRef } from "react";
+import { RefObject, useContext, useRef } from "react";
 import axios from "axios";
-import { isMobile } from "../utils";
+import { AuthUserContext, isMobile } from "../utils";
 import { User } from "../types";
 
 interface EditProfileProps {
@@ -10,7 +10,7 @@ interface EditProfileProps {
 
 export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
-    const authId = 1;
+    const authId = useContext(AuthUserContext);
     const usernameInputRef = useRef<HTMLInputElement>(null);
     const usernameH2Ref = useRef<HTMLHeadingElement>(null);
     const statusInputRef = useRef<HTMLInputElement>(null);

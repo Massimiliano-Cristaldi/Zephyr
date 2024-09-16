@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { Message } from "../../types";
-import { getDate, getTime } from "../../utils";
+import { AuthUserContext, getDate, getTime } from "../../utils";
 
 interface MessageElementProps{
     message: Message
@@ -7,7 +8,7 @@ interface MessageElementProps{
 
 export default function MessageElement({message}: MessageElementProps){
 
-    const authId = 1;
+    const authId = useContext(AuthUserContext);
 
     return(
         <>

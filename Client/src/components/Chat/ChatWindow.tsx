@@ -1,16 +1,18 @@
-import { useState, useEffect, useRef, FormEvent, ChangeEvent, Fragment } from "react";
+import { useState, useEffect, useRef, FormEvent, ChangeEvent, Fragment, useContext } from "react";
 import { animateScroll } from 'react-scroll';
 import axios from "axios";
 import MessageElement from "./MessageElement";
 import "./ChatWindow.css";
 import { Message } from "../../types";
 import { useParams } from "react-router-dom";
+import { AuthUserContext } from "../../utils";
 
 export default function ChatWindow(){
 
     // FIX: When on mobile refreshing the page on url /chat/id/id makes the contact list appear again
 
-    const {authId, contactId} = useParams();
+    const {_, contactId} = useParams();
+    const authId = useContext(AuthUserContext);
     const [messages, setMessages] = useState<Message[] | []>();
     const [message, setMessage] = useState<Message>({
         content: "",

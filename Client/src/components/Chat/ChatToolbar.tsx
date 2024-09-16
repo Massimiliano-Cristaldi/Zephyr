@@ -1,8 +1,11 @@
 import { User } from "../../types"
 
-export default function ChatToolbar(contact: User){
+interface ChatToolbarProps{
+    contact: User
+}
 
-    
+export default function ChatToolbar({contact}: ChatToolbarProps){    
+
     return(
             <div id="chatToolbar">
                 <div id="contactInfo">

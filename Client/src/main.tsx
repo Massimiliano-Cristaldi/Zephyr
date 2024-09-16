@@ -3,8 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
 import AwaitContact from './components/Chat/AwaitContact';
-import SelectedContact, {loader as contactLoader} from './components/Chat/SelectedContact';
-import { loader as contactListLoader } from './components/Chat/Body';
+import SelectedContact from './components/Chat/SelectedContact';
 import EditForm from './components/EditThemes/EditForm';
 import './index.css';
 
@@ -12,7 +11,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout/>,
-    loader: contactListLoader,
     children: [
       {
         path: "/",
@@ -21,7 +19,6 @@ const router = createBrowserRouter([
       {
         path: "chat/:authId/:contactId",
         element: <SelectedContact/>,
-        loader: contactLoader
       },
       {
         path: "themes/edit",
@@ -32,5 +29,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')!).render(
+  <StrictMode>
     <RouterProvider router={router}/>
+  </StrictMode>
 )

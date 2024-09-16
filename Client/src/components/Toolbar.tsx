@@ -1,13 +1,14 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import EditProfile from "./EditProfile";
 import { User } from "../types";
 import "./Toolbar.css";
+import { AuthUserContext } from "../utils";
 
 export default function Toolbar(){
 
-    const authId = 1;
     const [authUser, setAuthUser] = useState<User | undefined>();
+    const authId = useContext(AuthUserContext);
     const toolbarDropdownRef = useRef<HTMLUListElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +44,7 @@ export default function Toolbar(){
         <>
         <div id="toolbarWrapper">
             <div id="authUserInfo">
-                <div id="userIcon" style={{backgroundImage: `url(${authUser?.icon_url}`}}/>
+                <div id="userIcon" style={{backgroundImage: `url(${authUser?.icon_url || "/user.png"}`}}/>
                 {authUser ? authUser.username : "Loading..."}
             </div>
             <div id="icons">

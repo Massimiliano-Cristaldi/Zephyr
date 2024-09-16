@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
 import Body from "./Chat/Body";
-import { ContactListRefContext } from "../utils";
+import { ContactListRefContext, AuthUserContext } from "../utils";
 import "../StyleVariables.css";
 import "../index.css";
 
@@ -26,6 +26,7 @@ export default function Layout(){
     }, [])
 
     return(
+        <AuthUserContext.Provider value={1}>
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
         <div className="container-fluid h-100">
             <div className="row">
@@ -39,5 +40,6 @@ export default function Layout(){
             </div>
         </div>
         </ContactListRefContext.Provider>
+        </AuthUserContext.Provider>
     )
 }

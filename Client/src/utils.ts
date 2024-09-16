@@ -34,3 +34,4 @@ export function getTime(time: string, time_adjustment:number){
 export const fonts = ["Arial", "Times New Roman", "Helvetica", "Century Gothic Paneuropean", "Verdana", "Tahoma", "Trebuchet MS", "Georgia", "Garamond", "Courier New"].sort();
 
 export const ContactListRefContext = createContext<any>([]);
+export const AuthUserContext = createContext<any>(1);
