@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { AuthUserContext, ContactListRefContext, isMobile } from "../../utils";
+import { AuthUserContext, ContactListRefContext, isMobile, MessageCountContext } from "../../utils";
 import { User } from "../../types";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 interface ContactListProps{
     contactList: User[] | [];
 }

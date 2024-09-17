@@ -63,13 +63,13 @@ export default function EditForm(){
             ))}
             <div className="editFontAndBorder">
                 Font
-                <select name="favoriteFont" id="favoriteFont" onChange={setProperty}>
+                <select name="favoriteFont" id="favoriteFont" defaultValue={currentTheme.favoriteFont} onChange={setProperty}>
                     {fonts.map((el)=>(<option value={el} key={el} style={{fontFamily: el}}>{el}</option>))}
                 </select>
             </div>
             <div className="editFontAndBorder">
                 Message box borders
-                <select name="messageBorderRadius" onChange={setProperty}>
+                <select name="messageBorderRadius" defaultValue={currentTheme.messageBorderRadius} onChange={setProperty}>
                     <option value="0px">Squared</option>
                     <option value="10px">Rounded</option>
                 </select>

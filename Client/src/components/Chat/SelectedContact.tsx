@@ -41,7 +41,7 @@ export default function SelectedContact(){
             }
         }
         fetchData();
-    }, [])
+    }, [params.contactId])
     
     return(
         <>

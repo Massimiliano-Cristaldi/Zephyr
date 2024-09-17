@@ -23,7 +23,7 @@
 }
 
 #sidebarWrapper i::before{
-    font-size: 150% !important;
+    font-size: 1.3rem;
 }
 
 #sidebarWrapper  i:hover{
@@ -38,9 +38,5 @@
     #sidebarWrapper{
         height: 93vh;
         width: 4%;
-    }
-
-    #sidebarWrapper i::before{
-        font-size: 2em;
     }
 }
