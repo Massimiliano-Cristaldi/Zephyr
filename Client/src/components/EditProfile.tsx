@@ -1,4 +1,4 @@
-import { RefObject, useContext, useRef } from "react";
+import { ChangeEvent, FormEvent, RefObject, useContext, useRef, useState } from "react";
 import axios from "axios";
 import { AuthUserContext, isMobile } from "../utils";
 import { User } from "../types";
@@ -15,12 +15,37 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
     const usernameH2Ref = useRef<HTMLHeadingElement>(null);
     const statusInputRef = useRef<HTMLInputElement>(null);
     const statusPRef = useRef<HTMLParagraphElement>(null);
+    const [icon, setIcon] = useState<File | undefined>();
     //This flag allows the discard change functions to execute correctly without firing the submit change functions,
     //as hiding the inputs causes them to lose focus, and thus normally trigger any onBlur events
     let discarding = false;
     
     //I tried to lump some of these functions together, but it made them extremely verbose and less clear, especially
     //with Typescript's specific event type requirements, so I ultimately decided to leave them like this
+    function changeIcon(e:ChangeEvent<HTMLInputElement>){
+        const target = e.target as HTMLInputElement & {files: FileList};
+        const uploadedImage = target.files[0];
+        setIcon(uploadedImage);
+    }
+    console.log(icon);
+
+    function submitIconChange(e:FormEvent){
+        e.preventDefault();
+        if (icon){
+            const formdata = new FormData();
+            formdata.append("icon", icon);
+            console.log(formdata);
+            
+            axios.post("http://localhost:8800/updateicon", formdata);
+        }
+    }
+
+    async function logTest(){
+        const response = await axios.get("http://localhost:8800/test");
+        console.log(response);
+        
+    }
+
     function changeUsername(){
         usernameInputRef.current!.style.display = "block";
         usernameInputRef.current!.focus();
@@ -97,7 +122,16 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
     return(
         <div id="editProfileWrapper" ref={editProfileRef}>
             <div id="editProfileModal">
-                <div id="editIcon"></div>
+                <div id="currentIcon">
+                    <label htmlFor="uploadIcon">
+                        <i className="fa-solid fa-upload" style={{color: "#868484"}}/>
+                    </label>
+                    <form onSubmit={submitIconChange}>
+                        <input type="file" name="icon_url" id="uploadIcon" onChange={changeIcon}/>
+                        <button type="submit" className="text-black">Submit</button>
+                    </form>
+                </div>
+                        <button onClick={logTest} className="text-black">log</button>
                 <h2 
                 {...(isMobile() 
                     ? {onClick: changeUsername, ref: usernameH2Ref} 
