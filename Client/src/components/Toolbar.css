@@ -85,7 +85,8 @@
     border-radius: 50%;
     margin-right: 15px;
     background-position: center;
-    background-size: contain;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(../assets/img_not_found.jpg);
 }
 
@@ -155,8 +156,8 @@
     position: relative;
     height: 30%;
     aspect-ratio: 1/1;
-    background-image: url(/public/user.png);
-    background-size: contain;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
     border-radius: 50%;
 }

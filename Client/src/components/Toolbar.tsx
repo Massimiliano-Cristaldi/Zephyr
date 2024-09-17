@@ -7,10 +7,10 @@ import { AuthUserContext } from "../utils";
 
 export default function Toolbar(){
 
-    const [authUser, setAuthUser] = useState<User | undefined>();
     const authId = useContext(AuthUserContext);
     const toolbarDropdownRef = useRef<HTMLUListElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
+    const [authUser, setAuthUser] = useState<User | undefined>();
 
     useEffect(()=>{
         async function getAuthUser(){
@@ -40,11 +40,14 @@ export default function Toolbar(){
             toolbarDropdownRef.current!.style.display = "none";
     }
 
+console.log(authUser?.icon_url);
+
+
     return(
         <>
         <div id="toolbarWrapper">
             <div id="authUserInfo">
-                <div id="userIcon" style={{backgroundImage: `url(${authUser?.icon_url || "/user.png"}`}}/>
+                <div id="userIcon" style={{backgroundImage: `url(/${authUser?.icon_url || "user.png"}`}}/>
                 {authUser ? authUser.username : "Loading..."}
             </div>
             <div id="icons">
