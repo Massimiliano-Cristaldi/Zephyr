@@ -31,6 +31,35 @@ export function getTime(time: string, time_adjustment:number){
     }
 }
 
+export function getCaretCoordinates (input: HTMLInputElement, position:number){
+    const div = document.createElement("div");
+    const style = window.getComputedStyle(input);
+
+    // Copy input styles to the div
+    Array.from(style).forEach((prop:any) => {
+        div.style[prop] = style[prop];
+        });
+    
+        div.style.position = "absolute";
+        div.style.visibility = "hidden";
+        div.style.whiteSpace = "pre-wrap";
+        div.style.wordWrap = "break-word";
+    
+        // Replicate the input text up to the caret
+        div.textContent = input.value.slice(0, position);
+    
+        // Insert a zero-width space to get the caret position
+        const span = document.createElement("span");
+        span.textContent = "\u200B"; // Zero-width space character
+        div.appendChild(span);
+    
+        document.body.appendChild(div);
+        const rect = span.getBoundingClientRect();
+        document.body.removeChild(div);
+    
+        return rect;
+    };
+
 export const fonts = ["Arial", "Times New Roman", "Helvetica", "Century Gothic Paneuropean", "Verdana", "Tahoma", "Trebuchet MS", "Georgia", "Garamond", "Courier New"].sort();
 
 export const ContactListRefContext = createContext<any>([]);

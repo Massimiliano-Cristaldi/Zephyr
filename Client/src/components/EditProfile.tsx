@@ -23,10 +23,6 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
     
     //I tried to lump some of these functions together, but it made them extremely verbose and less clear, especially
     //with Typescript's specific event type requirements, so I ultimately decided to leave them like this
-
-    //TODO: Limit which kinds of file can be put into the file input (image/jpg, image/png etc.)
-    //TODO: Find how to reconstruct the filename as it's processed by multer - see this:
-    //file.fieldname + "_" + Date.now() + path.extname(file.originalname) 
     function changeIcon(e:ChangeEvent<HTMLInputElement>){
         const target = e.target as HTMLInputElement & {files: FileList};
         const uploadedImage = target.files[0];
@@ -113,17 +109,21 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         window.location.reload();
     }
 
-    // TODO: add the possibility of changing profile picture
-
     return(
         <div id="editProfileWrapper" ref={editProfileRef}>
-
             <div id="editProfileModal">
+
                 <div id="currentIcon" style={{backgroundImage: `url(/${user?.icon_url || "user.png"})`}} ref={iconRef}>
                     <label htmlFor="uploadIcon">
                         <i className="fa-solid fa-upload" style={{color: "#868484"}}/>
                     </label>
-                    <input type="file" name="icon_url" id="uploadIcon" onChange={changeIcon}/>
+                    <input
+                    type="file" 
+                    name="icon_url" 
+                    id="uploadIcon" 
+                    onChange={changeIcon}
+                    accept="image/*"
+                    />
                 </div>
 
                 <h2 

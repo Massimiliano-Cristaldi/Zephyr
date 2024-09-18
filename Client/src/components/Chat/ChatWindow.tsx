@@ -2,10 +2,10 @@ import { useState, useEffect, useRef, FormEvent, ChangeEvent, Fragment, useConte
 import { animateScroll } from 'react-scroll';
 import axios from "axios";
 import MessageElement from "./MessageElement";
-import "./ChatWindow.css";
 import { Message } from "../../types";
 import { useParams } from "react-router-dom";
-import { AuthUserContext, MessageCountContext } from "../../utils";
+import { AuthUserContext, MessageCountContext, getCaretCoordinates } from "../../utils";
+import "./ChatWindow.css";
 
 export default function ChatWindow(){
 
@@ -14,6 +14,7 @@ export default function ChatWindow(){
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
     const scrollRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const fontStylePopupRef = useRef<HTMLDivElement>(null);
 
     const [messages, setMessages] = useState<Message[] | []>();
     const [message, setMessage] = useState<Message>({
@@ -21,6 +22,7 @@ export default function ChatWindow(){
         recipient_id: Number(contactId),
         sender_id: Number(authId),
     });
+    const [textCursorOffset, setTextCursorOffset] = useState(0)
     
     //Fetch messages
     useEffect(()=>{
@@ -41,6 +43,11 @@ export default function ChatWindow(){
         getMessages();
     }, [sessionMessageCount, contactId])
 
+    //Scroll to bottom on chat load
+    useEffect(()=>{
+        animateScroll.scrollToBottom({containerId: "messagesWrapper", duration: 0});
+    }, [messages])
+
     //Post message to database
     function sendMessage(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
@@ -51,20 +58,38 @@ export default function ChatWindow(){
         }
     }
 
-    //Change message.content on input value change
+    //Change message.content and get text cursor position on input value change
     function handleChange(e: ChangeEvent<HTMLInputElement>){
-        setMessage({...message, content: e.target.value})
+        setMessage({...message, content: e.target.value});
+
+        const input = inputRef.current;
+        const position = input?.selectionStart;
+        if (position){
+            const leftOffset = getCaretCoordinates(input, position).left;
+            setTextCursorOffset(leftOffset);
+        }
     }
 
-    
-    //Scroll to bottom on chat load
-    useEffect(()=>{
-        animateScroll.scrollToBottom({containerId: "messagesWrapper", duration: 0});
-    }, [messages])
+    //TODO: Make it so that popup changes place if selection position changes, fix popup left offset 
+    //Make popup for italics/bold appear on mouseUp
+    function toggleFontStylePopup(){
+        const selectionLength = window.getSelection()?.toString().length;
+        const isSelectionInInput = window.getSelection()?.getRangeAt(0).getBoundingClientRect().height === 0;
+        const isValidSelection = selectionLength && selectionLength > 0 && fontStylePopupRef.current && isSelectionInInput;
+        const isNothingSelected = selectionLength === 0 || selectionLength === undefined;
+
+        if (isValidSelection){
+            const leftOffset = textCursorOffset > 170 ? textCursorOffset - 150 : 20;
+            fontStylePopupRef.current.style.display = "flex";
+            fontStylePopupRef.current.style.left = `${leftOffset}px`;
+        } else if (isNothingSelected){
+            fontStylePopupRef.current!.style.display = "none";
+        }
+    }
     
     return(
         <>
-            <div id="chatBody">
+            <div id="chatBody" onMouseUp={toggleFontStylePopup}>
                 {messages && messages.length ?
                 (<div id="messagesWrapper" ref={scrollRef}>
                     {messages.map((message)=>(
@@ -79,13 +104,14 @@ export default function ChatWindow(){
                     </div>
                 )}
             </div>
-            <div id="chatInputWrapper">
+            <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>
                 <form onSubmit={sendMessage}>
                     <input type="text" placeholder="Enter message" ref={inputRef} onChange={handleChange}/>
                     <button>
                         <i className="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
+                <div id="fontStylePopup" ref={fontStylePopupRef}>Minchia</div>
             </div>
         </>
     )
