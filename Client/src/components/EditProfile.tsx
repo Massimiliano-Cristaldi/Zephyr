@@ -31,13 +31,14 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         const target = e.target as HTMLInputElement & {files: FileList};
         const uploadedImage = target.files[0];
         if (uploadedImage){
-            console.log(uploadedImage);
-            
             const formdata = new FormData();
             formdata.append("icon", uploadedImage);
             formdata.append("userId", authId.toString());
             axios.post(`http://localhost:8800/updateicon`, formdata)
-            // .then(()=>{iconRef.current!.style.backgroundImage = `url(/${uploadedImage})`});
+            .then(async ()=>{return await axios.get(`http://localhost:8800/geticon/${authId}`)})
+            .then((res)=>{iconRef.current!.style.backgroundImage = `url(/${res.data[0].icon_url})`})
+            // .then((res)=>{console.log(res.data[0].icon_url)})
+            .catch((err)=>{console.error(err)});
         }
     }
 
