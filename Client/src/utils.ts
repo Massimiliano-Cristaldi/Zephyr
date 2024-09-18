@@ -60,6 +60,10 @@ export function getCaretCoordinates (input: HTMLInputElement, position:number){
         return rect;
     };
 
+export function sanitizeMessageInput(message:string){
+    return message.replace(/(<\/?([a-z]|[A-Z]){2,}\/?>)|(<([a-z]|[A-Z])\/>)/g, "");
+}
+
 export const fonts = ["Arial", "Times New Roman", "Helvetica", "Century Gothic Paneuropean", "Verdana", "Tahoma", "Trebuchet MS", "Georgia", "Garamond", "Courier New"].sort();
 
 export const ContactListRefContext = createContext<any>([]);

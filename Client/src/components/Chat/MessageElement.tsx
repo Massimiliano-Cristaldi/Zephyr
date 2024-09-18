@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef, useEffect } from "react";
 import { Message } from "../../types";
 import { AuthUserContext, getDate, getTime } from "../../utils";
 
@@ -9,6 +9,13 @@ interface MessageElementProps{
 export default function MessageElement({message}: MessageElementProps){
 
     const authId = useContext(AuthUserContext);
+    const messageRef = useRef<HTMLDivElement>(null);
+
+    useEffect(()=>{
+        if (messageRef.current) {
+            messageRef.current.innerHTML = message.content;
+        }
+    }, [])
 
     return(
         <>
@@ -16,8 +23,7 @@ export default function MessageElement({message}: MessageElementProps){
             key={message.id} 
             className={(message.sender_id == authId) ? "senderMessage" : "recipientMessage"}
             >
-                {message.content}
-                <br />
+                <div ref={messageRef}></div>
             </div>
             <small 
             className={(message.sender_id == authId) ? "timeSentSender" : "timeSentRecipient"} 

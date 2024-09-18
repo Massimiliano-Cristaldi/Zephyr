@@ -40,9 +40,6 @@ export default function Toolbar(){
             toolbarDropdownRef.current!.style.display = "none";
     }
 
-console.log(authUser?.icon_url);
-
-
     return(
         <>
         <div id="toolbarWrapper">
