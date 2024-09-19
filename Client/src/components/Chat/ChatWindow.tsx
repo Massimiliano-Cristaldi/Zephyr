@@ -1,17 +1,18 @@
-import { useState, useEffect, useRef, FormEvent, ChangeEvent, Fragment, useContext, KeyboardEventHandler } from "react";
+import { useState, useEffect, useRef, Fragment, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { animateScroll } from 'react-scroll';
 import axios from "axios";
-import MessageElement from "./MessageElement";
+import { AuthUserContext, MessageCountContext, getCaretCoordinates } from "../../utils";
 import { Message } from "../../types";
-import { useParams } from "react-router-dom";
-import { AuthUserContext, MessageCountContext, getCaretCoordinates, sanitizeMessageInput } from "../../utils";
+import MessageElement from "./MessageElement";
+import ChatInput from "./ChatInput";
 import "./ChatWindow.css";
 
 export default function ChatWindow(){
 
     const {_, contactId} = useParams();
     const authId = useContext(AuthUserContext);
-    const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
+    const [sessionMessageCount] = useContext(MessageCountContext);
     const scrollRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const fontStylePopupRef = useRef<HTMLDivElement>(null);
@@ -47,21 +48,6 @@ export default function ChatWindow(){
     useEffect(()=>{
         animateScroll.scrollToBottom({containerId: "messagesWrapper", duration: 0});
     }, [messages])
-    
-    //Change message.content on input value change
-    function handleChange(e: ChangeEvent<HTMLInputElement>){
-        setMessage({...message, content: sanitizeMessageInput(e.target.value)});
-    }
-    
-    //Post message to database
-    function sendMessage(e: FormEvent<HTMLFormElement>){
-            e.preventDefault();
-            if (inputRef && inputRef.current?.value !== "") {
-                    axios.post("http://localhost:8800/messages", message)
-                    .then(()=>{setSessionMessageCount(sessionMessageCount + 1)});
-                    inputRef.current!.value = "";
-            }
-    }
 
     //Make font style popup dialog appear/disappear when selecting/deselecting text in the chat input
     function toggleFontStylePopup(){
@@ -84,40 +70,6 @@ export default function ChatWindow(){
         }
     }
 
-    //Close font style popup and remove selection upon clicking Esc
-    function handleKeyboardEvents(e:React.KeyboardEvent<HTMLInputElement>){
-        const triggers = ["ShiftLeft", "ShiftRight", "ArrowLeft", "ArrowRight"];
-        if (fontStylePopupRef.current) {
-            if (e.key === "Escape"){
-                window.getSelection()?.removeAllRanges();
-                fontStylePopupRef.current.style.display = "none";
-            } else if (triggers.includes(e.code) || triggers.includes(e.key)){
-                toggleFontStylePopup();
-            }
-        }
-    }
-    
-    //Make text italic, bold or underlined
-    function changeTextStyle(style:string){
-        const input = inputRef.current;
-        if (input && input.selectionStart && input.selectionEnd) {
-            let selection;
-            switch (style) {
-                case "italics":
-                    selection = `<i>${selectedText}</i>`;
-                break;
-                case "bold":
-                    selection = `<b>${selectedText}</b>`;
-                break;
-                case "underline":
-                    selection = `<u>${selectedText}</u>`;
-                break;
-            }
-            inputRef.current.value = input.value.slice(0, input.selectionStart) + selection + input.value.slice(input.selectionEnd, input.value.length); 
-            setMessage({...message, content: inputRef.current.value});
-        }
-    }
-
     return(
         <>
             <div id="chatBody" onMouseUp={toggleFontStylePopup}>
@@ -135,19 +87,11 @@ export default function ChatWindow(){
                     </div>
                 )}
             </div>
-            <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>
-                <form onSubmit={sendMessage}>
-                    <input type="text" placeholder="Enter message" ref={inputRef} onChange={handleChange} onKeyUp={handleKeyboardEvents}/>
-                    <button>
-                        <i className="fa-solid fa-paper-plane"></i>
-                    </button>
-                </form>
-                <div id="fontStylePopup" ref={fontStylePopupRef}>
-                    <i className="fa-solid fa-italic" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("italics")}}/>
-                    <i className="fa-solid fa-bold" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("bold")}}/>
-                    <i className="fa-solid fa-underline" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("underline")}}/>
-                </div>
-            </div>
+            <ChatInput
+            states={[[message, setMessage], [selectedText, setSelectedText]]}
+            refs={[inputRef, fontStylePopupRef]}
+            actions={toggleFontStylePopup}
+            />
         </>
     )
 }
