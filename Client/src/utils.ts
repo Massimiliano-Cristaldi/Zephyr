@@ -55,6 +55,7 @@ export function getCaretCoordinates (input: HTMLInputElement, position:number){
     
         document.body.appendChild(div);
         const rect = span.getBoundingClientRect();
+        
         document.body.removeChild(div);
     
         return rect;

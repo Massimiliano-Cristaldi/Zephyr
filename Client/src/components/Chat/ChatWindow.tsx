@@ -64,7 +64,6 @@ export default function ChatWindow(){
     }
 
     //Make font style popup dialog appear/disappear when selecting/deselecting text in the chat input
-    //TODO: Make it possible to toggle the popup by selecting with keyboard instead of mouse
     function toggleFontStylePopup(){
         const input = inputRef.current;
         const position = input?.selectionStart;
@@ -84,32 +83,37 @@ export default function ChatWindow(){
             }
         }
     }
-    console.log(selectedText);
 
     //Close font style popup and remove selection upon clicking Esc
-    //FIX: This function behaves weirdly when the selected text occurs multiple times 
-    //(the first instance of the text is changed, even if it's not the selected one)
-    function closeFontStylePopup(e:React.KeyboardEvent<HTMLInputElement>){
-        if (e.key === "Escape" && fontStylePopupRef.current){
-            window.getSelection()?.removeAllRanges();
-            fontStylePopupRef.current.style.display = "none";
+    function handleKeyboardEvents(e:React.KeyboardEvent<HTMLInputElement>){
+        const triggers = ["ShiftLeft", "ShiftRight", "ArrowLeft", "ArrowRight"];
+        if (fontStylePopupRef.current) {
+            if (e.key === "Escape"){
+                window.getSelection()?.removeAllRanges();
+                fontStylePopupRef.current.style.display = "none";
+            } else if (triggers.includes(e.code) || triggers.includes(e.key)){
+                toggleFontStylePopup();
+            }
         }
     }
     
     //Make text italic, bold or underlined
     function changeTextStyle(style:string){
-        if (inputRef.current) {
+        const input = inputRef.current;
+        if (input && input.selectionStart && input.selectionEnd) {
+            let selection;
             switch (style) {
                 case "italics":
-                    inputRef.current.value = inputRef.current.value.replace(selectedText, `<i>${selectedText}</i>`);
+                    selection = `<i>${selectedText}</i>`;
                 break;
                 case "bold":
-                    inputRef.current.value = inputRef.current.value.replace(selectedText, `<b>${selectedText}</b>`);
+                    selection = `<b>${selectedText}</b>`;
                 break;
                 case "underline":
-                    inputRef.current.value = inputRef.current.value.replace(selectedText, `<u>${selectedText}</u>`);
-                    break;
-                }
+                    selection = `<u>${selectedText}</u>`;
+                break;
+            }
+            inputRef.current.value = input.value.slice(0, input.selectionStart) + selection + input.value.slice(input.selectionEnd, input.value.length); 
             setMessage({...message, content: inputRef.current.value});
         }
     }
@@ -133,7 +137,7 @@ export default function ChatWindow(){
             </div>
             <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>
                 <form onSubmit={sendMessage}>
-                    <input type="text" placeholder="Enter message" ref={inputRef} onChange={handleChange} onKeyUp={closeFontStylePopup}/>
+                    <input type="text" placeholder="Enter message" ref={inputRef} onChange={handleChange} onKeyUp={handleKeyboardEvents}/>
                     <button>
                         <i className="fa-solid fa-paper-plane"></i>
                     </button>
