@@ -52,8 +52,9 @@ export default function ChatInput({states, refs, actions}:any){
                     selection = `<u>${selectedText}</u>`;
                 break;
             }
-            inputRef.current.value = input.value.slice(0, input.selectionStart) + selection + input.value.slice(input.selectionEnd, input.value.length); 
-            setMessage({...message, content: inputRef.current.value});
+            input.value = input.value.slice(0, input.selectionStart) + selection + input.value.slice(input.selectionEnd, input.value.length);
+            input.focus();
+            setMessage({...message, content: input.value});
         }
     }
 

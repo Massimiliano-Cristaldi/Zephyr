@@ -41,9 +41,9 @@
     background-color: var(--iconHoverBg);
 }
 
-#toolbarDropdown{
+.toolbarDropdown{
     background-color: var(--toolbarOptionsBg);
-    width: 37vw;
+    width: 50vw !important;
     position: absolute;
     top: 10vh;
     right: 0;
@@ -51,10 +51,10 @@
     border-bottom: 3px solid var(--toolbarOptionsBorder);
     border-left: 3px solid var(--toolbarOptionsBorder);
     padding: 0px;
-    z-index: 2;
+    z-index: 200;
 }
 
-#toolbarDropdown li{
+.toolbarDropdown li{
     display: inline-block;
     padding: 3px 8px;
     width: 100%;
@@ -62,11 +62,11 @@
     cursor: pointer;
 }
 
-#toolbarDropdown li:hover{
+.toolbarDropdown li:hover{
     background-color: var(--toolbarOptionsBorder);
 }
 
-#toolbarDropdown li>a{
+.toolbarDropdown li>a{
     text-decoration: none;
     color: var(--defaultFontColor);
 }
@@ -90,170 +90,17 @@
     background-image: url(../assets/img_not_found.jpg);
 }
 
-#editProfileWrapper{
-    display: none;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 3;
-    background-color: rgba(68, 68, 68, 0.678);
-    backdrop-filter: blur(5px);
-    animation-name: modalDarkenBg;
-    animation-duration: 0.5s;
-}
-
-#editProfileModal{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-    position: relative;
-    height: 80%;
-    width: 80%;
-    padding: 2rem 1.3rem 0.3rem 1.3rem;
-
-    background-color: hsl(210, 13%, 94%);
-    font-size: 30px;
-    font-weight: 600;
-    border-radius: 20px;
-
-    animation-name: modalSlide;
-    animation-duration: 0.5s;
-}
-
-#editProfileModal>h2{
-    min-height: 39px;
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-    color: rgb(80, 80, 80);
-    margin-bottom: -10px;
-}
-
-#editProfileModal>h2:hover{
-    background-color: hsl(210, 13%, 84%);
-}
-
-#editProfileModal>p{
-    font-size: 1.2rem;
-    text-align: center;
-    color: rgb(80, 80, 80);
-    min-height: 34px;
-    width: 90%;
-    margin: 0px;
-}
-
-#editProfileModal>p:hover{
-    background-color: hsl(210, 13%, 84%);
-}
-
-#currentIcon{
-    position: relative;
-    height: 30%;
-    aspect-ratio: 1/1;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 50%;
-}
-
-#uploadIcon{
-    display: none;
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    width: 40px;
-    aspect-ratio: 1/1;
-    background-color: white;
-    font-size: 1.2rem;
-    padding: 10px;
-    border: 1px solid #868484;
-
-    border-radius: 50%;
-}
-
-#currentIcon>label{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-
-    border-radius: 50%;
-    border: 1px solid #868484;
-    background-color: hsl(210, 13%, 94%);
-    color: rgb(80, 80, 80);
-    font-size: 1.4rem;
-}
-
-#newUsernameInput{
-    display: none;
-    height: 38px;
-    padding: 5px;
-    border: none;
-    margin-bottom: 20px;
-    color: rgb(36, 36, 36);
-}
-
-#newStatusInput{
-    display: none;
-    height: 34px;
-    border: none;
-    padding: 5px;
-    margin-bottom: 30px;
-    color: rgb(36, 36, 36);
-    font-size: 1.2rem;
-}
-
-@keyframes modalSlide {
-    0% {top: -100vh}
-    100%{top: 0}
-}
-
-@keyframes modalDarkenBg {
-    0% {background-color: transparent; backdrop-filter: blur(0px);}
-    100%{background-color: rgba(68, 68, 68, 0.678); backdrop-filter: blur(5px);}
-}
-
 @media screen and (min-width: 996px) {
     #toolbarWrapper{
         height: 7vh;
     }
 
-    #toolbarDropdown{
+    .toolbarDropdown{
         top: 7vh;
-        width: 15vw;
+        right: 10px;
+        width: 15vw !important;
+        padding: 0px !important;
         border-top: 3px solid var(--toolbarOptionsBorder);
         border-right: 3px solid var(--toolbarOptionsBorder);
-        right: 10px;
     }
-    
-    #editProfileModal{
-        width: 40vw;
-        height: 50vh;
-    }
-
-    #editProfileModal>p{
-        width: 30vw;
-    }
-
-    #newStatusInput{
-        width: 30vw;
-    }
-}
-
-.closeModal{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
 }

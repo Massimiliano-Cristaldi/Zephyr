@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, RefObject } from "react";
 
 export function isMobile(){
     return window.innerWidth < 776;
@@ -63,6 +63,13 @@ export function getCaretCoordinates (input: HTMLInputElement, position:number){
 
 export function sanitizeMessageInput(message:string){
     return message.replace(/(<\/?([a-z]|[A-Z]){2,}\/?>)|(<([a-z]|[A-Z])\/>)/g, "");
+}
+
+export function closeModal(ref: RefObject<HTMLDivElement>){
+    if (ref.current) {
+        ref.current.style.display = "none";
+        window.location.reload();
+    }
 }
 
 export const fonts = ["Arial", "Times New Roman", "Helvetica", "Century Gothic Paneuropean", "Verdana", "Tahoma", "Trebuchet MS", "Georgia", "Garamond", "Courier New"].sort();

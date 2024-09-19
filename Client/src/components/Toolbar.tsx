@@ -1,17 +1,21 @@
-import { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useRef, useContext, RefObject } from "react";
 import axios from "axios";
-import EditProfile from "./EditProfile";
-import { User } from "../types";
-import "./Toolbar.css";
 import { AuthUserContext } from "../utils";
+import { User } from "../types";
+import EditProfile from "./EditProfile";
+import AddContact from "./AddContact";
+import "./Toolbar.css";
 
 export default function Toolbar(){
 
     const authId = useContext(AuthUserContext);
-    const toolbarDropdownRef = useRef<HTMLUListElement>(null);
+    const toolbarOptionsRef = useRef<HTMLUListElement>(null);
+    const toolbarAddRef = useRef<HTMLUListElement>(null);
+    const addContactRef = useRef<HTMLDivElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
     const [authUser, setAuthUser] = useState<User | undefined>();
 
+    //Fetch logged user's info
     useEffect(()=>{
         async function getAuthUser(){
             try {
@@ -27,17 +31,24 @@ export default function Toolbar(){
         getAuthUser();
     }, [])
 
-    function showDropdown(){
-        if (toolbarDropdownRef.current?.style.display === "none") {
-            toolbarDropdownRef.current!.style.display = "block";
-        } else {
-            toolbarDropdownRef.current!.style.display = "none";
+    function showDropdown(showRef: RefObject<HTMLUListElement>, hideRef: RefObject<HTMLUListElement>){
+        if (showRef.current && hideRef.current) {            
+            if (showRef.current.style.display === "none") {
+                showRef.current.style.display = "block";
+                hideRef.current.style.display = "none";
+            } else {
+                showRef.current.style.display = "none";
+                hideRef.current.style.display = "none";
+            }
         }
     }
 
-    function showEditProfileModal(){
-            editProfileRef.current!.style.display = "flex";
-            toolbarDropdownRef.current!.style.display = "none";
+    function showModal(ref: RefObject<HTMLDivElement>){
+        if (ref.current && toolbarOptionsRef.current && toolbarAddRef.current) {
+            ref.current.style.display = "flex";
+            toolbarOptionsRef.current.style.display = "none";
+            toolbarAddRef.current.style.display = "none";
+        }
     }
 
     return(
@@ -48,23 +59,32 @@ export default function Toolbar(){
                 {authUser ? authUser.username : "Loading..."}
             </div>
             <div id="icons">
-                <a href="">
-                    <i className="fa-solid fa-plus fa-xl" 
-                        style={{color: "white"}}
-                        data-toggle="tooltip"
-                        title="Add new contact"
-                    />
-                </a>
+                <i className="fa-solid fa-plus fa-xl" 
+                    style={{color: "white"}}
+                    onClick={()=>{showDropdown(toolbarAddRef, toolbarOptionsRef)}}
+                    data-toggle="tooltip"
+                    title="Add new contact"
+                />
                 <i className="fa-solid fa-ellipsis-vertical fa-xl" 
                     style={{color: "white"}} 
-                    onClick={showDropdown}
+                    onClick={()=>{showDropdown(toolbarOptionsRef, toolbarAddRef)}}
                     data-toggle="tooltip"
                     title="Options"
                 />
             </div>
         </div>
-        <ul id="toolbarDropdown" style={{display: "none"}} ref={toolbarDropdownRef}>
-            <li onClick={showEditProfileModal}>Profile</li>
+        <ul 
+        className="toolbarDropdown" 
+        style={{display: "none", right: "60px", borderRight: "3px solid var(--toolbarOptionsBorder)"}} 
+        ref={toolbarAddRef}>
+            <li onClick={()=>{showModal(addContactRef)}}>New chat</li>
+            <li>New group chat</li>
+        </ul>
+        <ul 
+        className="toolbarDropdown" 
+        style={{display: "none"}} 
+        ref={toolbarOptionsRef}>
+            <li onClick={()=>{showModal(editProfileRef)}}>Profile</li>
             <a href="/themes/edit">
                 <li>Change themes</li>
             </a>
@@ -72,6 +92,9 @@ export default function Toolbar(){
                 <li>Logout</li>
             </a>
         </ul>
+        <div id="addContactWrapper" ref={addContactRef}>
+            <AddContact addContactRef={addContactRef}/>
+        </div>
         <EditProfile user={authUser} editProfileRef={editProfileRef}/>
         </>
     )
