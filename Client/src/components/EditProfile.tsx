@@ -57,10 +57,12 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         usernameInputRef.current!.style.display = "none";
         usernameH2Ref.current!.style.display = "block";
         if (user && usernameInputRef.current?.value){
-            const newUsername = {username: usernameInputRef.current.value, authId: authId};
-            axios.post("http://localhost:8800/updateusername", newUsername);
-            usernameH2Ref.current!.textContent = newUsername.username;
-            user.username = newUsername.username;
+            const newUsername = {field: "username", 
+                                value: usernameInputRef.current.value, 
+                                authId: authId};
+            axios.post("http://localhost:8800/updateuserinfo", newUsername);
+            usernameH2Ref.current!.textContent = newUsername.value;
+            user.username = newUsername.value;
         }
     }
     
@@ -90,10 +92,12 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         statusInputRef.current!.style.display = "none";
         statusPRef.current!.style.display = "block";
         if (user && statusInputRef.current?.value){
-            const newStatus = {status: statusInputRef.current.value, authUserId: authId};
-            axios.post("http://localhost:8800/updatestatus", newStatus);
-            statusPRef.current!.textContent = newStatus.status;
-            user.custom_status = newStatus.status;
+            const newStatus = {field: "custom_status", 
+                                value: statusInputRef.current.value, 
+                                authId: authId};
+            axios.post("http://localhost:8800/updateuserinfo", newStatus);
+            statusPRef.current!.textContent = newStatus.value;
+            user.custom_status = newStatus.value;
         }
     }
 
@@ -125,7 +129,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 <h2 
                 {...(isMobile() 
                     ? {onClick: changeUsername, ref: usernameH2Ref} 
-                    : {onClick: changeUsername, ref: usernameH2Ref})}
+                    : {onDoubleClick: changeUsername, ref: usernameH2Ref})}
                 >{user?.username}</h2>
                 <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>
                     <input type="text"
@@ -141,7 +145,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 <p
                 {...(isMobile() 
                     ? {onClick: changeStatus, ref: statusPRef} 
-                    : {onClick: changeStatus, ref: statusPRef})}
+                    : {onDoubleClick: changeStatus, ref: statusPRef})}
                 >
                     {user?.custom_status || "This user hasn't chosen a status yet"}
                 </p>

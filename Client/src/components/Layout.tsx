@@ -29,6 +29,7 @@ export default function Layout(){
     }, [])
 
     //Make font style popup dialog appear/disappear when selecting/deselecting text in the chat input
+    //The function appears here because the mouseup event should trigger when the button is released anywhere
     function toggleFontStylePopup(){
         const input = chatInputRef.current;
         const position = input?.selectionStart;

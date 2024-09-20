@@ -17,9 +17,9 @@ export default function Toolbar(){
 
     //Fetch logged user's info
     useEffect(()=>{
-        async function getAuthUser(){
+        async function fetchData(){
             try {
-                const response = await axios.get(`http://localhost:8800/contact/${authId}`);
+                const response = await axios.get(`http://localhost:8800/userinfo/${authId}`);
                 if (response.status !== 200 || response.data.length === 0) {
                     throw new Error("User not found");
                 }
@@ -28,7 +28,7 @@ export default function Toolbar(){
                 console.error(err);
             }
         }
-        getAuthUser();
+        fetchData();
     }, [])
 
     function showDropdown(showRef: RefObject<HTMLUListElement>, hideRef: RefObject<HTMLUListElement>){

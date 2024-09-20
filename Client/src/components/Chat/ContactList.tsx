@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { AuthUserContext, ContactListRefContext, isMobile, MessageCountContext } from "../../utils";
+import { AuthUserContext, ContactListRefContext, isMobile } from "../../utils";
 import { User } from "../../types";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 interface ContactListProps{
     contactList: User[] | [];
 }
@@ -27,7 +27,7 @@ export default function ContactList({contactList}: ContactListProps){
             (contactList.map((contact: User)=> contact.id !== authId ? (
                     <div key={contact.id} onClick={()=>openChat(contact.id)}>
                         <div className="contactIcon" style={{backgroundImage: `url(${contact.icon_url || "/user.png"})`}}></div>
-                        {contact.username}
+                        {contact.user_added_as}
                     </div>
             ) : "")
         ) : (

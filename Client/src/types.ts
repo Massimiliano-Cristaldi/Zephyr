@@ -4,6 +4,7 @@ export interface User {
     phone_number: number,
     icon_url: string | null
     custom_status?: string
+    user_added_as?: string
 }
 
 export interface Message {

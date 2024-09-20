@@ -4,8 +4,8 @@ interface ChatToolbarProps{
     contact: User
 }
 
-export default function ChatToolbar({contact}: ChatToolbarProps){    
-
+export default function ChatToolbar({contact}: ChatToolbarProps){
+    
     return(
             <div id="chatToolbar">
                 <div id="contactInfo">

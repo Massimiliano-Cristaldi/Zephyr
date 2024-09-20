@@ -23,10 +23,13 @@ export default function SelectedContact(){
         }
     }, [])
 
+    console.log(params);
+    
+
     useEffect(()=>{
         async function fetchData(){
             try {
-                const response = await axios.get(`http://localhost:8800/contact/${params.contactId}`);
+                const response = await axios.get(`http://localhost:8800/contact/${params.authId}/${params.contactId}`);
                 const contacts = await axios.get(`http://localhost:8800/contactlist/${params.authId}`);                
                 const isInContactList = contacts.data.some((obj:User) => obj.id === Number(params.contactId));                
                 if (response.status !== 200 || response.data?.length === 0) {
