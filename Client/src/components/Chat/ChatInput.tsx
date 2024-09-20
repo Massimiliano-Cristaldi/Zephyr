@@ -7,7 +7,7 @@ export default function ChatInput({states, refs, actions}:any){
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
     const [message, setMessage] = [states[0][0], states[0][1]];
     const selectedText = states[1][0];
-    const [inputRef, fontStylePopupRef] = [refs[0], refs[1]];
+    const [chatInputRef, fontStylePopupRef] = [refs[0], refs[1]];
     const toggleFontStylePopup = actions;    
 
     function handleChatInputChange(e: ChangeEvent<HTMLInputElement>){
@@ -16,16 +16,16 @@ export default function ChatInput({states, refs, actions}:any){
 
     function sendMessage(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
-        if (inputRef && inputRef.current?.value !== "") {
+        if (chatInputRef && chatInputRef.current?.value !== "") {
                 axios.post("http://localhost:8800/messages", message)
                 .then(()=>{setSessionMessageCount(sessionMessageCount + 1)});
-                inputRef.current!.value = "";
+                chatInputRef.current!.value = "";
         }
 }
 
     //Close font style popup and remove selection upon clicking Esc
     function handleKeyboardEvents(e:React.KeyboardEvent<HTMLInputElement>){
-        const triggers = ["ShiftLeft", "ShiftRight", "ArrowLeft", "ArrowRight", "Space", "Backspace"];
+        const triggers = ["ShiftLeft", "ShiftRight", "ArrowLeft", "ArrowRight", "Space", "Backspace", "Delete", "v"];
         if (fontStylePopupRef.current) {
             if (e.key === "Escape"){
                 window.getSelection()?.removeAllRanges();
@@ -38,7 +38,7 @@ export default function ChatInput({states, refs, actions}:any){
         
     //Make text italic, bold or underlined
     function changeTextStyle(style:string){
-        const input = inputRef.current;
+        const input = chatInputRef.current;
         if (input && input.selectionStart && input.selectionEnd) {
             let selection;
             switch (style) {
@@ -61,7 +61,7 @@ export default function ChatInput({states, refs, actions}:any){
     return(
         <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>
         <form onSubmit={sendMessage}>
-            <input type="text" placeholder="Enter message" ref={inputRef} onChange={handleChatInputChange} onKeyUp={handleKeyboardEvents}/>
+            <input type="text" placeholder="Enter message" ref={chatInputRef} onChange={handleChatInputChange} onKeyUp={handleKeyboardEvents}/>
             <button>
                 <i className="fa-solid fa-paper-plane"></i>
             </button>

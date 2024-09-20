@@ -77,3 +77,4 @@ export const fonts = ["Arial", "Times New Roman", "Helvetica", "Century Gothic P
 export const ContactListRefContext = createContext<any>([]);
 export const AuthUserContext = createContext<number>(1);
 export const MessageCountContext = createContext<any>([]);
+export const FontStylePopupContext = createContext<any>([]);
