@@ -7,11 +7,11 @@ import { Message } from "../../types";
 import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";
 import ViewProfile from "../ViewProfile";
-import "../css/ChatWindow.css";
+import "../../css/ChatWindow.css";
 
 export default function ChatWindow(){
 
-    const {_, contactId} = useParams();
+    const contactId = useParams().contactId;
     const authId = useContext(AuthUserContext);
     const {actions, states, refs} = useContext(FontStylePopupContext);
     const [sessionMessageCount] = useContext(MessageCountContext);
@@ -24,11 +24,14 @@ export default function ChatWindow(){
         recipient_id: Number(contactId),
         sender_id: Number(authId),
     });
+    const [deletedMessageCount, setDeletedMessageCount] = useState<number>(0);
     const [selectedText, setSelectedText] = states;    
 
     //Fetch messages
     useEffect(()=>{
         async function getMessages(){
+            console.log("I'm here");
+            
             try {
                 const response = await axios.get(`http://localhost:8800/messages/${authId}/${contactId}`);
                 if (response.status !== 200 || response.data.length === 0) {
@@ -43,7 +46,7 @@ export default function ChatWindow(){
             }
         }
         getMessages();
-    }, [sessionMessageCount, contactId])
+    }, [contactId, sessionMessageCount, deletedMessageCount])
 
     //Scroll to bottom on chat load
     useEffect(()=>{
@@ -59,7 +62,7 @@ export default function ChatWindow(){
                 (<div id="messagesWrapper" ref={scrollRef}>
                     {messages.map((message)=>(
                         <Fragment key={message.id}>
-                            <MessageElement message={message}/>
+                            <MessageElement message={message} states={[deletedMessageCount, setDeletedMessageCount]}/>
                         </Fragment>
                     ))}
                     <ViewProfile/>

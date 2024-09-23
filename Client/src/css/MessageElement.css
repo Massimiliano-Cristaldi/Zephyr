@@ -1,0 +1,91 @@
+.senderMessage{
+    display: flex;
+    align-items: center;
+    align-self: end;
+    position: relative;
+    width: 50vw;
+    padding: 10px 15px 10px 0px;
+    background-color: var(--senderMessageBg);
+    text-align: justify;
+    border-radius: var(--messageBorderRadius) var(--messageBorderRadius) 0px 0px;
+}
+
+.senderMessage::before{
+    content: '';
+    position: relative;
+    bottom: calc(-50% - 33px);
+    left: calc(100% + 14px);
+    border-left: 7px solid var(--senderMessageBg);
+    border-bottom: 7px solid var(--senderMessageBg);
+    border-right: 7px solid transparent;
+    border-top: 7px solid transparent;
+}
+
+.recipientMessage{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 50vw;
+    padding: 10px 15px 10px 0px;
+    background-color: var(--recipientMessageBg);
+    text-align: justify;
+    border-radius: var(--messageBorderRadius) var(--messageBorderRadius) 0px 0px;
+}
+
+.recipientMessage::before {
+    content: '';
+    position: relative;
+    bottom: calc(-50% - 33px);
+    left: -14px;
+    border-right: 7px solid var(--recipientMessageBg);
+    border-bottom: 7px solid var(--recipientMessageBg);
+    border-left: 7px solid transparent;
+    border-top: 7px solid transparent;
+}
+
+.timeSentSender{
+    min-height: 30px;
+    width: 50vw;
+    padding: 0px 15px 5px 0px;
+    margin-bottom: 20px;
+    align-self: end;
+    text-align: end;
+    background-color: var(--senderMessageBg);
+    cursor: default;
+    border-bottom-left-radius: var(--messageBorderRadius);
+}
+
+.timeSentRecipient{
+    min-height: 30px;
+    width: 50vw;
+    padding: 0px 0px 5px 15px;
+    margin-bottom: 20px;
+    background-color: var(--recipientMessageBg);
+    cursor: default;
+    border-bottom-right-radius: var(--messageBorderRadius);
+}
+
+.timeSentSender:last-child, .timeSentRecipient:last-child{
+    margin-bottom: 0px;
+}
+
+.deleteMessageIcon{
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    cursor: pointer;
+}
+
+@media screen and (min-Width: 996px) {
+    .senderMessage, .recipientMessage, .timeSentSender, .timeSentRecipient{
+        width: 40vw;
+    }
+
+    .deleteMessageIcon{
+        display: none;
+    }
+
+    .senderMessage:hover .deleteMessageIcon{
+        display: block;
+    }
+}

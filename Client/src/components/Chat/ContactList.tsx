@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthUserContext, ContactListRefContext, isMobile } from "../../utils";
 import { User } from "../../types";
-import "../css/ContactList.css";
+import "../../css/ContactList.css";
 
 interface ContactListProps{
     contactList: User[] | [];

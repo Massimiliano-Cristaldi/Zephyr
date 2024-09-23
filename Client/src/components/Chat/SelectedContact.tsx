@@ -12,7 +12,7 @@ export default function SelectedContact(){
     const params = useParams();    
     const [contact, setContact] = useState<User>({
         id: 0, 
-        username: "N/A", 
+        username: "User not found", 
         phone_number: 0, 
         icon_url: "/user.png"});
     const [userIsAdded, setUserIsAdded] = useState(true);

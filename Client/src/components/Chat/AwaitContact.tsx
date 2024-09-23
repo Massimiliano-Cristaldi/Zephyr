@@ -1,4 +1,4 @@
-import "../css/AwaitContact.css";
+import "../../css/AwaitContact.css";
 
 export default function AwaitContact(){
 
