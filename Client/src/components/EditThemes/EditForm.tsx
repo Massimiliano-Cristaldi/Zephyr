@@ -3,7 +3,7 @@ import ConfirmPopup from "./ConfirmPopup";
 import { defaultTheme, hexToHslString, getLightnessFromHex, formatColorProperty } from "../../ColorTools";
 import { ContactListRefContext, isMobile, fonts } from "../../utils";
 import { StyleProperties } from "../../types";
-import "./EditForm.css";
+import "../../css/EditForm.css";
 
 export default function EditForm(){
 

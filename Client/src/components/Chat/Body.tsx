@@ -4,7 +4,7 @@ import axios from "axios";
 import ContactList from "./ContactList";
 import { AuthUserContext, ContactListRefContext, MessageCountContext } from "../../utils";
 import { User } from "../../types";
-import "./Body.css";
+import "../css/Body.css";
 
 export default function Body(){
 

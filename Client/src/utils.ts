@@ -65,10 +65,12 @@ export function sanitizeMessageInput(message:string){
     return message.replace(/(<\/?([a-z]|[A-Z]){2,}\/?>)|(<([a-z]|[A-Z])\/>)/g, "");
 }
 
-export function closeModal(ref: RefObject<HTMLDivElement>){
+export function closeModal(ref: RefObject<HTMLDivElement>, refresh:boolean){
     if (ref.current) {
         ref.current.style.display = "none";
-        window.location.reload();
+        if (refresh) {
+            window.location.reload();
+        }
     }
 }
 
@@ -78,3 +80,4 @@ export const ContactListRefContext = createContext<any>([]);
 export const AuthUserContext = createContext<number>(1);
 export const MessageCountContext = createContext<any>([]);
 export const FontStylePopupContext = createContext<any>([]);
+export const ViewProfileContext = createContext<any>([]);

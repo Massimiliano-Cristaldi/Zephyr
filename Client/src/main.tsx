@@ -5,7 +5,7 @@ import Layout from './components/Layout';
 import AwaitContact from './components/Chat/AwaitContact';
 import SelectedContact from './components/Chat/SelectedContact';
 import EditForm from './components/EditThemes/EditForm';
-import './index.css';
+import './css/index.css';
 
 const router = createBrowserRouter([
   {

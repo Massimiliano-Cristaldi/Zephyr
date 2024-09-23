@@ -2,7 +2,7 @@ import { ChangeEvent, RefObject, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthUserContext, isMobile, closeModal } from "../utils";
 import { User } from "../types";
-import "./EditProfile.css"
+import "../css/EditProfile.css"
 
 interface EditProfileProps {
     user: User | undefined,
@@ -162,7 +162,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
                 <i className="fa-solid fa-xmark closeModal" 
                 style={{color: "rgb(180, 180, 180)"}} 
-                onClick={()=>{closeModal(editProfileRef)}}
+                onClick={()=>{closeModal(editProfileRef, true)}}
                 />
 
             </div>

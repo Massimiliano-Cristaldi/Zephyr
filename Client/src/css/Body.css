@@ -1,0 +1,82 @@
+#chatBody{
+    height: 80%;
+    background-color: var(--chatBodyBg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#userNotAddedWrapper{
+    display: none;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: calc(100% - 10vh);
+    width: calc(100% - 15vw);
+
+    background-color: rgba(68, 68, 68, 0.678);
+    animation-name: modalDarkenBg;
+    animation-duration: 0.5s;
+    z-index: 20;
+}
+
+#userNotAddedModal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+    height: 80%;
+    width: 80%;
+
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    
+    animation-name: modalSlide;
+    animation-duration: 0.5s;
+}
+
+#userNotAddedModal>.fa-user-plus{
+    color: rgb(175, 175, 175);
+    font-size: 10rem;
+}
+
+#userNotAddedModal>span{
+    color: rgb(116, 116, 116);
+}
+
+#userNotAddedModal>span>u{
+    color: rgb(70, 70, 70);
+    cursor: pointer;
+}
+
+@media screen and (min-Width: 996px) {
+    #contactList>div{
+        height: 8%;
+        min-height: 8%;
+    }
+
+    #userNotAddedWrapper{
+        height: calc(100% - 7vh);
+        width: calc(100% - 20vw);
+    }
+
+    #userNotAddedModal{
+        height: 60%;
+        width: 60%;
+        gap: 60px;
+    }
+}
+
+@keyframes modalDarkenBg {
+    0% {background-color: transparent;}
+    100% {background-color: rgba(68, 68, 68, 0.678);}
+}
+
+@keyframes modalSlide {
+    0% {transform: translate(0px, -100vh);}
+    100% {transform: translate(0px, 0vh);}
+}

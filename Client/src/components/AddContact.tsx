@@ -1,6 +1,6 @@
 import { RefObject } from "react";
 import { closeModal } from "../utils";
-import "./AddContact.css";
+import "../css/AddContact.css";
 
 interface AddContactProps{
     addContactRef: RefObject<HTMLDivElement>
@@ -14,7 +14,7 @@ export default function AddContact({addContactRef}:AddContactProps){
 
             <i className="fa-solid fa-xmark closeModal" 
                 style={{color: "rgb(180, 180, 180)"}} 
-                onClick={()=>{closeModal(addContactRef)}}
+                onClick={()=>{closeModal(addContactRef, true)}}
             />
         </div>
     )

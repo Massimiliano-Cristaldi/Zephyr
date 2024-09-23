@@ -4,7 +4,7 @@ import { AuthUserContext } from "../utils";
 import { User } from "../types";
 import EditProfile from "./EditProfile";
 import AddContact from "./AddContact";
-import "./Toolbar.css";
+import "../css/Toolbar.css";
 
 export default function Toolbar(){
 

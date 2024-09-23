@@ -1,0 +1,70 @@
+#chatInputWrapper{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-around;
+    height: 10%;
+    width: 100%;
+    background-color: var(--chatInputWrapperBg);
+}
+
+#chatInputWrapper>form{
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    padding: 0px 15px 0px 20px;
+}
+
+#chatInputWrapper input{
+    width: 80%;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--chatInputBg);
+    padding-left: 5px;
+    color: black;
+}
+
+#chatInputWrapper button{
+    background-color: var(--sendButtonSecondary);
+    border: 2px solid var(--sendButtonPrimary);
+    border-radius: 50%;
+    padding: 3px 8px 3px 6px;
+}
+
+#fontStylePopup{
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    top: -10px;
+    left: 0px;
+    height: 35px;
+    width: 120px;
+    background-color: rgba(36, 36, 36, 0.9);
+}
+
+#fontStylePopup>i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 40px;
+    cursor: pointer;
+    border: 1px solid rgba(100, 100, 100, 0.9);
+}
+
+#fontStylePopup>i:hover{
+    background-color: rgba(100, 100, 100, 0.9);
+}
+
+#chatInputWrapper .fa-paper-plane{
+    color: var(--sendButtonPrimary);
+}
+
+@media screen and (min-Width: 996px) {
+
+    #chatInputWrapper input{
+        width: 100%;
+    }
+
+}

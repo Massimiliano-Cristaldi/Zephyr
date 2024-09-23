@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import "./Sidebar.css";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { ContactListRefContext, isMobile } from "../utils";
+import "../css/Sidebar.css";
 
 export default function Sidebar(){
 

@@ -3,8 +3,8 @@ import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
 import Body from "./Chat/Body";
 import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext } from "../utils";
-import "../StyleVariables.css";
-import "../index.css";
+import "../css/StyleVariables.css";
+import "../css/index.css";
 
 export default function Layout(){
 
@@ -54,17 +54,17 @@ export default function Layout(){
         <AuthUserContext.Provider value={1}>
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
         <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: [toggleFontStylePopup]}}>
-        <div className="container-fluid h-100" onMouseUp={toggleFontStylePopup}>
-            <div className="row">
-                    <Toolbar/>
-            </div>
-            <div className="row">
-                    <Sidebar/>
-                <div id="body">
-                    <Body/>
+            <div className="container-fluid h-100" onMouseUp={toggleFontStylePopup}>
+                <div className="row">
+                        <Toolbar/>
+                </div>
+                <div className="row">
+                        <Sidebar/>
+                    <div id="body">
+                        <Body/>
+                    </div>
                 </div>
             </div>
-        </div>
         </FontStylePopupContext.Provider>
         </ContactListRefContext.Provider>
         </AuthUserContext.Provider>

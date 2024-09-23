@@ -1,19 +1,23 @@
+import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { ContactListRefContext, isMobile, ViewProfileContext } from "../../utils";
 import { User } from "../../types";
 import ChatToolbar from "./ChatToolbar";
 import ChatWindow from "./ChatWindow";
-import "./Body.css";
-import { useContext, useEffect, useState } from "react";
-import { ContactListRefContext, isMobile } from "../../utils";
 import UserNotAdded from "./UserNotAdded";
 
 export default function SelectedContact(){
     
     const params = useParams();    
-    const [contact, setContact] = useState<User>({id: 0, username: "N/A", phone_number: 0, icon_url: "/user.png"});
+    const [contact, setContact] = useState<User>({
+        id: 0, 
+        username: "N/A", 
+        phone_number: 0, 
+        icon_url: "/user.png"});
     const [userIsAdded, setUserIsAdded] = useState(true);
-    const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext)
+    const viewProfileRef = useRef<HTMLDivElement>(null);
+    const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 
     useEffect(()=>{
         if (isMobile()) {
@@ -22,9 +26,6 @@ export default function SelectedContact(){
             backButtonRef.current.style.visibility = "visible";
         }
     }, [])
-
-    console.log(params);
-    
 
     useEffect(()=>{
         async function fetchData(){
@@ -47,10 +48,10 @@ export default function SelectedContact(){
     }, [params.contactId])
     
     return(
-        <>
+        <ViewProfileContext.Provider value={viewProfileRef}>
             {userIsAdded || <UserNotAdded/>}
             <ChatToolbar contact={contact}/>
             <ChatWindow/>
-        </>
+        </ViewProfileContext.Provider>
     )
 }

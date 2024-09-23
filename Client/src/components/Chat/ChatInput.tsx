@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useContext } from "react";
 import axios from "axios";
 import { MessageCountContext, sanitizeMessageInput } from "../../utils";
+import "../css/ChatInput.css"
 
 export default function ChatInput({states, refs, actions}:any){
 

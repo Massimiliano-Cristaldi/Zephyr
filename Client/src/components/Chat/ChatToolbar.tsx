@@ -1,14 +1,23 @@
-import { User } from "../../types"
+import { useContext } from "react";
+import { ViewProfileContext } from "../../utils";
+import { User } from "../../types";
+import "../css/ChatToolbar.css";
 
 interface ChatToolbarProps{
     contact: User
 }
 
 export default function ChatToolbar({contact}: ChatToolbarProps){
+
+    const viewProfileRef = useContext(ViewProfileContext);
+
+    function showViewProfileModal(){
+        viewProfileRef.current.style.display = "flex";
+    }
     
     return(
             <div id="chatToolbar">
-                <div id="contactInfo">
+                <div id="contactInfo" onClick={showViewProfileModal}>
                     <div 
                     className="contactIcon" 
                     style={{backgroundImage: `url(${contact.icon_url || '/user.png'})`}}>
@@ -22,7 +31,6 @@ export default function ChatToolbar({contact}: ChatToolbarProps){
                         </small>
                     </div>
                 </div>
-
             </div>
     )
 }

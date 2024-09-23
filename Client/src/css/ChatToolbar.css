@@ -1,0 +1,43 @@
+#chatToolbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px 3px 20px;
+    height: 10%;
+    background-color: var(--chatToolbarBg);
+}
+
+#chatToolbar>div{
+    height: 100%;
+}
+
+#contactInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 15vw !important;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+}
+
+.contactIcon{
+    height: 75%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-size: contain;
+    background-position: center;
+}
+
+#nameAndNumber>div{
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.3rem;
+}
+
+#nameAndNumber>#phoneNumber{
+    font-size: 0.7rem;
+}

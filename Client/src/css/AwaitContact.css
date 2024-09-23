@@ -1,0 +1,17 @@
+#awaitContact{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-size: 15px;
+    text-align: center;
+    color: rgb(116, 116, 116);
+}
+
+#awaitContact>.fa-chalkboard-user{
+    font-size: 200px;
+    color: rgb(175, 175, 175);
+}

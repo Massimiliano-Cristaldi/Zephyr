@@ -1,0 +1,40 @@
+#contactList{
+    height: 100%;
+    overflow-y: scroll;
+    background-color: var(--contactListBg);
+}
+
+#contactList::-webkit-scrollbar{
+    width: 8px;
+}
+
+#contactList::-webkit-scrollbar-track{
+    background: var(--scrollbarBg);
+    border-right: 2px solid var(--accents);
+}
+
+#contactList::-webkit-scrollbar-thumb{
+    background: var(--scrollbarColor);
+}
+
+#contactList>div{
+    height: 12%;
+    min-height: 12%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: var(--contactBg);
+    color: var(--contactListFontColor);
+    border-bottom: 2px solid var(--accents);
+    cursor: pointer;
+}
+
+@media screen and (min-Width: 996px) {
+    #contactList>div{
+        height: 8%;
+        min-height: 8%;
+    }
+}

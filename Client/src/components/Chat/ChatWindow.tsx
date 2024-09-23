@@ -2,11 +2,12 @@ import { useState, useEffect, useRef, Fragment, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { animateScroll } from 'react-scroll';
 import axios from "axios";
-import { AuthUserContext, FontStylePopupContext, MessageCountContext, getCaretCoordinates } from "../../utils";
+import { AuthUserContext, FontStylePopupContext, MessageCountContext } from "../../utils";
 import { Message } from "../../types";
 import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";
-import "./ChatWindow.css";
+import ViewProfile from "../ViewProfile";
+import "../css/ChatWindow.css";
 
 export default function ChatWindow(){
 
@@ -61,6 +62,7 @@ export default function ChatWindow(){
                             <MessageElement message={message}/>
                         </Fragment>
                     ))}
+                    <ViewProfile/>
                 </div>) : (
                     <div id="noMessages">
                         <i className="fa-regular fa-comments mb-5"></i>
