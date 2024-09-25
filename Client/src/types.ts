@@ -13,6 +13,8 @@ export interface Message {
     attachments?: string | null,
     sender_id: number,
     recipient_id: number,
+    replying_to_message_id?: number,
+    replied_message_content?: string,
     time_sent?: string
 }
 

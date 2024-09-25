@@ -25,5 +25,7 @@
     --chatToolbarBg: hsl(222, 38%, 40%);
     /* Chat Window */
     --recipientMessageBg: hsl(222, 38%, 60%);
+    --recipientReplyBg: hsl(222, 38%, 70%);
     --senderMessageBg: hsl(300, 33%, 49%);
+    --senderReplyBg: hsl(300, 33%, 69%);
 }

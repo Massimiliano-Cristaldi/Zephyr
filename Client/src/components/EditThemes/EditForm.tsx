@@ -24,13 +24,23 @@ export default function EditForm(){
     }, [])
 
     function setProperty(e: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>){
-        if (e.target.name === "iconBg") {
-            //This constant calculates the hsl lightness adjustment for button:hovers automatically, giving
-            //a darker shade if the color is light and a lighter shade if the color is dark 
+        if (e.target.name === "iconBg"){
             const lightnessAdjust = getLightnessFromHex(e.target.value) as number <= 20 ? 10 : -10;
             setCurrentTheme({...currentTheme,
                 iconBg: e.target.value,
                 iconHoverBg: hexToHslString(e.target.value, lightnessAdjust) as string
+            });
+        } else if (e.target.name === "senderMessageBg"){
+            const lightnessAdjust = getLightnessFromHex(e.target.value) as number <= 20 ? 10 : -10;
+            setCurrentTheme({...currentTheme,
+                senderMessageBg: e.target.value,
+                senderReplyBg: hexToHslString(e.target.value, lightnessAdjust) as string
+            });
+        } else if (e.target.name === "recipientMessageBg"){
+            const lightnessAdjust = getLightnessFromHex(e.target.value) as number <= 20 ? 10 : -10;
+            setCurrentTheme({...currentTheme,
+                recipientMessageBg: e.target.value,
+                recipientReplyBg: hexToHslString(e.target.value, lightnessAdjust) as string
             });
         } else {
             setCurrentTheme({...currentTheme, [e.target.name]: e.target.value});
@@ -43,10 +53,12 @@ export default function EditForm(){
     }
 
     function showPopup(ref:RefObject<HTMLDivElement>){
-        ref.current!.style.display = "flex";
+        if (ref.current){
+            ref.current.style.display = "flex";
+        }
     }
 
-    const excludeTheseProperties = ["iconHoverBg", "favoriteFont", "messageBorderRadius"];
+    const excludeTheseProperties = ["iconHoverBg", "favoriteFont", "messageBorderRadius", "recipientReplyBg", "senderReplyBg"];
     
     return(
         <div id="editThemeWrapper">

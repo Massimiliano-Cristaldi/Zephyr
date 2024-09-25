@@ -12,15 +12,17 @@ interface MessageElementProps{
 export default function MessageElement({message, states}: MessageElementProps){
 
     const authId = useContext(AuthUserContext);
-    const messageRef = useRef<HTMLDivElement>(null);
+    const messageContentRef = useRef<HTMLDivElement>(null);
     const [deletedMessageCount, setDeletedMessageCount] = states;
+    console.log(message);
+    
 
     useEffect(()=>{
-        if (messageRef.current) {
+        if (messageContentRef.current) {
             if (message.content) {
-                messageRef.current.innerHTML = sanitizeMessageInput(message.content);
+                messageContentRef.current.innerHTML = sanitizeMessageInput(message.content);
             } else {
-                messageRef.current.innerHTML = "<i>This message has been deleted.</i>";
+                messageContentRef.current.innerHTML = "<i>This message has been deleted.</i>";
             }
         }
     }, [deletedMessageCount])
@@ -40,7 +42,14 @@ export default function MessageElement({message, states}: MessageElementProps){
             key={message.id} 
             className={(message.sender_id == authId) ? "senderMessage" : "recipientMessage"}
             >
-                <div ref={messageRef}/>
+                <div>
+                    {message.replied_message_content && 
+                        <div className={(message.sender_id == authId) ? "senderRepliedMessage" : "recipientRepliedMessage"}>
+                            <i>Replying to: </i>
+                            {message.replied_message_content}
+                        </div>}
+                    <div ref={messageContentRef}/>
+                </div>
                 {message.sender_id == authId && <i className="fa-solid fa-trash fa-xs deleteMessageIcon" onClick={deleteMessage}/>}
             </div>
             <small 
