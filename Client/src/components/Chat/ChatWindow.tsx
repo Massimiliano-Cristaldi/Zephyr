@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, Fragment, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { animateScroll } from 'react-scroll';
 import axios from "axios";
-import { AuthUserContext, FontStylePopupContext, MessageCountContext } from "../../utils";
+import { AuthUserContext, FontStylePopupContext, MessageCountContext, MessageReplyContext } from "../../utils";
 import { Message } from "../../types";
 import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";
@@ -14,17 +14,21 @@ export default function ChatWindow(){
     const contactId = useParams().contactId;
     const authId = useContext(AuthUserContext);
     const {actions, states, refs} = useContext(FontStylePopupContext);
-    const [sessionMessageCount] = useContext(MessageCountContext);
+    
     const scrollRef = useRef<HTMLDivElement>(null);
+    const replyRef = useRef<HTMLDivElement>(null);
     const [chatInputRef, fontStylePopupRef] = refs;
-
+    
     const [messages, setMessages] = useState<Message[] | []>();
-    const [message, setMessage] = useState<Message>({
+    const [newMessage, setNewMessage] = useState<Message>({
         content: "",
-        recipient_id: Number(contactId),
         sender_id: Number(authId),
+        recipient_id: Number(contactId),
+        replying_to_message_id: null
     });
     const [deletedMessageCount, setDeletedMessageCount] = useState<number>(0);
+    const [repliedMessage, setRepliedMessage] = useState<string>("");
+    const [sessionMessageCount] = useContext(MessageCountContext);
     const [selectedText, setSelectedText] = states;    
 
     //Fetch messages
@@ -40,13 +44,13 @@ export default function ChatWindow(){
                 console.error(err);
                 setMessages([]);
             } finally {
-                setMessage({...message, recipient_id: Number(contactId)});      
+                setNewMessage({...newMessage, recipient_id: Number(contactId)});      
             }
         }
         fetchData();
     }, [contactId, sessionMessageCount, deletedMessageCount])
 
-    //Scroll to bottom on chat load
+    //Scroll to bottom when chat is loaded or a new message is posted
     useEffect(()=>{
         animateScroll.scrollToBottom({containerId: "messagesWrapper", duration: 0});
     }, [messages])
@@ -54,13 +58,16 @@ export default function ChatWindow(){
     const [toggleFontStylePopup] = actions;
 
     return(
-        <>
+        <MessageReplyContext.Provider value={{refs: replyRef, states: [repliedMessage, setRepliedMessage]}}>
             <div id="chatBody">
                 {messages && messages.length ?
                 (<div id="messagesWrapper" ref={scrollRef}>
-                    {messages.map((message)=>(
-                        <Fragment key={message.id}>
-                            <MessageElement message={message} states={[deletedMessageCount, setDeletedMessageCount]}/>
+                    {messages.map((el)=>(
+                        <Fragment key={el.id}>
+                            <MessageElement 
+                            message={el} 
+                            newMessageState={[newMessage, setNewMessage]} 
+                            deletedMessageState={[deletedMessageCount, setDeletedMessageCount]}/>
                         </Fragment>
                     ))}
                     <ViewProfile/>
@@ -70,12 +77,12 @@ export default function ChatWindow(){
                         There are no messages between you and this person. You can initiate a chat by typing in the input below.
                     </div>
                 )}
-            </div>
             <ChatInput
-            states={[[message, setMessage], [selectedText, setSelectedText]]}
+            states={[[newMessage, setNewMessage], [selectedText, setSelectedText]]}
             refs={[chatInputRef, fontStylePopupRef]}
             actions={toggleFontStylePopup}
             />
-        </>
+            </div>
+        </MessageReplyContext.Provider>
     )
 }

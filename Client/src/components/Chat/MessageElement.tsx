@@ -1,21 +1,27 @@
-import { useContext, useRef, useEffect, Dispatch, SetStateAction } from "react";
+import {  useContext, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import axios from "axios";
 import { Message } from "../../types";
-import { AuthUserContext, getDate, getTime, sanitizeMessageInput } from "../../utils";
+import { AuthUserContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils";
 import "../../css/MessageElement.css";
+import MessageDropdown from "./MessageDropdown";
 
 interface MessageElementProps{
     message: Message,
-    states: [number, Dispatch<SetStateAction<number>>]
+    newMessageState: [Message, Dispatch<SetStateAction<Message>>],
+    deletedMessageState: [number, Dispatch<SetStateAction<number>>]
 }
 
-export default function MessageElement({message, states}: MessageElementProps){
+export default function MessageElement({message, newMessageState, deletedMessageState}: MessageElementProps){
 
     const authId = useContext(AuthUserContext);
     const messageContentRef = useRef<HTMLDivElement>(null);
-    const messageDropdownRef = useRef<HTMLUListElement>(null);
-    const [deletedMessageCount, setDeletedMessageCount] = states;
+    const replyRef = useContext(MessageReplyContext).refs;
+    const replyContentRef = useRef<HTMLDivElement>(null);
+    const [newMessage, setNewMessage] = newMessageState;
+    const setRepliedMessage = useContext(MessageReplyContext).states[1];
+    const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
 
+    //Set message box content
     useEffect(()=>{
         if (messageContentRef.current) {
             if (message.content) {
@@ -24,28 +30,37 @@ export default function MessageElement({message, states}: MessageElementProps){
                 messageContentRef.current.innerHTML = "<i>This message has been deleted.</i>";
             }
         }
+        if (replyContentRef.current && message.replied_message_content) {
+                replyContentRef.current.innerHTML = message.replied_message_content;
+        }
     }, [deletedMessageCount])
-
-    function showMessageDropdown(){
-        if (messageDropdownRef.current) {
-            if (messageDropdownRef.current.style.display === "none") {
-                messageDropdownRef.current.style.display = "flex";
-            } else {
-                messageDropdownRef.current.style.display = "none";
-            }
+    
+    function handleReply(){
+        try {
+            axios.get(`http://localhost:8800/message/${message.id}`)
+            .then((response)=>{
+                setRepliedMessage(response.data[0]);
+                setNewMessage({...newMessage, replying_to_message_id: message.id});
+                replyRef.current!.style.display = "block";
+                replyRef.current!.innerHTML = `<div><i>Replying to:</i> <br/>${response.data[0].content}</div>`;
+            })
+        } catch (err) {
+            console.error(err);
         }
     }
 
-    function hideMessageDropdown(){
-        if (messageDropdownRef.current) {
-                messageDropdownRef.current.style.display = "none";
-        }
-    }
+    
 
+    //FIX: Deleting a message with a reply doesn't delete the reply
+    //Should suffice to change the query in index.js (set replying to message id = null)
     function deleteMessage(){
         try {
             axios.post("http://localhost:8800/deletemessage", {messageId: message.id})
-            .then(()=>{setDeletedMessageCount(deletedMessageCount + 1); message.content = "";});
+            .then(()=>{
+                setDeletedMessageCount(deletedMessageCount + 1); 
+                setNewMessage({...newMessage, replying_to_message_id: null});
+                message.content = ""; 
+            });
         } catch (err) {
             console.error(err);
         }
@@ -59,26 +74,13 @@ export default function MessageElement({message, states}: MessageElementProps){
             >
                 <div className="pt-2">
                     {message.replied_message_content && 
-                        <div className={(message.sender_id == authId) ? "senderRepliedMessage" : "recipientRepliedMessage"}>
-                            <i>Replying to: </i>
-                            {message.replied_message_content}
-                        </div>
+                    <div className={(message.sender_id == authId) ? "senderRepliedMessage" : "recipientRepliedMessage"}>
+                        <i>Replying to: </i>
+                        <div ref={replyContentRef}/>
+                    </div>
                     }
                     <div ref={messageContentRef}/>
-                </div>
-                <div className="messageDropdownWrapper">
-                    <i 
-                    className="fa-solid fa-chevron-down messageDropdownButton" 
-                    onClick={showMessageDropdown} 
-                    onBlur={hideMessageDropdown}
-                    tabIndex={0}/>
-                    <ul 
-                    className={(message.sender_id == authId) ? "senderMessageDropdown" : "recipientMessageDropdown"}
-                    ref={messageDropdownRef}
-                    >
-                        <li>Reply</li>
-                        {message.sender_id == authId && <li onClick={deleteMessage}>Delete</li>}
-                    </ul>
+                    <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>
                 </div>
             </div>
             <small 

@@ -81,3 +81,4 @@ export const AuthUserContext = createContext<number>(1);
 export const MessageCountContext = createContext<any>([]);
 export const FontStylePopupContext = createContext<any>([]);
 export const ViewProfileContext = createContext<any>([]);
+export const MessageReplyContext = createContext<any>([]);

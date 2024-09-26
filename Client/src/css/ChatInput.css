@@ -1,6 +1,8 @@
 #chatInputWrapper{
     display: flex;
+    flex-direction: column;
     position: relative;
+    bottom: 0px;
     align-items: center;
     justify-content: space-around;
     height: 10%;
@@ -24,11 +26,31 @@
     color: black;
 }
 
+#chatInputWrapper input:focus{
+    outline: 1px solid black;
+}
+
 #chatInputWrapper button{
     background-color: var(--sendButtonSecondary);
     border: 2px solid var(--sendButtonPrimary);
     border-radius: 50%;
     padding: 3px 8px 3px 6px;
+}
+
+#replyWrapper{
+    display: none;
+    background-color: var(--chatInputWrapperBg);
+    width: 100%;
+    padding: 10px 10px 0px 10px;
+}
+
+#replyWrapper>div{
+    padding: 5px;
+    background-color: var(--senderMessageBg);
+}
+
+#replyWrapper i:first-child{
+    font-size: 0.8rem;
 }
 
 #fontStylePopup{

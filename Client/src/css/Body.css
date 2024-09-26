@@ -1,11 +1,3 @@
-#chatBody{
-    height: 80%;
-    background-color: var(--chatBodyBg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 #userNotAddedWrapper{
     display: none;
     /* display: flex; */

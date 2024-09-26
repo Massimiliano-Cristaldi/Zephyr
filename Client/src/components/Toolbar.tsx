@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useContext, RefObject } from "react";
+import { redirect } from "react-router-dom";
 import axios from "axios";
 import { AuthUserContext } from "../utils";
 import { User } from "../types";
@@ -31,7 +32,7 @@ export default function Toolbar(){
         fetchData();
     }, [])
 
-    function showDropdown(showRef: RefObject<HTMLUListElement>, hideRef: RefObject<HTMLUListElement>){
+    function toggleDropdown(showRef: RefObject<HTMLUListElement>, hideRef: RefObject<HTMLUListElement>){
         if (showRef.current && hideRef.current) {            
             if (showRef.current.style.display === "none") {
                 showRef.current.style.display = "block";
@@ -67,15 +68,15 @@ export default function Toolbar(){
             <div id="icons">
                 <i className="fa-solid fa-plus fa-xl" 
                     style={{color: "white"}}
-                    onClick={()=>{showDropdown(toolbarAddRef, toolbarOptionsRef)}}
+                    onClick={()=>{toggleDropdown(toolbarAddRef, toolbarOptionsRef)}}
                     onBlur={()=>{hideDropdown(toolbarAddRef)}}
                     tabIndex={0}
                     data-toggle="tooltip"
-                    title="Add new contact"
+                    title="New chat or group chat"
                 />
                 <i className="fa-solid fa-ellipsis-vertical fa-xl" 
                     style={{color: "white"}} 
-                    onClick={()=>{showDropdown(toolbarOptionsRef, toolbarAddRef)}}
+                    onClick={()=>{toggleDropdown(toolbarOptionsRef, toolbarAddRef)}}
                     onBlur={()=>{hideDropdown(toolbarOptionsRef)}}
                     tabIndex={0}
                     data-toggle="tooltip"
@@ -87,17 +88,15 @@ export default function Toolbar(){
         className="toolbarDropdown" 
         style={{display: "none", right: "60px", borderRight: "3px solid var(--toolbarOptionsBorder)"}} 
         ref={toolbarAddRef}>
-            <li onClick={()=>{showModal(addContactRef)}}>New chat</li>
+            <li onMouseDown={()=>{showModal(addContactRef)}}>New chat</li>
             <li>New group chat</li>
         </ul>
         <ul 
         className="toolbarDropdown" 
         style={{display: "none"}} 
         ref={toolbarOptionsRef}>
-            <li onClick={()=>{showModal(editProfileRef)}}>Profile</li>
-            <a href="/themes/edit">
-                <li>Change themes</li>
-            </a>
+            <li onMouseDown={()=>{showModal(editProfileRef)}}>Profile</li>
+            <li onMouseDown={()=>{window.location.assign("/themes/edit")}}>Change themes</li>
             <a href="">
                 <li>Logout</li>
             </a>
