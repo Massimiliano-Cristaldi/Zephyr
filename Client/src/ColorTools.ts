@@ -82,9 +82,9 @@ export function hslStringToHex(hsl: string){
 export function hexToHsl(hex: string){
 const isValidString = (/#((\d|[a-f]){2}){3}/g).test(hex);
 if (isValidString) {
-    const r = parseInt(hex.slice(1, 3), 16)/255; //0.666
-    const g = parseInt(hex.slice(3, 5), 16)/255; //0.266
-    const b = parseInt(hex.slice(5), 16)/255; //0.337
+    const r = parseInt(hex.slice(1, 3), 16)/255;
+    const g = parseInt(hex.slice(3, 5), 16)/255;
+    const b = parseInt(hex.slice(5), 16)/255;
     const maxComponent = Math.max(r, g, b);
     const minComponent = Math.min(r, g, b);
     const chroma = maxComponent - minComponent;
@@ -148,7 +148,7 @@ export function formatColorProperty(property: string){
                 el = el.slice(0, 1).toLowerCase() + el.slice(1, el.length);
                 result += (el === "bg" ? " background" : ` ${el}`);
             })
-        return (otherWordsMatch.includes("Color") ? result : result + " color");
+            return (otherWordsMatch.includes("Color") ? result : result + " color");
         }
         return result + " color";
     }

@@ -15,6 +15,7 @@ export default function Layout(){
     const fontStylePopupRef = useRef<HTMLDivElement>(null);
     const [selectedText, setSelectedText] = useState<string>("");
 
+    //Load custom theme (if any)
     useEffect(()=>{
         const styles = document.documentElement.style;
         const theme = window.localStorage.getItem("theme");

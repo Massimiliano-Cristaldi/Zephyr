@@ -31,16 +31,20 @@ export default function EditForm(){
                 iconHoverBg: hexToHslString(e.target.value, lightnessAdjust) as string
             });
         } else if (e.target.name === "senderMessageBg"){
-            const lightnessAdjust = getLightnessFromHex(e.target.value) as number <= 20 ? 10 : -10;
+            const replyLightnessAdjust = getLightnessFromHex(e.target.value) as number <= 90 ? 10 : -10;
+            const borderLightnessAdjust = getLightnessFromHex(e.target.value) as number <= 30 ? 20 : -20;
             setCurrentTheme({...currentTheme,
                 senderMessageBg: e.target.value,
-                senderReplyBg: hexToHslString(e.target.value, lightnessAdjust) as string
+                senderReplyBg: hexToHslString(e.target.value, replyLightnessAdjust) as string,
+                senderMessageDropdownBorder: hexToHslString(e.target.value, borderLightnessAdjust) as string
             });
         } else if (e.target.name === "recipientMessageBg"){
-            const lightnessAdjust = getLightnessFromHex(e.target.value) as number <= 20 ? 10 : -10;
+            const replyLightnessAdjust = getLightnessFromHex(e.target.value) as number <= 90 ? 10 : -10;
+            const borderLightnessAdjust = getLightnessFromHex(e.target.value) as number <= 30 ? 20 : -20;
             setCurrentTheme({...currentTheme,
                 recipientMessageBg: e.target.value,
-                recipientReplyBg: hexToHslString(e.target.value, lightnessAdjust) as string
+                recipientReplyBg: hexToHslString(e.target.value, replyLightnessAdjust) as string,
+                recipientMessageDropdownBorder: hexToHslString(e.target.value, borderLightnessAdjust) as string
             });
         } else {
             setCurrentTheme({...currentTheme, [e.target.name]: e.target.value});
@@ -58,7 +62,7 @@ export default function EditForm(){
         }
     }
 
-    const excludeTheseProperties = ["iconHoverBg", "favoriteFont", "messageBorderRadius", "recipientReplyBg", "senderReplyBg"];
+    const excludeTheseProperties = ["iconHoverBg", "favoriteFont", "messageBorderRadius", "recipientReplyBg", "senderReplyBg", "senderMessageDropdownBorder", "recipientMessageDropdownBorder"];
     
     return(
         <div id="editThemeWrapper">

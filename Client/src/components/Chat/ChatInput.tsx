@@ -62,7 +62,14 @@ export default function ChatInput({states, refs, actions}:any){
     return(
         <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>
         <form onSubmit={sendMessage}>
-            <input type="text" placeholder="Enter message" ref={chatInputRef} onChange={handleChatInputChange} onKeyUp={handleKeyboardEvents}/>
+            <input 
+            type="text" 
+            placeholder="Enter message" 
+            ref={chatInputRef}
+            onChange={handleChatInputChange} 
+            onKeyUp={handleKeyboardEvents}
+            id="messageInput"
+            />
             <button>
                 <i className="fa-solid fa-paper-plane"></i>
             </button>

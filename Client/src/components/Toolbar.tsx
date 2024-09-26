@@ -43,6 +43,12 @@ export default function Toolbar(){
         }
     }
 
+    function hideDropdown(ref: RefObject<HTMLUListElement>){
+        if (ref.current) {
+            ref.current.style.display = "none";
+        }
+    }
+
     function showModal(ref: RefObject<HTMLDivElement>){
         if (ref.current && toolbarOptionsRef.current && toolbarAddRef.current) {
             ref.current.style.display = "flex";
@@ -62,12 +68,16 @@ export default function Toolbar(){
                 <i className="fa-solid fa-plus fa-xl" 
                     style={{color: "white"}}
                     onClick={()=>{showDropdown(toolbarAddRef, toolbarOptionsRef)}}
+                    onBlur={()=>{hideDropdown(toolbarAddRef)}}
+                    tabIndex={0}
                     data-toggle="tooltip"
                     title="Add new contact"
                 />
                 <i className="fa-solid fa-ellipsis-vertical fa-xl" 
                     style={{color: "white"}} 
                     onClick={()=>{showDropdown(toolbarOptionsRef, toolbarAddRef)}}
+                    onBlur={()=>{hideDropdown(toolbarOptionsRef)}}
+                    tabIndex={0}
                     data-toggle="tooltip"
                     title="Options"
                 />

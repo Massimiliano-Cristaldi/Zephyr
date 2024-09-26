@@ -29,9 +29,7 @@ export default function ChatWindow(){
 
     //Fetch messages
     useEffect(()=>{
-        async function getMessages(){
-            console.log("I'm here");
-            
+        async function fetchData(){
             try {
                 const response = await axios.get(`http://localhost:8800/messages/${authId}/${contactId}`);
                 if (response.status !== 200 || response.data.length === 0) {
@@ -45,7 +43,7 @@ export default function ChatWindow(){
                 setMessage({...message, recipient_id: Number(contactId)});      
             }
         }
-        getMessages();
+        fetchData();
     }, [contactId, sessionMessageCount, deletedMessageCount])
 
     //Scroll to bottom on chat load
