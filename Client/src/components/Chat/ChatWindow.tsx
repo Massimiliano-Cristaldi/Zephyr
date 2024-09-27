@@ -83,6 +83,7 @@ export default function ChatWindow(){
             refs={[chatInputRef, inputReplyRef, fontStylePopupRef]}
             newMessageState={[newMessage, setNewMessage]}
             selectedTextState={[selectedText, setSelectedText]}
+            repliedMessageState={[repliedMessage, setRepliedMessage]}
             actions={toggleFontStylePopup}
             />
             </div>

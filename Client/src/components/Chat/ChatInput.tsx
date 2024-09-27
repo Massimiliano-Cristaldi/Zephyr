@@ -1,16 +1,17 @@
 import { ChangeEvent, FormEvent, useContext, useRef } from "react";
 import axios from "axios";
-import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
+import { AuthUserContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
 import "../../css/ChatInput.css"
 
-export default function ChatInput({refs, newMessageState, selectedTextState, actions}:any){
+export default function ChatInput({refs, newMessageState, selectedTextState, repliedMessageState, actions}:any){
 
-    const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
+    const authId = useContext(AuthUserContext);
     const replyRef = useContext(MessageReplyContext).refs;
     const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
     const [newMessage, setNewMessage] = newMessageState;
-    const [repliedMessage, setRepliedMessage] = useContext(MessageReplyContext).states;
     const [selectedText, setSelectedText] = selectedTextState;
+    const [repliedMessage, setRepliedMessage] = repliedMessageState;
+    const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
     const toggleFontStylePopup = actions;
 
     function handleChatInputChange(e: ChangeEvent<HTMLInputElement>){
@@ -44,6 +45,14 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
             }
         }
     }
+
+    //Hide the box containing the message you're replying to and set newMessage.replying_to_message_id = null
+    function cancelReplyState(){
+        if (replyRef.current) {
+            replyRef.current.style.display = "none";
+            setNewMessage({...newMessage, replying_to_message_id: null});
+        }
+    }
         
     //Make text italic, bold or underlined
     function changeTextStyle(style:string){
@@ -70,12 +79,11 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     return(
         <>
             <div id="replyWrapper" ref={replyRef}>
-                <div >
-                    <i>Replying to:</i>
+                <div>
+                    <i>Replying to <b>{repliedMessage.replied_message_sender_username}</b>'s message:</i>
                     <br />
-                    <div ref={inputReplyRef}>
-                        {repliedMessage.content}
-                    </div>
+                    <div ref={inputReplyRef}/>
+                    <i className="fa-solid fa-xmark" onClick={cancelReplyState}/>
                 </div>
             </div>
             <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>

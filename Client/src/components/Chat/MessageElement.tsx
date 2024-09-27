@@ -44,6 +44,8 @@ export default function MessageElement({message, refs, newMessageState, deletedM
             .then((response)=>{
                 setRepliedMessage(response.data[0]);
                 setNewMessage({...newMessage, replying_to_message_id: message.id});
+                console.log(response.data[0]);
+                
                 if (replyRef.current && inputReplyRef.current) {
                     replyRef.current.style.display = "block";
                     inputReplyRef.current.innerHTML = response.data[0].content;
