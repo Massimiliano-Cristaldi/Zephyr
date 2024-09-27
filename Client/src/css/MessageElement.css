@@ -13,7 +13,7 @@
 .senderMessage::before{
     content: '';
     position: relative;
-    bottom: calc(-50% - 33px);
+    bottom: calc(-50% - 32px);
     left: calc(100% + 14px);
     border-left: 7px solid var(--senderMessageBg);
     border-bottom: 7px solid var(--senderMessageBg);
@@ -35,18 +35,20 @@
 .recipientMessage::before {
     content: '';
     position: relative;
-    bottom: calc(-50% - 33px);
+    bottom: calc(-50% - 32px);
     left: -14px;
     border-right: 7px solid var(--recipientMessageBg);
     border-bottom: 7px solid var(--recipientMessageBg);
     border-left: 7px solid transparent;
     border-top: 7px solid transparent;
+    margin-top: -1px;
 }
 
 .timeSentSender{
     min-height: 30px;
     width: 50vw;
     padding: 0px 15px 5px 0px;
+    margin-top: -1px;
     margin-bottom: 20px;
     align-self: end;
     text-align: end;
@@ -59,6 +61,7 @@
     min-height: 30px;
     width: 50vw;
     padding: 0px 0px 5px 15px;
+    margin-top: -1px;
     margin-bottom: 20px;
     background-color: var(--recipientMessageBg);
     cursor: default;
@@ -69,8 +72,38 @@
     margin-bottom: 0px;
 }
 
+.senderRepliedMessage{
+    display: flex;
+    flex-direction: column;
+    width: calc(50vw - 29px);
+    justify-self: center;
+    align-self: center;
+    padding: 5px 10px;
+    margin: 5px 0px;
+    background-color: var(--senderReplyBg);
+}
+
+.recipientRepliedMessage{
+    display: flex;
+    flex-direction: column;
+    width: calc(50vw - 29px);
+    justify-self: center;
+    align-self: center;
+    padding: 5px 10px;
+    margin: 5px 0px;
+    background-color: var(--recipientReplyBg);
+}
+
+.senderRepliedMessage>i, .recipientRepliedMessage>i{
+    font-size: 0.8rem;
+}
+
 @media screen and (min-Width: 996px) {
     .senderMessage, .recipientMessage, .timeSentSender, .timeSentRecipient{
         width: 40vw;
+    }
+
+    .senderRepliedMessage, .recipientRepliedMessage{
+        width: calc(40vw - 29px);
     }
 }

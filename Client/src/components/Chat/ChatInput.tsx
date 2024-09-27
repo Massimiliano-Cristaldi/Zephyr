@@ -1,11 +1,11 @@
-import { ChangeEvent, FormEvent, useContext, useRef } from "react";
+import { ChangeEvent, FormEvent, useContext } from "react";
 import axios from "axios";
-import { AuthUserContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
+import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
+import { ChatInputProps } from "../../types";
 import "../../css/ChatInput.css"
 
-export default function ChatInput({refs, newMessageState, selectedTextState, repliedMessageState, actions}:any){
+export default function ChatInput({refs, newMessageState, selectedTextState, repliedMessageState, actions}:ChatInputProps){
 
-    const authId = useContext(AuthUserContext);
     const replyRef = useContext(MessageReplyContext).refs;
     const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
     const [newMessage, setNewMessage] = newMessageState;
@@ -80,7 +80,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, rep
         <>
             <div id="replyWrapper" ref={replyRef}>
                 <div>
-                    <i>Replying to <b>{repliedMessage.replied_message_sender_username}</b>'s message:</i>
+                    <i>Replying to <b>{repliedMessage && repliedMessage.replied_message_sender_username}</b>'s message:</i>
                     <br />
                     <div ref={inputReplyRef}/>
                     <i className="fa-solid fa-xmark" onClick={cancelReplyState}/>

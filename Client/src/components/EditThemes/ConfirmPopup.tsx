@@ -1,9 +1,4 @@
-import { RefObject } from "react"
-
-interface ConfirmPopupProps{
-    popupRef: RefObject<HTMLDivElement>,
-    confirmAction: () => void
-}
+import { ConfirmPopupProps } from "../../types";
 
 export default function ConfirmPopup({popupRef, confirmAction} : ConfirmPopupProps){
 

@@ -46,11 +46,6 @@
 }
 
 @media screen and (min-Width: 996px) {
-    #contactList>div{
-        height: 8%;
-        min-height: 8%;
-    }
-
     #userNotAddedWrapper{
         height: calc(100% - 7vh);
         width: calc(100% - 20vw);

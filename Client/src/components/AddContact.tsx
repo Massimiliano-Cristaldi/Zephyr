@@ -1,10 +1,6 @@
-import { RefObject } from "react";
 import { closeModal } from "../utils";
+import { AddContactProps } from "../types";
 import "../css/AddContact.css";
-
-interface AddContactProps{
-    addContactRef: RefObject<HTMLDivElement>
-}
 
 export default function AddContact({addContactRef}:AddContactProps){
     return(

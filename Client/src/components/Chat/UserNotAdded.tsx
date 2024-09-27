@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 export default function UserNotAdded(){
     
@@ -7,7 +6,6 @@ export default function UserNotAdded(){
 
     function addContact(e: React.FormEvent){
         e.preventDefault();
-
     }
 
     return(

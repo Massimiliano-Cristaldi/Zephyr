@@ -1,12 +1,7 @@
 import { useContext, useRef } from "react";
 import { AuthUserContext } from "../../utils";
-import { Message } from "../../types";
+import { MessageDropdownProps } from "../../types";
 import "../../css/MessageDropdown.css";
-
-interface MessageDropdownProps {
-    message: Message,
-    actions: [()=>void, ()=>void]
-}
 
 export default function MessageDropdown(props: MessageDropdownProps){
 

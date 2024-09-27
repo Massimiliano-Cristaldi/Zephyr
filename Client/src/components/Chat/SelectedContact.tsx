@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { ContactListRefContext, isMobile, ViewProfileContext } from "../../utils";
+import { ContactListRefContext, IsMobileContext, ViewProfileContext } from "../../utils";
 import { User } from "../../types";
 import ChatToolbar from "./ChatToolbar";
 import ChatWindow from "./ChatWindow";
@@ -10,6 +10,7 @@ import UserNotAdded from "./UserNotAdded";
 export default function SelectedContact(){
     
     const params = useParams();    
+    const isMobile = useContext(IsMobileContext);
     const [contact, setContact] = useState<User>({
         id: 0, 
         username: "User not found", 
@@ -20,7 +21,7 @@ export default function SelectedContact(){
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 
     useEffect(()=>{
-        if (isMobile()) {
+        if (isMobile) {
             contactListRef.current.style.display = "none";
             chatWrapperRef.current.style.display = "block";
             backButtonRef.current.style.visibility = "visible";

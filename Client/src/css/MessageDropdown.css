@@ -10,32 +10,6 @@
     cursor: pointer;
 }
 
-.senderRepliedMessage{
-    display: flex;
-    flex-direction: column;
-    width: calc(40vw - 29px);
-    justify-self: center;
-    align-self: center;
-    padding: 5px 10px;
-    margin: 5px 0px;
-    background-color: var(--senderReplyBg);
-}
-
-.recipientRepliedMessage{
-    display: flex;
-    flex-direction: column;
-    width: calc(40vw - 29px);
-    justify-self: center;
-    align-self: center;
-    padding: 5px 10px;
-    margin: 5px 0px;
-    background-color: var(--recipientReplyBg);
-}
-
-.senderRepliedMessage>i, .recipientRepliedMessage>i{
-    font-size: 0.8rem;
-}
-
 .senderMessageDropdown{
     display: none;
     flex-direction: column;

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext, IsMobileContext } from "../utils";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
 import Body from "./Chat/Body";
-import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext } from "../utils";
 import "../css/StyleVariables.css";
 import "../css/index.css";
 
@@ -13,6 +13,7 @@ export default function Layout(){
     const backButtonRef = useRef<HTMLElement>(null);
     const chatInputRef = useRef<HTMLInputElement>(null);
     const fontStylePopupRef = useRef<HTMLDivElement>(null);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 996);
     const [selectedText, setSelectedText] = useState<string>("");
 
     //Load custom theme (if any)
@@ -30,7 +31,7 @@ export default function Layout(){
     }, [])
 
     //Make font style popup dialog appear/disappear when selecting/deselecting text in the chat input
-    //The function appears here because the mouseup event should trigger when the button is released anywhere
+    //The function appears here because the mouseup event should trigger when the mouse button is released anywhere
     function toggleFontStylePopup(){
         const input = chatInputRef.current;
         const position = input?.selectionStart;
@@ -51,8 +52,14 @@ export default function Layout(){
         }
     }
 
+    //Check if mobile layout should be used every time the window width changes
+    window.addEventListener('resize', ()=>{
+        setIsMobile(window.innerWidth <= 996);
+    })
+
     return(
         <AuthUserContext.Provider value={1}>
+        <IsMobileContext.Provider value={isMobile}>
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
         <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: [toggleFontStylePopup]}}>
             <div className="container-fluid h-100" onMouseUp={toggleFontStylePopup}>
@@ -68,6 +75,7 @@ export default function Layout(){
             </div>
         </FontStylePopupContext.Provider>
         </ContactListRefContext.Provider>
+        </IsMobileContext.Provider>
         </AuthUserContext.Provider>
     )
 }

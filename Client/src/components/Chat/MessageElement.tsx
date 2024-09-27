@@ -1,16 +1,9 @@
 import {  useContext, useRef, useEffect, Dispatch, SetStateAction, RefObject } from "react";
 import axios from "axios";
-import { Message } from "../../types";
 import { AuthUserContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils";
-import "../../css/MessageElement.css";
+import { MessageElementProps } from "../../types";
 import MessageDropdown from "./MessageDropdown";
-
-interface MessageElementProps{
-    message: Message,
-    refs: RefObject<HTMLDivElement>,
-    newMessageState: [Message, Dispatch<SetStateAction<Message>>],
-    deletedMessageState: [number, Dispatch<SetStateAction<number>>]
-}
+import "../../css/MessageElement.css";
 
 export default function MessageElement({message, refs, newMessageState, deletedMessageState}: MessageElementProps){
 

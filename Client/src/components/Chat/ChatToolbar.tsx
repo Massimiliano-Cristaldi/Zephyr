@@ -1,11 +1,7 @@
 import { useContext } from "react";
 import { ViewProfileContext } from "../../utils";
-import { User } from "../../types";
+import { ChatToolbarProps } from "../../types";
 import "../../css/ChatToolbar.css";
-
-interface ChatToolbarProps{
-    contact: User
-}
 
 export default function ChatToolbar({contact}: ChatToolbarProps){
 

@@ -1,22 +1,23 @@
 import { useState, useEffect, useContext, useRef, RefObject } from "react";
 import ConfirmPopup from "./ConfirmPopup";
 import { defaultTheme, hexToHslString, getLightnessFromHex, formatColorProperty } from "../../ColorTools";
-import { ContactListRefContext, isMobile, fonts } from "../../utils";
+import { ContactListRefContext, fonts, IsMobileContext } from "../../utils";
 import { StyleProperties } from "../../types";
 import "../../css/EditForm.css";
 
 export default function EditForm(){
 
+    const isMobile = useContext(IsMobileContext);
+    const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
+    const confirmApplyRef = useRef<HTMLDivElement>(null);
+    const confirmResetRef = useRef<HTMLDivElement>(null);
     const [currentTheme, setCurrentTheme] = useState<StyleProperties>(()=>{
         const savedTheme = window.localStorage.getItem("theme");
         return savedTheme ? JSON.parse(savedTheme) : defaultTheme;
     });
-    const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
-    const confirmApplyRef = useRef<HTMLDivElement>(null);
-    const confirmResetRef = useRef<HTMLDivElement>(null);
 
     useEffect(()=>{
-        if (isMobile()) {
+        if (isMobile) {
             contactListRef.current.style.display = "none";
             chatWrapperRef.current.style.display = "block";
             backButtonRef.current.style.visibility = "visible";

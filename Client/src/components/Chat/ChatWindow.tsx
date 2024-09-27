@@ -28,7 +28,7 @@ export default function ChatWindow(){
         replying_to_message_id: null
     });
     const [deletedMessageCount, setDeletedMessageCount] = useState<number>(0);
-    const [repliedMessage, setRepliedMessage] = useState<string>("");
+    const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
     const [sessionMessageCount] = useContext(MessageCountContext);
     const [selectedText, setSelectedText] = states;    
 

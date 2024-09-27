@@ -2,11 +2,11 @@
     display: none;
     align-items: center;
     justify-content: center;
-    height: 74.5vh;
-    width: 80vw;
+    height: 73.6vh;
+    width: 85vw;
     position: absolute;
-    left: 20vw;
-    top: 16.3vh;
+    left: 15vw;
+    top: 19vh;
     z-index: 3;
     background-color: rgba(68, 68, 68, 0.678);
     backdrop-filter: blur(5px);
@@ -23,12 +23,12 @@
     height: 80%;
     width: 80%;
     padding: 2rem 1.3rem 0.3rem 1.3rem;
-
+    
     background-color: hsl(210, 13%, 94%);
     font-size: 30px;
     font-weight: 600;
     border-radius: 20px;
-
+    
     animation-name: modalSlide;
     animation-duration: 0.5s;
 }
@@ -87,11 +87,18 @@
 }
 
 @media screen and (min-width: 996px) {
+    #viewProfileWrapper{
+        height: 76.4vh;
+        width: 80vw;
+        top: 16.3vh;
+        left: 20vw;
+    }
+    
     #viewProfileModal{
         width: 40vw;
         height: 50vh;
     }
-
+    
     #viewProfileModal>p{
         width: 30vw;
     }
