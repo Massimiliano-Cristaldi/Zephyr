@@ -41,7 +41,10 @@
     display: none;
     background-color: var(--chatInputWrapperBg);
     width: 100%;
+    height: 8.5vh;
     padding: 10px 10px 0px 10px;
+    animation-name: growReplyWrapper;
+    animation-duration: 0.15s;
 }
 
 #replyWrapper>div{
@@ -49,7 +52,7 @@
     background-color: var(--senderMessageBg);
 }
 
-#replyWrapper i:first-child{
+#replyWrapper>div>i:first-child{
     font-size: 0.8rem;
 }
 
@@ -84,9 +87,12 @@
 }
 
 @media screen and (min-Width: 996px) {
-
     #chatInputWrapper input{
         width: 100%;
     }
+}
 
+@keyframes growReplyWrapper {
+    0% {height: 0px}
+    100% {height: 8.5vh;}
 }

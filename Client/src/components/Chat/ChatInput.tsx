@@ -1,16 +1,16 @@
-import { ChangeEvent, FormEvent, useContext } from "react";
+import { ChangeEvent, FormEvent, useContext, useRef } from "react";
 import axios from "axios";
 import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
 import "../../css/ChatInput.css"
 
-export default function ChatInput({states, refs, actions}:any){
+export default function ChatInput({refs, newMessageState, selectedTextState, actions}:any){
 
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
     const replyRef = useContext(MessageReplyContext).refs;
-    const repliedMessage = useContext(MessageReplyContext).states[0];
-    const [newMessage, setNewMessage] = [states[0][0], states[0][1]];
-    const selectedText = states[1][0];
-    const [chatInputRef, fontStylePopupRef] = refs;
+    const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
+    const [newMessage, setNewMessage] = newMessageState;
+    const [repliedMessage, setRepliedMessage] = useContext(MessageReplyContext).states;
+    const [selectedText, setSelectedText] = selectedTextState;
     const toggleFontStylePopup = actions;
 
     function handleChatInputChange(e: ChangeEvent<HTMLInputElement>){
@@ -48,7 +48,7 @@ export default function ChatInput({states, refs, actions}:any){
     //Make text italic, bold or underlined
     function changeTextStyle(style:string){
         const input = chatInputRef.current;
-        if (input && input.selectionStart && input.selectionEnd) {
+        if (input && input.selectionStart !== undefined && input.selectionEnd !== undefined) {
             let selection;
             switch (style) {
                 case "italics":
@@ -73,7 +73,9 @@ export default function ChatInput({states, refs, actions}:any){
                 <div >
                     <i>Replying to:</i>
                     <br />
-                    {repliedMessage.content}
+                    <div ref={inputReplyRef}>
+                        {repliedMessage.content}
+                    </div>
                 </div>
             </div>
             <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>

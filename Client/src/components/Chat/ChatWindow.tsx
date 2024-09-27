@@ -15,9 +15,10 @@ export default function ChatWindow(){
     const authId = useContext(AuthUserContext);
     const {actions, states, refs} = useContext(FontStylePopupContext);
     
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const replyRef = useRef<HTMLDivElement>(null);
     const [chatInputRef, fontStylePopupRef] = refs;
+    const replyRef = useRef<HTMLDivElement>(null);
+    const inputReplyRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
     
     const [messages, setMessages] = useState<Message[] | []>();
     const [newMessage, setNewMessage] = useState<Message>({
@@ -65,7 +66,8 @@ export default function ChatWindow(){
                     {messages.map((el)=>(
                         <Fragment key={el.id}>
                             <MessageElement 
-                            message={el} 
+                            message={el}
+                            refs={inputReplyRef}
                             newMessageState={[newMessage, setNewMessage]} 
                             deletedMessageState={[deletedMessageCount, setDeletedMessageCount]}/>
                         </Fragment>
@@ -78,8 +80,9 @@ export default function ChatWindow(){
                     </div>
                 )}
             <ChatInput
-            states={[[newMessage, setNewMessage], [selectedText, setSelectedText]]}
-            refs={[chatInputRef, fontStylePopupRef]}
+            refs={[chatInputRef, inputReplyRef, fontStylePopupRef]}
+            newMessageState={[newMessage, setNewMessage]}
+            selectedTextState={[selectedText, setSelectedText]}
             actions={toggleFontStylePopup}
             />
             </div>

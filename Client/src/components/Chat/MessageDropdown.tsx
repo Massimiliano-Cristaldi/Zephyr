@@ -13,13 +13,12 @@ export default function MessageDropdown(props: MessageDropdownProps){
     const messageDropdownRef = useRef<HTMLUListElement>(null);
     const message = props.message;
 
-    //FIX: Having the onBlur event causes the dropdown items to do nothing
     function toggleMessageDropdown(){
         if (messageDropdownRef.current) {
-            if (messageDropdownRef.current.style.display === "none") {
-                messageDropdownRef.current.style.display = "flex";
-            } else {
+            if (messageDropdownRef.current.style.display === "flex") {
                 messageDropdownRef.current.style.display = "none";
+            } else {
+                messageDropdownRef.current.style.display = "flex";
             }
         }
     }
@@ -37,15 +36,15 @@ export default function MessageDropdown(props: MessageDropdownProps){
                     <i 
                     className="fa-solid fa-chevron-down messageDropdownButton" 
                     onClick={toggleMessageDropdown} 
-                    // onBlur={hideMessageDropdown}
-                    // tabIndex={0}
+                    onBlur={hideMessageDropdown}
+                    tabIndex={0}
                     />
                     <ul 
                     className={(message.sender_id == authId) ? "senderMessageDropdown" : "recipientMessageDropdown"}
                     ref={messageDropdownRef}
                     >
-                        <li onClick={handleReply}>Reply</li>
-                        {message.sender_id == authId && <li onClick={deleteMessage}>Delete</li>}
+                        <li onMouseDown={handleReply}>Reply</li>
+                        {message.sender_id == authId && <li onMouseDown={deleteMessage}>Delete</li>}
                     </ul>
         </div>
     )

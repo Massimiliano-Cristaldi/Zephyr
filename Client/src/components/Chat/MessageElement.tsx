@@ -1,4 +1,4 @@
-import {  useContext, useRef, useEffect, Dispatch, SetStateAction } from "react";
+import {  useContext, useRef, useEffect, Dispatch, SetStateAction, RefObject } from "react";
 import axios from "axios";
 import { Message } from "../../types";
 import { AuthUserContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils";
@@ -7,19 +7,21 @@ import MessageDropdown from "./MessageDropdown";
 
 interface MessageElementProps{
     message: Message,
+    refs: RefObject<HTMLDivElement>,
     newMessageState: [Message, Dispatch<SetStateAction<Message>>],
     deletedMessageState: [number, Dispatch<SetStateAction<number>>]
 }
 
-export default function MessageElement({message, newMessageState, deletedMessageState}: MessageElementProps){
+export default function MessageElement({message, refs, newMessageState, deletedMessageState}: MessageElementProps){
 
     const authId = useContext(AuthUserContext);
     const messageContentRef = useRef<HTMLDivElement>(null);
     const replyRef = useContext(MessageReplyContext).refs;
     const replyContentRef = useRef<HTMLDivElement>(null);
+    const inputReplyRef = refs;
     const [newMessage, setNewMessage] = newMessageState;
-    const setRepliedMessage = useContext(MessageReplyContext).states[1];
     const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
+    const [repliedMessage, setRepliedMessage] = useContext(MessageReplyContext).states;
 
     //Set message box content
     useEffect(()=>{
@@ -35,31 +37,32 @@ export default function MessageElement({message, newMessageState, deletedMessage
         }
     }, [deletedMessageCount])
     
+    //Connect current message to the message you're replying to, make the reply box above the chat input appear
     function handleReply(){
         try {
             axios.get(`http://localhost:8800/message/${message.id}`)
             .then((response)=>{
                 setRepliedMessage(response.data[0]);
                 setNewMessage({...newMessage, replying_to_message_id: message.id});
-                replyRef.current!.style.display = "block";
-                replyRef.current!.innerHTML = `<div><i>Replying to:</i> <br/>${response.data[0].content}</div>`;
+                if (replyRef.current && inputReplyRef.current) {
+                    replyRef.current.style.display = "block";
+                    inputReplyRef.current.innerHTML = response.data[0].content;
+                }
             })
         } catch (err) {
             console.error(err);
         }
     }
 
-    
-
-    //FIX: Deleting a message with a reply doesn't delete the reply
-    //Should suffice to change the query in index.js (set replying to message id = null)
+    //Change the message content to empty string and remove connection to replied message
     function deleteMessage(){
         try {
             axios.post("http://localhost:8800/deletemessage", {messageId: message.id})
             .then(()=>{
                 setDeletedMessageCount(deletedMessageCount + 1); 
                 setNewMessage({...newMessage, replying_to_message_id: null});
-                message.content = ""; 
+                message.content = "";
+                message.replied_message_content = "";
             });
         } catch (err) {
             console.error(err);
@@ -77,10 +80,10 @@ export default function MessageElement({message, newMessageState, deletedMessage
                     <div className={(message.sender_id == authId) ? "senderRepliedMessage" : "recipientRepliedMessage"}>
                         <i>Replying to: </i>
                         <div ref={replyContentRef}/>
-                    </div>
-                    }
+                    </div>}
                     <div ref={messageContentRef}/>
-                    <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>
+                    {message.content &&
+                    <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>}
                 </div>
             </div>
             <small 
