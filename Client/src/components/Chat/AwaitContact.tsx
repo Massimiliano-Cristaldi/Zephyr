@@ -1,6 +1,19 @@
+import { useContext, useEffect } from "react";
+import { ContactListRefContext, IsMobileContext } from "../../utils";
 import "../../css/AwaitContact.css";
 
 export default function AwaitContact(){
+
+    const isMobile = useContext(IsMobileContext);
+    const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
+
+    useEffect(()=>{
+        if (isMobile) {
+            chatWrapperRef.current.style.display = "none";
+        } else {
+            chatWrapperRef.current.style.display = "block";
+        }
+    }, [isMobile])
 
     return(
         <div id="awaitContact">

@@ -19,6 +19,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
     //as hiding the inputs causes them to lose focus, and thus normally trigger any onBlur events
     let discarding = false;
     
+    //Post new image to storage, and change user's icon_url property in the database to that image's url
     function changeIcon(e:ChangeEvent<HTMLInputElement>){
         const target = e.target as HTMLInputElement & {files: FileList};
         const uploadedImage = target.files[0];
@@ -33,6 +34,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         }
     }
 
+    //Set a new value for user's username or custom_status; change is not applied until the input is blurred
     function changeUserProperty(inputElement: RefObject<any>, staticElement: RefObject<any>, property: keyof User){
         if (user && inputElement.current && staticElement.current) {
             inputElement.current.style.display = "block";
@@ -46,6 +48,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         }
     }
 
+    //Apply changes made with changeUserProperty
     function submitPropertyChange(inputElement: RefObject<any>, staticElement: RefObject<any>, property: keyof User){
         if (discarding){
             discarding = false;
@@ -65,6 +68,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         }
     }
 
+    //Hide the input and show the static element without applying the changes made with changeUserProperty
     function discardPropertyChange(e:React.KeyboardEvent<HTMLInputElement>, inputElement: RefObject<any>, staticElement: RefObject<any>){
         if (e.key === "Escape" && inputElement.current && staticElement.current){
             discarding = true;

@@ -25,8 +25,11 @@ export default function SelectedContact(){
             contactListRef.current.style.display = "none";
             chatWrapperRef.current.style.display = "block";
             backButtonRef.current.style.visibility = "visible";
+        } else {
+            contactListRef.current.style.display = "block";
+            backButtonRef.current.style.visibility = "hidden";
         }
-    }, [])
+    }, [isMobile])
 
     useEffect(()=>{
         async function fetchData(){
