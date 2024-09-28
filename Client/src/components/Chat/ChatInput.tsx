@@ -1,11 +1,15 @@
-import { ChangeEvent, FormEvent, useContext } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import axios from "axios";
-import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
+import { AuthUserContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
 import { ChatInputProps } from "../../types";
 import "../../css/ChatInput.css"
+import { useParams } from "react-router-dom";
 
+//TODO: The box above chat input check ternary operator only on mount, always returning repliedMessage.replied_message_sender_id
 export default function ChatInput({refs, newMessageState, selectedTextState, repliedMessageState, actions}:ChatInputProps){
 
+    const params = useParams();
+    const authUser = useContext(AuthUserContext);
     const replyRef = useContext(MessageReplyContext).refs;
     const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
     const [newMessage, setNewMessage] = newMessageState;
@@ -14,6 +18,12 @@ export default function ChatInput({refs, newMessageState, selectedTextState, rep
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
     const toggleFontStylePopup = actions;
 
+    //Cancel replying state when switching to a different chat
+    useEffect(()=>{
+        cancelReplyState();
+    }, [params])
+
+    //Set new message content every time the chat input's value changes
     function handleChatInputChange(e: ChangeEvent<HTMLInputElement>){
         setNewMessage({...newMessage, content: sanitizeMessageInput(e.target.value)});
     }
@@ -76,11 +86,17 @@ export default function ChatInput({refs, newMessageState, selectedTextState, rep
         }
     }
 
+    console.log(repliedMessage);
+    
     return(
         <>
             <div id="replyWrapper" ref={replyRef}>
                 <div>
-                    <i>Replying to <b>{repliedMessage && repliedMessage.replied_message_sender_username}</b>'s message:</i>
+                    <i>Replying to
+                        {repliedMessage &&
+                        <b> {repliedMessage.replied_message_sender_id == authUser.id ? authUser.username : repliedMessage.replied_message_sender_username}</b>}
+                        's message
+                    </i>
                     <br />
                     <div ref={inputReplyRef}/>
                     <i className="fa-solid fa-xmark" onClick={cancelReplyState}/>

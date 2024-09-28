@@ -5,7 +5,7 @@ import "../../css/MessageDropdown.css";
 
 export default function MessageDropdown(props: MessageDropdownProps){
 
-    const authId = useContext(AuthUserContext);
+    const authUser = useContext(AuthUserContext);
     const messageDropdownRef = useRef<HTMLUListElement>(null);
     const message = props.message;
 
@@ -36,11 +36,11 @@ export default function MessageDropdown(props: MessageDropdownProps){
                     tabIndex={0}
                     />
                     <ul 
-                    className={(message.sender_id == authId) ? "senderMessageDropdown" : "recipientMessageDropdown"}
+                    className={(message.sender_id == authUser.id) ? "senderMessageDropdown" : "recipientMessageDropdown"}
                     ref={messageDropdownRef}
                     >
                         <li onMouseDown={handleReply}>Reply</li>
-                        {message.sender_id == authId && <li onMouseDown={deleteMessage}>Delete</li>}
+                        {message.sender_id == authUser.id && <li onMouseDown={deleteMessage}>Delete</li>}
                     </ul>
         </div>
     )

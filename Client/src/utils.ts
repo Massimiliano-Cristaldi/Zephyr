@@ -1,4 +1,5 @@
 import { createContext, RefObject } from "react";
+import { User } from "./types";
 
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function
 export function getDate(date: string){
@@ -66,7 +67,12 @@ export function closeModal(ref: RefObject<HTMLDivElement>, refresh:boolean){
 export const fonts = ["Arial", "Times New Roman", "Helvetica", "Century Gothic Paneuropean", "Verdana", "Tahoma", "Trebuchet MS", "Georgia", "Garamond", "Courier New"].sort();
 
 export const IsMobileContext = createContext<boolean>(false);
-export const AuthUserContext = createContext<number>(1);
+export const AuthUserContext = createContext<User>({
+    id: 0,
+    username: "Loading...",
+    phone_number: 0,
+    icon_url: null
+});
 export const ContactListRefContext = createContext<any>([]);
 export const MessageCountContext = createContext<any>([]);
 export const FontStylePopupContext = createContext<any>([]);

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext, IsMobileContext } from "../utils";
+import { User } from "../types";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
 import Body from "./Chat/Body";
@@ -15,6 +17,29 @@ export default function Layout(){
     const fontStylePopupRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 996);
     const [selectedText, setSelectedText] = useState<string>("");
+    const [authUser, setAuthUser] = useState<User>({
+        id: 0,
+        username: "Loading...",
+        phone_number: 0,
+        icon_url: null
+    });
+
+    //Fetch logged user's info
+    //Change the axios request parameter to change the currently logged user
+    useEffect(()=>{
+        async function fetchData(){
+            try {
+                const response = await axios.get(`http://localhost:8800/userinfo/1`);
+                if (response.status !== 200 || response.data.length === 0) {
+                    throw new Error("User not found");
+                }
+                setAuthUser(response.data[0]);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        fetchData();
+    }, [])
 
     //Load custom theme (if any)
     useEffect(()=>{
@@ -58,7 +83,7 @@ export default function Layout(){
     })
 
     return(
-        <AuthUserContext.Provider value={1}>
+        <AuthUserContext.Provider value={authUser}>
         <IsMobileContext.Provider value={isMobile}>
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
         <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: [toggleFontStylePopup]}}>

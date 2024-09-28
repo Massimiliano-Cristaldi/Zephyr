@@ -18,6 +18,7 @@ export interface Message {
     replying_to_message_id?: number | null,
     replied_message_content?: string,
     time_sent?: string,
+    replied_message_sender_id?: number,
     replied_message_sender_username?: string
 }
 

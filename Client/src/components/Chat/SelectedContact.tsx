@@ -13,7 +13,7 @@ export default function SelectedContact(){
     const isMobile = useContext(IsMobileContext);
     const [contact, setContact] = useState<User>({
         id: 0, 
-        username: "User not found", 
+        username: "Loading...", 
         phone_number: 0, 
         icon_url: "/user.png"});
     const [userIsAdded, setUserIsAdded] = useState(true);

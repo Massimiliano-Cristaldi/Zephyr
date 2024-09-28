@@ -8,25 +8,28 @@ import "../../css/Body.css";
 
 export default function Body(){
 
+    const authUser = useContext(AuthUserContext);
+    const [contactListRef, chatWrapperRef] = useContext(ContactListRefContext);
     const [contacts, setContacts] = useState<User[] | []>([]);
     const [sessionMessageCount, setSessionMessageCount] = useState(0);
-    const [contactListRef, chatWrapperRef] = useContext(ContactListRefContext);
-    const authId = useContext(AuthUserContext);
+
     useEffect(()=>{
         async function fetchData(){
             try {
-                const response = await axios.get(`http://localhost:8800/contactlist/${authId}`);
-                if (response.status !== 200) {
+                const response = await axios.get(`http://localhost:8800/contactlist/${authUser.id}`);
+                if (response.status !== 200 || response.data.length === 0) {
                     throw new Error("Fetch failed");
                 }
                 setContacts(response.data);
             } catch (err) {
                 console.error(err);
-                return null;
             }
         }
         fetchData();
-    }, [sessionMessageCount])
+    }, [sessionMessageCount, authUser.id])
+
+    console.log(authUser);
+    
 
     return(
         <MessageCountContext.Provider value={[sessionMessageCount, setSessionMessageCount]}>

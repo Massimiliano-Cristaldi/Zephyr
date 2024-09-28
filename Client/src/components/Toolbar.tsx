@@ -1,36 +1,16 @@
-import { useEffect, useState, useRef, useContext, RefObject } from "react";
-import { redirect } from "react-router-dom";
-import axios from "axios";
+import { useRef, useContext, RefObject } from "react";
 import { AuthUserContext } from "../utils";
-import { User } from "../types";
 import EditProfile from "./EditProfile";
 import AddContact from "./AddContact";
 import "../css/Toolbar.css";
 
 export default function Toolbar(){
 
-    const authId = useContext(AuthUserContext);
+    const authUser = useContext(AuthUserContext);
     const toolbarOptionsRef = useRef<HTMLUListElement>(null);
     const toolbarAddRef = useRef<HTMLUListElement>(null);
     const addContactRef = useRef<HTMLDivElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
-    const [authUser, setAuthUser] = useState<User | undefined>();
-
-    //Fetch logged user's info
-    useEffect(()=>{
-        async function fetchData(){
-            try {
-                const response = await axios.get(`http://localhost:8800/userinfo/${authId}`);
-                if (response.status !== 200 || response.data.length === 0) {
-                    throw new Error("User not found");
-                }
-                setAuthUser(response.data[0]);
-            } catch (err) {
-                console.error(err);
-            }
-        }
-        fetchData();
-    }, [])
 
     function toggleDropdown(showRef: RefObject<HTMLUListElement>, hideRef: RefObject<HTMLUListElement>){
         if (showRef.current && hideRef.current) {            

@@ -9,7 +9,7 @@ import "../../css/ContactList.css";
 export default function ContactList({contactList}: ContactListProps){
 
     const navigate = useNavigate();
-    const authId = useContext(AuthUserContext);
+    const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 
@@ -19,13 +19,13 @@ export default function ContactList({contactList}: ContactListProps){
             chatWrapperRef.current.style.display = "block";
             backButtonRef.current.style.visibility = "visible";
         }
-        navigate(`/chat/${authId}/${contactId}`, {replace: true});
+        navigate(`/chat/${authUser.id}/${contactId}`, {replace: true});
     }
 
     return(
         <>
         {contactList ?
-            (contactList.map((contact)=> contact.id !== authId ? (
+            (contactList.map((contact)=> contact.id !== authUser.id ? (
                     <div key={contact.id} onClick={()=>openChat(contact.id)}>
                         <div className="contactIcon" style={{backgroundImage: `url(${contact.icon_url || "/user.png"})`}}></div>
                         {contact.user_added_as}

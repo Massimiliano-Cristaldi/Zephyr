@@ -5,9 +5,10 @@ import { MessageElementProps } from "../../types";
 import MessageDropdown from "./MessageDropdown";
 import "../../css/MessageElement.css";
 
+//TODO: The reply box inside message element doesn't display the up-to-date name of the sender
 export default function MessageElement({message, refs, newMessageState, deletedMessageState}: MessageElementProps){
 
-    const authId = useContext(AuthUserContext);
+    const authUser = useContext(AuthUserContext);
     const messageContentRef = useRef<HTMLDivElement>(null);
     const replyRef = useContext(MessageReplyContext).refs;
     const replyContentRef = useRef<HTMLDivElement>(null);
@@ -16,7 +17,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
     const [repliedMessage, setRepliedMessage] = useContext(MessageReplyContext).states;
 
-    //Set message box content
+    //Set message box content on loading the element or deleting the message
     useEffect(()=>{
         if (messageContentRef.current) {
             if (message.content) {
@@ -37,8 +38,6 @@ export default function MessageElement({message, refs, newMessageState, deletedM
             .then((response)=>{
                 setRepliedMessage(response.data[0]);
                 setNewMessage({...newMessage, replying_to_message_id: message.id});
-                console.log(response.data[0]);
-                
                 if (replyRef.current && inputReplyRef.current) {
                     replyRef.current.style.display = "block";
                     inputReplyRef.current.innerHTML = response.data[0].content;
@@ -68,12 +67,15 @@ export default function MessageElement({message, refs, newMessageState, deletedM
         <>
             <div
             key={message.id} 
-            className={(message.sender_id == authId) ? "senderMessage" : "recipientMessage"}
+            className={(message.sender_id == authUser.id) ? "senderMessage" : "recipientMessage"}
             >
                 <div className="pt-2">
                     {message.replied_message_content && 
-                    <div className={(message.sender_id == authId) ? "senderRepliedMessage" : "recipientRepliedMessage"}>
-                        <i>Replying to: </i>
+                    <div className={(message.sender_id == authUser.id) ? "senderRepliedMessage" : "recipientRepliedMessage"}>
+                        <i>Replying to 
+                            <b> {message.replied_message_sender_id == authUser.id ? authUser.username : message.replied_message_sender_username}</b>
+                            's message:
+                        </i>
                         <div ref={replyContentRef}/>
                     </div>}
                     <div ref={messageContentRef}/>
@@ -82,7 +84,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                 </div>
             </div>
             <small 
-            className={(message.sender_id == authId) ? "timeSentSender" : "timeSentRecipient"} 
+            className={(message.sender_id == authUser.id) ? "timeSentSender" : "timeSentRecipient"} 
             data-toggle="tooltip" 
             title={message.time_sent ? getDate(message.time_sent) : "N/A"}
             >

@@ -12,7 +12,7 @@ import "../../css/ChatWindow.css";
 export default function ChatWindow(){
 
     const contactId = useParams().contactId;
-    const authId = useContext(AuthUserContext);
+    const authUser = useContext(AuthUserContext);
     const {actions, states, refs} = useContext(FontStylePopupContext);
     
     const [chatInputRef, fontStylePopupRef] = refs;
@@ -23,7 +23,7 @@ export default function ChatWindow(){
     const [messages, setMessages] = useState<Message[] | []>();
     const [newMessage, setNewMessage] = useState<Message>({
         content: "",
-        sender_id: Number(authId),
+        sender_id: Number(authUser.id),
         recipient_id: Number(contactId),
         replying_to_message_id: null
     });
@@ -36,11 +36,11 @@ export default function ChatWindow(){
     useEffect(()=>{
         async function fetchData(){
             try {
-                const response = await axios.get(`http://localhost:8800/messages/${authId}/${contactId}`);
+                const response = await axios.get(`http://localhost:8800/messages/${authUser.id}/${contactId}`);
                 if (response.status !== 200 || response.data.length === 0) {
                     throw new Error("Fetch failed");
                 }
-                setMessages(response.data);
+                setMessages(response.data[0]);
             } catch (err) {
                 console.error(err);
                 setMessages([]);
@@ -56,7 +56,7 @@ export default function ChatWindow(){
         animateScroll.scrollToBottom({containerId: "messagesWrapper", duration: 0});
     }, [messages])
 
-    const [toggleFontStylePopup] = actions;
+    const [toggleFontStylePopup] = actions;    
 
     return(
         <MessageReplyContext.Provider value={{refs: replyRef, states: [repliedMessage, setRepliedMessage]}}>

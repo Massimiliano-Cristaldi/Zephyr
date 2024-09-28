@@ -13,8 +13,9 @@ export default function ViewProfile(){
         id: 0, 
         username: "User not found", 
         phone_number: 0, 
-        icon_url: "/user.png"
+        icon_url: "user.png"
     });
+    const [isChanged, setIsChanged] = useState<boolean>(false);
 
     useEffect(()=>{
         async function fetchData(){
@@ -31,16 +32,16 @@ export default function ViewProfile(){
         fetchData();
     }, [params])
 
-    //TODO: Fix media query (wrapper and modal are not displaying properly from mobile)
-
     return(
         <div id="viewProfileWrapper" ref={viewProfileRef}>
             <div id="viewProfileModal">
-                <div id="userIcon" style={{backgroundImage: `url(${contact.icon_url})`}}/>
+                <div id="userIcon" style={{backgroundImage: `url(${contact.icon_url || "/user.png"})`}}/>
                 <h2>{contact.user_added_as}</h2>
+                <h5>+ 39 {contact.phone_number}</h5>
+                <p>{contact.custom_status}</p>
                 <i className="fa-solid fa-xmark closeModal" 
                 style={{color: "rgb(180, 180, 180)"}} 
-                onClick={()=>{closeModal(viewProfileRef, false)}}
+                onClick={()=>{closeModal(viewProfileRef, isChanged)}}
                 />
             </div>
         </div>

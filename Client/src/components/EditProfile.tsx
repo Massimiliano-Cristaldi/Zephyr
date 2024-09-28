@@ -4,9 +4,10 @@ import { AuthUserContext, closeModal, IsMobileContext } from "../utils";
 import { EditProfileProps, User } from "../types";
 import "../css/EditProfile.css"
 
+//TODO: Clicking on the username H2 while having the status input open with text selected causes weird behavior
 export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
-    const authId = useContext(AuthUserContext);
+    const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
     const iconRef = useRef<HTMLDivElement>(null);
     const usernameInputRef = useRef<HTMLInputElement>(null);
@@ -26,9 +27,9 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         if (uploadedImage){
             const formdata = new FormData();
             formdata.append("icon", uploadedImage);
-            formdata.append("userId", authId.toString());
+            formdata.append("userId", authUser.id.toString());
             axios.post(`http://localhost:8800/updateicon`, formdata)
-            .then(async ()=>{return await axios.get(`http://localhost:8800/geticon/${authId}`)})
+            .then(async ()=>{return await axios.get(`http://localhost:8800/geticon/${authUser.id}`)})
             .then((res)=>{iconRef.current!.style.backgroundImage = `url(/${res.data[0].icon_url})`})
             .catch((err)=>{console.error(err)});
         }
@@ -60,7 +61,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
             if (user && inputElement.current.value){
                 const newUsername = {field: property, 
                     value: inputElement.current.value, 
-                    authId: authId};
+                    authUserId: authUser.id};
                 axios.post("http://localhost:8800/updateuserinfo", newUsername);
                 staticElement.current!.textContent = newUsername.value;
                 user.username = newUsername.value;
@@ -81,7 +82,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         <div id="editProfileWrapper" ref={editProfileRef}>
             <div id="editProfileModal">
 
-                <div id="currentIcon" style={{backgroundImage: `url(/${user?.icon_url || "user.png"})`}} ref={iconRef}>
+                <div id="currentIcon" style={{backgroundImage: `url(/${user?.icon_url || "/user.png"})`}} ref={iconRef}>
                     <label htmlFor="uploadIcon">
                         <i className="fa-solid fa-upload" style={{color: "#868484"}}/>
                     </label>
