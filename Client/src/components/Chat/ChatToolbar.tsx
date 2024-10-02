@@ -5,7 +5,7 @@ import "../../css/ChatToolbar.css";
 
 export default function ChatToolbar({contact}: ChatToolbarProps){
 
-    const viewProfileRef = useContext(ViewProfileContext);
+    const [viewProfileRef, contactNameRef] = useContext(ViewProfileContext);
 
     function showViewProfileModal(){
         viewProfileRef.current.style.display = "flex";
@@ -19,8 +19,8 @@ export default function ChatToolbar({contact}: ChatToolbarProps){
                     style={{backgroundImage: `url(${contact.icon_url || '/user.png'})`}}>
                     </div>
                     <div className="d-flex flex-column pb-1" id="nameAndNumber">
-                        <div>
-                            {contact.username}
+                        <div ref={contactNameRef}>
+                            {contact.user_added_as}
                         </div>
                         <small id="phoneNumber">
                             +39 {contact.phone_number}

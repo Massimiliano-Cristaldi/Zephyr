@@ -27,7 +27,6 @@ export interface ChatInputProps{
     refs: RefObject<any>[],
     newMessageState: [Message, Dispatch<SetStateAction<Message>>],
     selectedTextState: [string, Dispatch<SetStateAction<string>>], 
-    repliedMessageState: [Message | null, Dispatch<SetStateAction<Message | null>>], 
     actions: ()=>any
 }
 

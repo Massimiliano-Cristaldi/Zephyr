@@ -10,7 +10,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
 
     const authUser = useContext(AuthUserContext);
     const messageContentRef = useRef<HTMLDivElement>(null);
-    const replyRef = useContext(MessageReplyContext).refs;
+    const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const replyContentRef = useRef<HTMLDivElement>(null);
     const inputReplyRef = refs;
     const [newMessage, setNewMessage] = newMessageState;
@@ -40,6 +40,8 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                 setNewMessage({...newMessage, replying_to_message_id: message.id});
                 if (replyRef.current && inputReplyRef.current) {
                     replyRef.current.style.display = "block";
+                    replyNameRef.current.innerText = " " + (response.data[0].sender_id === authUser.id ?
+                        authUser.username : response.data[0].replied_message_sender_username);
                     inputReplyRef.current.innerHTML = response.data[0].content;
                 }
             })

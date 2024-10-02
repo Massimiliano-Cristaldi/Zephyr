@@ -18,6 +18,7 @@ export default function SelectedContact(){
         icon_url: "/user.png"});
     const [userIsAdded, setUserIsAdded] = useState(true);
     const viewProfileRef = useRef<HTMLDivElement>(null);
+    const contactNameRef = useRef<HTMLDivElement>(null);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 
     useEffect(()=>{
@@ -52,7 +53,7 @@ export default function SelectedContact(){
     }, [params.contactId])
     
     return(
-        <ViewProfileContext.Provider value={viewProfileRef}>
+        <ViewProfileContext.Provider value={[viewProfileRef, contactNameRef]}>
             {userIsAdded || <UserNotAdded/>}
             <ChatToolbar contact={contact}/>
             <ChatWindow/>

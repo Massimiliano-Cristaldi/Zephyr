@@ -27,10 +27,7 @@ export default function Body(){
         }
         fetchData();
     }, [sessionMessageCount, authUser.id])
-
-    console.log(authUser);
     
-
     return(
         <MessageCountContext.Provider value={[sessionMessageCount, setSessionMessageCount]}>
             <div className="col-12 col-lg-2" id="contactList" ref={contactListRef}>

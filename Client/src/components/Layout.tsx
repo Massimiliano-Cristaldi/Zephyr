@@ -15,21 +15,22 @@ export default function Layout(){
     const backButtonRef = useRef<HTMLElement>(null);
     const chatInputRef = useRef<HTMLInputElement>(null);
     const fontStylePopupRef = useRef<HTMLDivElement>(null);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 996);
-    const [selectedText, setSelectedText] = useState<string>("");
+    const [authId, setAuthId] = useState<number>(1);
     const [authUser, setAuthUser] = useState<User>({
         id: 0,
         username: "Loading...",
         phone_number: 0,
         icon_url: null
     });
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 996);
+    const [selectedText, setSelectedText] = useState<string>("");
 
     //Fetch logged user's info
     //Change the axios request parameter to change the currently logged user
     useEffect(()=>{
         async function fetchData(){
             try {
-                const response = await axios.get(`http://localhost:8800/userinfo/1`);
+                const response = await axios.get(`http://localhost:8800/userinfo/${authId}`);
                 if (response.status !== 200 || response.data.length === 0) {
                     throw new Error("User not found");
                 }
@@ -39,7 +40,7 @@ export default function Layout(){
             }
         }
         fetchData();
-    }, [])
+    }, [authId])
 
     //Load custom theme (if any)
     useEffect(()=>{
@@ -79,7 +80,7 @@ export default function Layout(){
 
     //Check if mobile layout should be used every time the window width changes
     window.addEventListener('resize', ()=>{
-        setIsMobile(window.innerWidth <= 996);
+        setIsMobile(window.innerWidth < 996);
     })
 
     return(

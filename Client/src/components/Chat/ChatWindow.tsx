@@ -17,6 +17,7 @@ export default function ChatWindow(){
     
     const [chatInputRef, fontStylePopupRef] = refs;
     const replyRef = useRef<HTMLDivElement>(null);
+    const replyNameRef = useRef<HTMLElement>(null);
     const inputReplyRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
     
@@ -45,11 +46,11 @@ export default function ChatWindow(){
                 console.error(err);
                 setMessages([]);
             } finally {
-                setNewMessage({...newMessage, recipient_id: Number(contactId)});      
+                setNewMessage({...newMessage, sender_id: authUser.id, recipient_id: Number(contactId)});      
             }
         }
         fetchData();
-    }, [contactId, sessionMessageCount, deletedMessageCount])
+    }, [authUser.id, contactId, sessionMessageCount, deletedMessageCount])
 
     //Scroll to bottom when chat is loaded or a new message is posted
     useEffect(()=>{
@@ -59,7 +60,7 @@ export default function ChatWindow(){
     const [toggleFontStylePopup] = actions;    
 
     return(
-        <MessageReplyContext.Provider value={{refs: replyRef, states: [repliedMessage, setRepliedMessage]}}>
+        <MessageReplyContext.Provider value={{refs: [replyRef, replyNameRef], states: [repliedMessage, setRepliedMessage]}}>
             <div id="chatBody">
                 {messages && messages.length ?
                 (<div id="messagesWrapper" ref={scrollRef}>
@@ -83,7 +84,6 @@ export default function ChatWindow(){
             refs={[chatInputRef, inputReplyRef, fontStylePopupRef]}
             newMessageState={[newMessage, setNewMessage]}
             selectedTextState={[selectedText, setSelectedText]}
-            repliedMessageState={[repliedMessage, setRepliedMessage]}
             actions={toggleFontStylePopup}
             />
             </div>

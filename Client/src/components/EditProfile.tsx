@@ -4,16 +4,15 @@ import { AuthUserContext, closeModal, IsMobileContext } from "../utils";
 import { EditProfileProps, User } from "../types";
 import "../css/EditProfile.css"
 
-//TODO: Clicking on the username H2 while having the status input open with text selected causes weird behavior
 export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
     const iconRef = useRef<HTMLDivElement>(null);
-    const usernameInputRef = useRef<HTMLInputElement>(null);
     const usernameH2Ref = useRef<HTMLHeadingElement>(null);
-    const statusInputRef = useRef<HTMLInputElement>(null);
+    const usernameInputRef = useRef<HTMLInputElement>(null);
     const statusPRef = useRef<HTMLParagraphElement>(null);
+    const statusInputRef = useRef<HTMLInputElement>(null);
     const [isChanged, setIsChanged] = useState<boolean>(false);
 
     //This flag allows the discard change functions to execute correctly without firing the submit change functions,
@@ -30,7 +29,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
             formdata.append("userId", authUser.id.toString());
             axios.post(`http://localhost:8800/updateicon`, formdata)
             .then(async ()=>{return await axios.get(`http://localhost:8800/geticon/${authUser.id}`)})
-            .then((res)=>{iconRef.current!.style.backgroundImage = `url(/${res.data[0].icon_url})`})
+            .then((res)=>{iconRef.current!.style.backgroundImage = `url(/${res.data[0].icon_url})`; setIsChanged(true);})
             .catch((err)=>{console.error(err)});
         }
     }
@@ -58,13 +57,13 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         if (inputElement.current && staticElement.current) {
             inputElement.current.style.display = "none";
             staticElement.current.style.display = "block";
-            if (user && inputElement.current.value){
-                const newUsername = {field: property, 
+            if (user && staticElement.current && inputElement.current.value){
+                const newValues = {field: property, 
                     value: inputElement.current.value, 
                     authUserId: authUser.id};
-                axios.post("http://localhost:8800/updateuserinfo", newUsername);
-                staticElement.current!.textContent = newUsername.value;
-                user.username = newUsername.value;
+                axios.post("http://localhost:8800/updateuserinfo", newValues);
+                staticElement.current.innerText = newValues.value;
+                user.username = newValues.value;
             }
         }
     }
@@ -106,7 +105,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                     ref={usernameInputRef}
                     onBlur={()=>{submitPropertyChange(usernameInputRef, usernameH2Ref, "username")}}
                     onKeyDown={(e)=>{discardPropertyChange(e, usernameInputRef, usernameH2Ref)}}
-                    maxLength={50}
+                    maxLength={30}
                     autoComplete="off"
                     />
                 </form>

@@ -1,20 +1,18 @@
 import { ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import axios from "axios";
-import { AuthUserContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
+import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
 import { ChatInputProps } from "../../types";
 import "../../css/ChatInput.css"
 import { useParams } from "react-router-dom";
 
 //TODO: The box above chat input check ternary operator only on mount, always returning repliedMessage.replied_message_sender_id
-export default function ChatInput({refs, newMessageState, selectedTextState, repliedMessageState, actions}:ChatInputProps){
+export default function ChatInput({refs, newMessageState, selectedTextState, actions}:ChatInputProps){
 
     const params = useParams();
-    const authUser = useContext(AuthUserContext);
-    const replyRef = useContext(MessageReplyContext).refs;
+    const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
     const [newMessage, setNewMessage] = newMessageState;
     const [selectedText, setSelectedText] = selectedTextState;
-    const [repliedMessage, setRepliedMessage] = repliedMessageState;
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
     const toggleFontStylePopup = actions;
 
@@ -32,16 +30,20 @@ export default function ChatInput({refs, newMessageState, selectedTextState, rep
     function sendMessage(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
         if (chatInputRef && chatInputRef.current?.value !== "") {
-                axios.post("http://localhost:8800/messages", newMessage)
+                axios.post("http://localhost:8800/sendmessage", newMessage)
                 .then(()=>{
-                    setSessionMessageCount(sessionMessageCount + 1);
                     setNewMessage({...newMessage, replying_to_message_id: null});
-                    replyRef.current!.style.innerHTML = "<div><i>Replying to:</i> <br/></div>";
-                    replyRef.current!.style.display = "none";
+                    setSessionMessageCount(sessionMessageCount + 1);
+                    if (replyRef.current) {
+                        replyRef.current.style.innerHTML = "<div><i>Replying to:</i> <br/></div>";
+                        replyRef.current.style.display = "none";
+                    }
                 });
-                chatInputRef.current!.value = "";
+                if (chatInputRef.current) {
+                    chatInputRef.current.value = "";
+                }
         }
-}
+    }
 
     //Show/hide/move font style popup upon pressing certain keys
     function handleKeyboardEvents(e:React.KeyboardEvent<HTMLInputElement>){
@@ -86,15 +88,12 @@ export default function ChatInput({refs, newMessageState, selectedTextState, rep
         }
     }
 
-    console.log(repliedMessage);
-    
     return(
         <>
             <div id="replyWrapper" ref={replyRef}>
                 <div>
                     <i>Replying to
-                        {repliedMessage &&
-                        <b> {repliedMessage.replied_message_sender_id == authUser.id ? authUser.username : repliedMessage.replied_message_sender_username}</b>}
+                        <b ref={replyNameRef}/>
                         's message
                     </i>
                     <br />
