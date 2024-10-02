@@ -4,9 +4,8 @@ import { AuthUserContext, ContactListRefContext, IsMobileContext } from "../../u
 import { ContactListProps } from "../../types";
 import "../../css/ContactList.css";
 
-
-
-export default function ContactList({contactList}: ContactListProps){
+//TODO: Fix the look of the contact list when it's empty
+export default function ContactList({contacts}: ContactListProps){
 
     const navigate = useNavigate();
     const authUser = useContext(AuthUserContext);
@@ -24,8 +23,8 @@ export default function ContactList({contactList}: ContactListProps){
 
     return(
         <>
-        {contactList ?
-            (contactList.map((contact)=> contact.id !== authUser.id ? (
+        {contacts ?
+            (contacts.map((contact)=> contact.id !== authUser.id ? (
                     <div key={contact.id} onClick={()=>openChat(contact.id)}>
                         <div className="contactIcon" style={{backgroundImage: `url(${contact.icon_url || "/user.png"})`}}></div>
                         {contact.user_added_as}

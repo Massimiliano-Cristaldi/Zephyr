@@ -83,6 +83,30 @@
     background-image: url(../assets/img_not_found.jpg);
 }
 
+#changeProfile{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+#profilesList{
+    display: none;
+    position: absolute;
+    left: -40vw;
+    top: 0px;
+    width: 40vw;
+    list-style: none;
+    padding: 0;
+    text-align: start;
+    background-color: var(--toolbarOptionsBg);
+    border: 3px solid var(--toolbarOptionsBorder);
+}
+
+#changeProfile:hover #profilesList{
+    display: block;
+}
+
 @media screen and (min-width: 776px) {
     #icons{
         gap: 30px;
@@ -101,5 +125,10 @@
         padding: 0px !important;
         border-top: 3px solid var(--toolbarOptionsBorder);
         border-right: 3px solid var(--toolbarOptionsBorder);
+    }
+
+    #profilesList{
+        width: 15vw;
+        left: -15vw;
     }
 }

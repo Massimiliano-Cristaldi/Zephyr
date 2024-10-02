@@ -27,11 +27,11 @@ export default function Body(){
         }
         fetchData();
     }, [sessionMessageCount, authUser.id])
-    
+
     return(
         <MessageCountContext.Provider value={[sessionMessageCount, setSessionMessageCount]}>
             <div className="col-12 col-lg-2" id="contactList" ref={contactListRef}>
-                <ContactList contactList={contacts}/>
+                <ContactList contacts={contacts}/>
             </div>
             <div className="col-12 col-lg-10" id="chatWrapper" ref={chatWrapperRef}>
                 <Outlet/>

@@ -1,16 +1,36 @@
-import { useRef, useContext, RefObject } from "react";
-import { AuthUserContext } from "../utils";
+import { useRef, useContext, RefObject, useEffect, useState } from "react";
+import { AuthIdContext, AuthUserContext } from "../utils";
+import { User } from "../types";
 import EditProfile from "./EditProfile";
 import AddContact from "./AddContact";
 import "../css/Toolbar.css";
+import axios from "axios";
 
 export default function Toolbar(){
 
+    const [authId, setAuthId] = useContext(AuthIdContext);
     const authUser = useContext(AuthUserContext);
     const toolbarOptionsRef = useRef<HTMLUListElement>(null);
     const toolbarAddRef = useRef<HTMLUListElement>(null);
     const addContactRef = useRef<HTMLDivElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
+    const [users, setUsers] = useState<User[] | []>([]);
+
+    //Fetch all users from database (dev feature, used to test different profiles)
+    useEffect(()=>{
+        async function fetchData(){
+            try {
+                const response = await axios.get("http://localhost:8800/getallusers");
+                if (response.status !== 200 || response.data.length === 0) {
+                    throw new Error("Fetch failed");
+                }
+                setUsers(response.data);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        fetchData();
+    }, [])
 
     function toggleDropdown(showRef: RefObject<HTMLUListElement>, hideRef: RefObject<HTMLUListElement>){
         if (showRef.current && hideRef.current) {            
@@ -77,9 +97,17 @@ export default function Toolbar(){
         ref={toolbarOptionsRef}>
             <li onMouseDown={()=>{showModal(editProfileRef)}}>Profile</li>
             <li onMouseDown={()=>{window.location.assign("/themes/edit")}}>Change themes</li>
-            <a href="">
-                <li>Logout</li>
-            </a>
+            <li id="changeProfile">
+                <i className="fa-solid fa-chevron-left fa-2xs"/>
+                Change profile
+                <ul id="profilesList">
+                    {users.map((user)=>user.id !== authUser.id && (
+                        <li key={user.id} onMouseDown={()=>{setAuthId(user.id)}}>
+                            {user.user_added_as || user.username}
+                        </li>
+                    ))}
+                </ul>
+            </li>
         </ul>
         <div id="addContactWrapper" ref={addContactRef}>
             <AddContact addContactRef={addContactRef}/>

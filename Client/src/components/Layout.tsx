@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext, IsMobileContext } from "../utils";
+import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext, IsMobileContext, AuthIdContext } from "../utils";
 import { User } from "../types";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
@@ -26,7 +26,6 @@ export default function Layout(){
     const [selectedText, setSelectedText] = useState<string>("");
 
     //Fetch logged user's info
-    //Change the axios request parameter to change the currently logged user
     useEffect(()=>{
         async function fetchData(){
             try {
@@ -84,6 +83,7 @@ export default function Layout(){
     })
 
     return(
+        <AuthIdContext.Provider value={[authId, setAuthId]}>
         <AuthUserContext.Provider value={authUser}>
         <IsMobileContext.Provider value={isMobile}>
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
@@ -103,5 +103,6 @@ export default function Layout(){
         </ContactListRefContext.Provider>
         </IsMobileContext.Provider>
         </AuthUserContext.Provider>
+        </AuthIdContext.Provider>
     )
 }
