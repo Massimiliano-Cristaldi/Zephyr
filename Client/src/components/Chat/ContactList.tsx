@@ -26,7 +26,7 @@ export default function ContactList({contacts}: ContactListProps){
         {contacts ?
             (contacts.map((contact)=> contact.id !== authUser.id ? (
                     <div key={contact.id} onClick={()=>openChat(contact.id)}>
-                        <div className="contactIcon" style={{backgroundImage: `url(${contact.icon_url || "/user.png"})`}}></div>
+                        <div className="contactIcon" style={{backgroundImage: `url(/${contact.icon_url || "user.png"})`}}></div>
                         {contact.user_added_as}
                     </div>
             ) : "")

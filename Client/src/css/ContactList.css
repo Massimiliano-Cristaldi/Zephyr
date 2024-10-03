@@ -36,8 +36,10 @@
     height: 75%;
     aspect-ratio: 1/1;
     border-radius: 50%;
-    background-size: contain;
+    background-color: black;
+    background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 @media screen and (min-Width: 996px) {
