@@ -50,6 +50,10 @@ export interface MessageElementProps{
     deletedMessageState: [number, Dispatch<SetStateAction<number>>]
 }
 
+export interface EmojiPickerProps{
+    refs: [RefObject<HTMLDivElement>, RefObject<HTMLInputElement>,RefObject<HTMLInputElement>]
+}
+
 //EditThemes
 export interface ConfirmPopupProps{
     popupRef: RefObject<HTMLDivElement>,

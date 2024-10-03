@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, Fragment, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { animateScroll } from 'react-scroll';
 import axios from "axios";
-import { AuthUserContext, FontStylePopupContext, MessageCountContext, MessageReplyContext } from "../../utils";
+import { AuthUserContext, FontStylePopupContext, MessageCountContext, MessageReplyContext } from "../../utils.tsx";
 import { Message } from "../../types";
 import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";

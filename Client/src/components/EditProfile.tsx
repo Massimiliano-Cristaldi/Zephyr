@@ -1,6 +1,6 @@
 import { ChangeEvent, RefObject, useContext, useRef, useState } from "react";
 import axios from "axios";
-import { AuthUserContext, closeModal, IsMobileContext } from "../utils";
+import { AuthUserContext, closeModal, IsMobileContext } from "../utils.tsx";
 import { EditProfileProps, User } from "../types";
 import "../css/EditProfile.css"
 

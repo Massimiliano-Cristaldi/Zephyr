@@ -1,4 +1,4 @@
-import { createContext, Dispatch, RefObject, SetStateAction } from "react";
+import { createContext, RefObject } from "react";
 import { User } from "./types";
 
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function
@@ -61,6 +61,37 @@ export function closeModal(ref: RefObject<HTMLDivElement>, refresh:boolean){
         if (refresh) {
             window.location.reload();
         }
+    }
+}
+
+export function getEmojis(emojiArray:any[], setName: string){
+    switch (setName) {
+        case "people":
+            for (let i = 128512; i <= 128567; i++) {
+                emojiArray.push(<span key={i}>{String.fromCodePoint(i)} </span>);
+            }
+            for (let i = 128577; i <= 128580; i++) {
+                emojiArray.push(<span key={i}>{String.fromCodePoint(i)} </span>);
+            }
+            for (let i = 129296; i <= 129303 && i !== 129302; i++) {
+                emojiArray.push(<span key={i}>{String.fromCodePoint(i)} </span>);
+            }
+            for (let i = 129312; i <= 129327 && i !== 129302; i++) {
+                emojiArray.push(<span key={i}>{String.fromCodePoint(i)} </span>);
+            }
+            for (let i = 129392; i <= 12398; i++) {
+                emojiArray.push(<span key={i}>{String.fromCodePoint(i)} </span>);
+            }
+            emojiArray.push(<span key={129402}>{String.fromCodePoint(129402)} </span>);
+            emojiArray.push(<span key={129488}>{String.fromCodePoint(129488)} </span>);
+            break;
+        case "animals":
+            for (let i = 128000; i <= 128062; i++) {
+                emojiArray.push(<span key={i}>{String.fromCodePoint(i)} </span>);
+            }
+            break;
+        default:
+            break;
     }
 }
 

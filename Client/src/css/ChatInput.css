@@ -13,22 +13,33 @@
 
 #chatInputWrapper>form{
     display: flex;
-    gap: 20px;
+    position: relative;
     width: 100%;
-    padding: 15px 15px 10px 20px;
+    padding: 10px 5px 5px 10px;
 }
 
-#chatInputWrapper input{
+#emojiButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    border: 2px solid var(--chatInputBg);
+    border-radius: 5px 0px 0px 5px;
+    cursor: pointer;
+}
+
+#messageInput{
     width: 80%;
-    border-radius: 5px;
+    border-radius: 0px 5px 5px 0px;
     border: none;
     background-color: var(--chatInputBg);
     padding-left: 5px;
+    margin-right: 20px;
     color: black;
 }
 
-#chatInputWrapper input:focus{
-    outline: 1px solid black;
+#messageInput:focus{
+    outline: 0px solid black;
 }
 
 #chatInputWrapper button{
@@ -42,7 +53,7 @@
     display: none;
     background-color: var(--chatInputWrapperBg);
     width: 100%;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     animation-name: growReplyWrapper;
     animation-duration: 0.15s;
 }
@@ -95,6 +106,10 @@
 }
 
 @media screen and (min-Width: 996px) {
+    #chatInputWrapper>form{
+        padding: 15px 15px 10px 20px;
+    }
+
     #chatInputWrapper input{
         width: 100%;
     }

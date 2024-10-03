@@ -1,6 +1,6 @@
 import { useRef, useContext, RefObject, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthIdContext, AuthUserContext } from "../utils";
+import { AuthIdContext, AuthUserContext } from "../utils.tsx";
 import { User } from "../types";
 import EditProfile from "./EditProfile";
 import AddContact from "./AddContact";

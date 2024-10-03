@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthUserContext, ContactListRefContext, IsMobileContext } from "../../utils";
+import { AuthUserContext, ContactListRefContext, IsMobileContext } from "../../utils.tsx";
 import { ContactListProps } from "../../types";
 import "../../css/ContactList.css";
 

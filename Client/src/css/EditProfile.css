@@ -20,8 +20,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 80%;
-    width: 80%;
+    height: 60vh;
+    width: 75vw;
     padding: 2rem 1.3rem 0.3rem 1.3rem;
 
     background-color: hsl(210, 13%, 94%);

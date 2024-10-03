@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext, IsMobileContext, AuthIdContext } from "../utils";
+import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext, IsMobileContext, AuthIdContext } from "../utils.tsx";
 import { User } from "../types";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";

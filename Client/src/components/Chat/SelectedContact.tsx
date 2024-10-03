@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { ContactListRefContext, IsMobileContext, ViewProfileContext } from "../../utils";
+import { ContactListRefContext, IsMobileContext, ViewProfileContext } from "../../utils.tsx";
 import { User } from "../../types";
 import ChatToolbar from "./ChatToolbar";
 import ChatWindow from "./ChatWindow";
@@ -15,7 +15,7 @@ export default function SelectedContact(){
         id: 0, 
         username: "Loading...", 
         phone_number: 0, 
-        icon_url: "/user.png"});
+        icon_url: null});
     const [userIsAdded, setUserIsAdded] = useState(true);
     const viewProfileRef = useRef<HTMLDivElement>(null);
     const contactNameRef = useRef<HTMLDivElement>(null);

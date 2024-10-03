@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
 import ContactList from "./ContactList";
-import { AuthUserContext, ContactListRefContext, MessageCountContext } from "../../utils";
+import { AuthUserContext, ContactListRefContext, MessageCountContext } from "../../utils.tsx";
 import { User } from "../../types";
 import "../../css/Body.css";
 

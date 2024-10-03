@@ -1,4 +1,4 @@
-import { closeModal } from "../utils";
+import { closeModal } from "../utils.tsx";
 import { AddContactProps } from "../types";
 import "../css/AddContact.css";
 

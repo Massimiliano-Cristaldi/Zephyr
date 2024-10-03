@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { ContactListRefContext, IsMobileContext } from "../../utils";
+import { ContactListRefContext, IsMobileContext } from "../../utils.tsx";
 import "../../css/AwaitContact.css";
 
 export default function AwaitContact(){

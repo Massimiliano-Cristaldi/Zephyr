@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ViewProfileContext } from "../../utils";
+import { ViewProfileContext } from "../../utils.tsx";
 import { ChatToolbarProps } from "../../types";
 import "../../css/ChatToolbar.css";
 

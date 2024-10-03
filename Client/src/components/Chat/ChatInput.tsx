@@ -1,16 +1,18 @@
-import { ChangeEvent, FormEvent, useContext, useEffect } from "react";
-import axios from "axios";
-import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils";
-import { ChatInputProps } from "../../types";
-import "../../css/ChatInput.css"
+import { ChangeEvent, FormEvent, useContext, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
+import { ChatInputProps } from "../../types";
+import EmojiPicker from "./EmojiPicker";
+import "../../css/ChatInput.css"
 
-//TODO: The box above chat input check ternary operator only on mount, always returning repliedMessage.replied_message_sender_id
 export default function ChatInput({refs, newMessageState, selectedTextState, actions}:ChatInputProps){
 
     const params = useParams();
     const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
+    const emojiPickerRef = useRef<HTMLDivElement>(null);
+    const emojiInputRef = useRef<HTMLInputElement>(null);
     const [newMessage, setNewMessage] = newMessageState;
     const [selectedText, setSelectedText] = selectedTextState;
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
@@ -88,6 +90,18 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
         }
     }
 
+    //Show the box containing all the emojis
+    function toggleEmojiPicker(){
+        // if (emojiPickerRef.current) {
+        //     if (emojiPickerRef.current.style.display === "block") {
+        //         emojiPickerRef.current.style.display = "none";
+        //     } else {
+        //         emojiPickerRef.current.style.display = "block";
+        //         emojiInputRef.current!.focus();
+        //     }
+        // }
+    }
+
     return(
         <>
             <div id="replyWrapper" ref={replyRef}>
@@ -101,11 +115,17 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                     <i className="fa-solid fa-xmark" onClick={cancelReplyState}/>
                 </div>
             </div>
-            <div id="chatInputWrapper" onMouseUp={toggleFontStylePopup}>
+            <div id="chatInputWrapper">
                 <form onSubmit={sendMessage}>
+                    <EmojiPicker refs={[emojiPickerRef, emojiInputRef, chatInputRef]}/>
+                    <i 
+                    className="fa-regular fa-face-smile fa-lg" 
+                    id="emojiButton" 
+                    style={{color: "#ebebeb"}}
+                    onClick={toggleEmojiPicker}
+                    />
                     <input 
                     type="text" 
-                    placeholder="Enter message" 
                     ref={chatInputRef}
                     onChange={handleChatInputChange} 
                     onKeyUp={handleKeyboardEvents}

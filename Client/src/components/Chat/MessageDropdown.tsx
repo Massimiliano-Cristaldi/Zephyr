@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react";
-import { AuthUserContext } from "../../utils";
+import { AuthUserContext } from "../../utils.tsx";
 import { MessageDropdownProps } from "../../types";
 import "../../css/MessageDropdown.css";
 

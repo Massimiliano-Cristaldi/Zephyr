@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { AuthUserContext, closeModal, IsMobileContext, ViewProfileContext } from "../utils";
+import { AuthUserContext, closeModal, IsMobileContext, ViewProfileContext } from "../utils.tsx";
 import { User } from "../types";
 import "../css/ViewProfile.css";
 

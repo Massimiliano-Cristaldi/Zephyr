@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef, RefObject } from "react";
 import ConfirmPopup from "./ConfirmPopup";
 import { defaultTheme, hexToHslString, getLightnessFromHex, formatColorProperty } from "../../ColorTools";
-import { ContactListRefContext, fonts, IsMobileContext } from "../../utils";
+import { ContactListRefContext, fonts, IsMobileContext } from "../../utils.tsx";
 import { StyleProperties } from "../../types";
 import "../../css/EditForm.css";
 

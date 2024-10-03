@@ -1,6 +1,6 @@
 import {  useContext, useRef, useEffect, Dispatch, SetStateAction, RefObject } from "react";
 import axios from "axios";
-import { AuthUserContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils";
+import { AuthUserContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
 import { MessageElementProps } from "../../types";
 import MessageDropdown from "./MessageDropdown";
 import "../../css/MessageElement.css";
