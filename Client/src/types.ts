@@ -51,7 +51,8 @@ export interface MessageElementProps{
 }
 
 export interface EmojiPickerProps{
-    refs: [RefObject<HTMLDivElement>, RefObject<HTMLInputElement>,RefObject<HTMLInputElement>]
+    refs: [RefObject<HTMLDivElement>, RefObject<HTMLInputElement>, RefObject<HTMLInputElement>],
+    currentPositionState: [number|null, Dispatch<SetStateAction<number|null>>],
 }
 
 //EditThemes

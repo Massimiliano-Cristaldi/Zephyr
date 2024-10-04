@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext, IsMobileContext, AuthIdContext } from "../utils.tsx";
+import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext,IsMobileContext, AuthIdContext, EmojiPickerContext } from "../utils.tsx";
 import { User } from "../types";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
@@ -15,6 +15,8 @@ export default function Layout(){
     const backButtonRef = useRef<HTMLElement>(null);
     const chatInputRef = useRef<HTMLInputElement>(null);
     const fontStylePopupRef = useRef<HTMLDivElement>(null);
+    const emojiPickerWrapperRef = useRef<HTMLDivElement>(null);
+
     const [authId, setAuthId] = useState<number>(1);
     const [authUser, setAuthUser] = useState<User>({
         id: 0,
@@ -24,6 +26,7 @@ export default function Layout(){
     });
     const [isMobile, setIsMobile] = useState(window.innerWidth < 996);
     const [selectedText, setSelectedText] = useState<string>("");
+    const [isSelectingEmoji, setIsSelectingEmoji] = useState<boolean>(false);
 
     //Fetch logged user's info
     useEffect(()=>{
@@ -77,6 +80,12 @@ export default function Layout(){
         }
     }
 
+    function closeEmojiPicker(){
+        if (emojiPickerWrapperRef.current && !isSelectingEmoji) {
+            emojiPickerWrapperRef.current.style.display = "none";
+        }
+    }
+
     //Check if mobile layout should be used every time the window width changes
     window.addEventListener('resize', ()=>{
         setIsMobile(window.innerWidth < 996);
@@ -88,7 +97,8 @@ export default function Layout(){
         <IsMobileContext.Provider value={isMobile}>
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
         <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: [toggleFontStylePopup]}}>
-            <div className="container-fluid h-100" onMouseUp={toggleFontStylePopup}>
+        <EmojiPickerContext.Provider value={{refs: emojiPickerWrapperRef, states: [isSelectingEmoji, setIsSelectingEmoji], actions: closeEmojiPicker}}>
+            <div className="container-fluid h-100" onMouseUp={()=>{toggleFontStylePopup(); closeEmojiPicker();}}>
                 <div className="row">
                         <Toolbar/>
                 </div>
@@ -99,6 +109,7 @@ export default function Layout(){
                     </div>
                 </div>
             </div>
+        </EmojiPickerContext.Provider>
         </FontStylePopupContext.Provider>
         </ContactListRefContext.Provider>
         </IsMobileContext.Provider>

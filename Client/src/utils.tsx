@@ -1,4 +1,4 @@
-import { createContext, RefObject } from "react";
+import { createContext, MouseEventHandler, RefObject, SyntheticEvent } from "react";
 import { User } from "./types";
 
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function
@@ -64,118 +64,118 @@ export function closeModal(ref: RefObject<HTMLDivElement>, refresh:boolean){
     }
 }
 
-export function getEmojis(emojiArray:any[], setName: string){
+export function getEmojis(emojiArray:any[], setName:string, onClickEvent:(entityNumber:number|number[])=>void){
     switch (setName) {
         case "people":
             for (let i = 128512; i <= 128567; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 128577; i <= 128580; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 129296; i <= 129303 && i !== 129302; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 129312; i <= 129327 && i !== 129302; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 129392; i <= 129398; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={129402}>{String.fromCodePoint(129402)}</span>);
-            emojiArray.push(<span key={129488}>{String.fromCodePoint(129488)}</span>);
-            emojiArray.push(<span key={9995}>{String.fromCodePoint(9995)}</span>);
-            emojiArray.push(<span key={128075}>{String.fromCodePoint(128075)}</span>);
-            emojiArray.push(<span key={128076}>{String.fromCodePoint(128076)}</span>);
-            emojiArray.push(<span key={128400}>{String.fromCodePoint(128400)}</span>);
-            emojiArray.push(<span key={128406}>{String.fromCodePoint(128406)}</span>);
-            emojiArray.push(<span key={129306}>{String.fromCodePoint(129306)}</span>);
-            emojiArray.push(<span key={9757}>{String.fromCodePoint(9757)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129402)}} key={129402}>{String.fromCodePoint(129402)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129488)}} key={129488}>{String.fromCodePoint(129488)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9995)}} key={9995}>{String.fromCodePoint(9995)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128075)}} key={128075}>{String.fromCodePoint(128075)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128076)}} key={128076}>{String.fromCodePoint(128076)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128400)}} key={128400}>{String.fromCodePoint(128400)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128406)}} key={128406}>{String.fromCodePoint(128406)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129306)}} key={129306}>{String.fromCodePoint(129306)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9757)}} key={9757}>{String.fromCodePoint(9757)}</span>);
             for (let i = 128070; i <= 128073; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={128405}>{String.fromCodePoint(128405)}</span>);
-            emojiArray.push(<span key={9994}>{String.fromCodePoint(9994)}</span>);
-            emojiArray.push(<span key={129295}>{String.fromCodePoint(129295)}</span>);
-            emojiArray.push(<span key={129304}>{String.fromCodePoint(129304)}</span>);
-            emojiArray.push(<span key={129305}>{String.fromCodePoint(129305)}</span>);
-            emojiArray.push(<span key={129310}>{String.fromCodePoint(129310)}</span>);
-            emojiArray.push(<span key={129311}>{String.fromCodePoint(129311)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128405)}} key={128405}>{String.fromCodePoint(128405)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9994)}} key={9994}>{String.fromCodePoint(9994)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129295)}} key={129295}>{String.fromCodePoint(129295)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129304)}} key={129304}>{String.fromCodePoint(129304)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129305)}} key={129305}>{String.fromCodePoint(129305)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129310)}} key={129310}>{String.fromCodePoint(129310)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129311)}} key={129311}>{String.fromCodePoint(129311)}</span>);
             break;
         case "nature":
             for (let i = 128000; i <= 128062; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 127792; i <= 127797; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 127799; i <= 127804; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 127807; i <= 127812; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={9748}>{String.fromCodePoint(9748)}</span>);
-            emojiArray.push(<span key={9889}>{String.fromCodePoint(9889)}</span>);
-            emojiArray.push(<span key={9978}>{String.fromCodePoint(9978)}</span>);
-            emojiArray.push(<span key={9973}>{String.fromCodePoint(9973)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9748)}} key={9748}>{String.fromCodePoint(9748)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9889)}} key={9889}>{String.fromCodePoint(9889)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9978)}} key={9978}>{String.fromCodePoint(9978)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9973)}} key={9973}>{String.fromCodePoint(9973)}</span>);
             break;
         case "food":
             for (let i = 129361; i <= 129365; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={127805}>{String.fromCodePoint(127805)}</span>);
-            emojiArray.push(<span key={127806}>{String.fromCodePoint(127806)}</span>);
-            emojiArray.push(<span key={129382}>{String.fromCodePoint(129382)}</span>);
-            emojiArray.push(<span key={129388}>{String.fromCodePoint(129388)}</span>);
-            emojiArray.push(<span key={129476}>{String.fromCodePoint(129476)}</span>);
-            emojiArray.push(<span key={129477}>{String.fromCodePoint(129477)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(127805)}} key={127805}>{String.fromCodePoint(127805)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(127806)}} key={127806}>{String.fromCodePoint(127806)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129382)}} key={129382}>{String.fromCodePoint(129382)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129388)}} key={129388}>{String.fromCodePoint(129388)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129476)}} key={129476}>{String.fromCodePoint(129476)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129477)}} key={129477}>{String.fromCodePoint(129477)}</span>);
             for (let i = 127813; i <= 127827; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 127789; i <= 127791; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             for (let i = 127828; i <= 127871; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
             break;
         case "misc":
-            emojiArray.push(<span key={10084}>{String.fromCodePoint(10084) + String.fromCodePoint(65039)}</span>);
-            emojiArray.push(<span key={129505}>{String.fromCodePoint(129505)}</span>);
-            emojiArray.push(<span key={128420}>{String.fromCodePoint(128420)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent([10084, 65039])}} key={10084}>{String.fromCodePoint(10084) + String.fromCodePoint(65039)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129505)}} key={129505}>{String.fromCodePoint(129505)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128420)}} key={128420}>{String.fromCodePoint(128420)}</span>);
             for (let i = 128153; i <= 128156; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={129293}>{String.fromCodePoint(129293)}</span>);
-            emojiArray.push(<span key={129294}>{String.fromCodePoint(129294)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129293)}} key={129293}>{String.fromCodePoint(129293)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(129294)}} key={129294}>{String.fromCodePoint(129294)}</span>);
             for (let i = 128147; i <= 128152; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={128157}>{String.fromCodePoint(128157)}</span>);
-            emojiArray.push(<span key={128158}>{String.fromCodePoint(128158)}</span>);
-            emojiArray.push(<span key={128159}>{String.fromCodePoint(128159)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128517)}} key={128157}>{String.fromCodePoint(128157)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128158)}} key={128158}>{String.fromCodePoint(128158)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128159)}} key={128159}>{String.fromCodePoint(128159)}</span>);
             for (let i = 9800; i <= 9811; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={9989}>{String.fromCodePoint(9989)}</span>);
-            emojiArray.push(<span key={10062}>{String.fromCodePoint(10062)}</span>);
-            emojiArray.push(<span key={10068}>{String.fromCodePoint(10068)}</span>);
-            emojiArray.push(<span key={10069}>{String.fromCodePoint(10069)}</span>);
-            emojiArray.push(<span key={10067}>{String.fromCodePoint(10067)}</span>);
-            emojiArray.push(<span key={10071}>{String.fromCodePoint(10071)}</span>);
-            emojiArray.push(<span key={10088}>{String.fromCodePoint(10088)}</span>);
-            emojiArray.push(<span key={10093}>{String.fromCodePoint(10093)}</span>);
-            emojiArray.push(<span key={10024}>{String.fromCodePoint(10024)}</span>);
-            emojiArray.push(<span key={10077}>{String.fromCodePoint(10077)}</span>);
-            emojiArray.push(<span key={10078}>{String.fromCodePoint(10078)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(9989)}} key={9989}>{String.fromCodePoint(9989)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10062)}} key={10062}>{String.fromCodePoint(10062)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10068)}} key={10068}>{String.fromCodePoint(10068)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10069)}} key={10069}>{String.fromCodePoint(10069)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10067)}} key={10067}>{String.fromCodePoint(10067)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10071)}} key={10071}>{String.fromCodePoint(10071)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10088)}} key={10088}>{String.fromCodePoint(10088)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10093)}} key={10093}>{String.fromCodePoint(10093)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10024)}} key={10024}>{String.fromCodePoint(10024)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10077)}} key={10077}>{String.fromCodePoint(10077)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10078)}} key={10078}>{String.fromCodePoint(10078)}</span>);
             for (let i = 8592; i <= 8597; i++) {
-                emojiArray.push(<span key={i}>{String.fromCodePoint(i)}</span>);
+                emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span key={8634}>{String.fromCodePoint(8634)}</span>);
-            emojiArray.push(<span key={8635}>{String.fromCodePoint(8635)}</span>);
-            emojiArray.push(<span key={10035}>{String.fromCodePoint(10035)}</span>);
-            emojiArray.push(<span key={10036}>{String.fromCodePoint(10036)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(8634)}} key={8634}>{String.fromCodePoint(8634)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(8635)}} key={8635}>{String.fromCodePoint(8635)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10035)}} key={10035}>{String.fromCodePoint(10035)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(10036)}} key={10036}>{String.fromCodePoint(10036)}</span>);
             break;
         default:
             break;
@@ -195,5 +195,6 @@ export const IsMobileContext = createContext<boolean>(false);
 export const ContactListRefContext = createContext<any>([]);
 export const MessageCountContext = createContext<any>([]);
 export const FontStylePopupContext = createContext<any>([]);
+export const EmojiPickerContext = createContext<any>([]);
 export const ViewProfileContext = createContext<any>([]);
 export const MessageReplyContext = createContext<any>([]);

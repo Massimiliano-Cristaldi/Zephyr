@@ -1,7 +1,7 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useRef } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
+import { EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
 import { ChatInputProps } from "../../types";
 import EmojiPicker from "./EmojiPicker";
 import "../../css/ChatInput.css"
@@ -9,13 +9,18 @@ import "../../css/ChatInput.css"
 export default function ChatInput({refs, newMessageState, selectedTextState, actions}:ChatInputProps){
 
     const params = useParams();
+
     const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
-    const emojiPickerWrapperRef = useRef<HTMLDivElement>(null);
+    const emojiPickerWrapperRef = useContext(EmojiPickerContext).refs;
     const tabIndexSetterRef = useRef<HTMLInputElement>(null);
+
     const [newMessage, setNewMessage] = newMessageState;
-    const [selectedText, setSelectedText] = selectedTextState;
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
+    const [currentPosition, setCurrentPosition] = useState<number|null>(null);
+    const [selectedText, setSelectedText] = selectedTextState;
+    const [isSelectingEmoji, setIsSelectingEmoji] = useContext(EmojiPickerContext).states;
+
     const toggleFontStylePopup = actions;
 
     //Cancel replying state when switching to a different chat
@@ -56,6 +61,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                 fontStylePopupRef.current.style.display = "none";
             } else if (triggers.includes(e.code) || triggers.includes(e.key)){
                 toggleFontStylePopup();
+                setCurrentPosition(chatInputRef.current!.selectionStart);
             }
         }
     }
@@ -92,14 +98,15 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
 
     //Show the box containing all the emojis
     function toggleEmojiPicker(){
-        // if (emojiPickerWrapperRef.current) {
-        //     if (emojiPickerWrapperRef.current.style.display === "block") {
-        //         emojiPickerWrapperRef.current.style.display = "none";
-        //     } else {
-        //         emojiPickerWrapperRef.current.style.display = "block";
-        //         tabIndexSetterRef.current!.focus();
-        //     }
-        // }
+        if (emojiPickerWrapperRef.current) {
+            if (emojiPickerWrapperRef.current.style.display === "block") {
+                setIsSelectingEmoji(false);
+                emojiPickerWrapperRef.current.style.display = "none";
+            } else {
+                setIsSelectingEmoji(true);
+                emojiPickerWrapperRef.current.style.display = "block";
+            }
+        }
     }
 
     return(
@@ -117,7 +124,10 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
             </div>
             <div id="chatInputWrapper">
                 <form onSubmit={sendMessage}>
-                    <EmojiPicker refs={[emojiPickerWrapperRef, tabIndexSetterRef, chatInputRef]}/>
+                    <EmojiPicker 
+                    refs={[emojiPickerWrapperRef, tabIndexSetterRef, chatInputRef]} 
+                    currentPositionState={[currentPosition, setCurrentPosition]}
+                    />
                     <i 
                     className="fa-regular fa-face-smile fa-lg" 
                     id="emojiButton" 
@@ -129,6 +139,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                     ref={chatInputRef}
                     onChange={handleChatInputChange} 
                     onKeyUp={handleKeyboardEvents}
+                    onClick={()=>{setCurrentPosition(chatInputRef.current!.selectionStart)}}
                     id="messageInput"
                     autoComplete="off"
                     />
