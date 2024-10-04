@@ -11,8 +11,8 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     const params = useParams();
     const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
-    const emojiPickerRef = useRef<HTMLDivElement>(null);
-    const emojiInputRef = useRef<HTMLInputElement>(null);
+    const emojiPickerWrapperRef = useRef<HTMLDivElement>(null);
+    const tabIndexSetterRef = useRef<HTMLInputElement>(null);
     const [newMessage, setNewMessage] = newMessageState;
     const [selectedText, setSelectedText] = selectedTextState;
     const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
@@ -92,12 +92,12 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
 
     //Show the box containing all the emojis
     function toggleEmojiPicker(){
-        // if (emojiPickerRef.current) {
-        //     if (emojiPickerRef.current.style.display === "block") {
-        //         emojiPickerRef.current.style.display = "none";
+        // if (emojiPickerWrapperRef.current) {
+        //     if (emojiPickerWrapperRef.current.style.display === "block") {
+        //         emojiPickerWrapperRef.current.style.display = "none";
         //     } else {
-        //         emojiPickerRef.current.style.display = "block";
-        //         emojiInputRef.current!.focus();
+        //         emojiPickerWrapperRef.current.style.display = "block";
+        //         tabIndexSetterRef.current!.focus();
         //     }
         // }
     }
@@ -117,7 +117,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
             </div>
             <div id="chatInputWrapper">
                 <form onSubmit={sendMessage}>
-                    <EmojiPicker refs={[emojiPickerRef, emojiInputRef, chatInputRef]}/>
+                    <EmojiPicker refs={[emojiPickerWrapperRef, tabIndexSetterRef, chatInputRef]}/>
                     <i 
                     className="fa-regular fa-face-smile fa-lg" 
                     id="emojiButton" 
