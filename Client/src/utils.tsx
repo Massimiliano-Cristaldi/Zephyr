@@ -191,6 +191,7 @@ export const AuthUserContext = createContext<User>({
 });
 export const IsMobileContext = createContext<boolean>(false);
 export const ContactListRefContext = createContext<any>([]);
+export const ChatTypeContext = createContext<any>(null);
 export const MessageCountContext = createContext<any>([]);
 export const FontStylePopupContext = createContext<any>([]);
 export const EmojiPickerContext = createContext<any>([]);

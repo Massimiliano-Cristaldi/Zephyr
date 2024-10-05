@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
 import AwaitContact from './components/Chat/AwaitContact';
 import SelectedContact from './components/Chat/SelectedContact';
+import SelectedGroup from './components/Groupchat/SelectedGroup';
 import EditForm from './components/EditThemes/EditForm';
 import './css/index.css';
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "chat/:authId/:contactId",
         element: <SelectedContact/>,
+      },
+      {
+        path: "groupchat/:groupId",
+        element: <SelectedGroup/>,
       },
       {
         path: "themes/edit",

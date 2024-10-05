@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext,IsMobileContext, AuthIdContext, EmojiPickerContext } from "../utils.tsx";
+import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext,IsMobileContext, AuthIdContext, EmojiPickerContext, ChatTypeContext } from "../utils.tsx";
 import { User } from "../types";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
@@ -25,6 +25,7 @@ export default function Layout(){
         icon_url: null
     });
     const [isMobile, setIsMobile] = useState(window.innerWidth < 996);
+    const [chatType, setChatType] = useState<string>("individualChat");
     const [selectedText, setSelectedText] = useState<string>("");
     const [isSelectingEmoji, setIsSelectingEmoji] = useState<boolean>(false);
 
@@ -80,6 +81,7 @@ export default function Layout(){
         }
     }
 
+    //Hide the box with all the emojis upon clicking anywhere outside of it
     function closeEmojiPicker(){
         if (emojiPickerWrapperRef.current && !isSelectingEmoji) {
             emojiPickerWrapperRef.current.style.display = "none";
@@ -98,6 +100,7 @@ export default function Layout(){
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
         <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: [toggleFontStylePopup]}}>
         <EmojiPickerContext.Provider value={{refs: emojiPickerWrapperRef, states: [isSelectingEmoji, setIsSelectingEmoji], actions: closeEmojiPicker}}>
+        <ChatTypeContext.Provider value={[chatType, setChatType]}>
             <div className="container-fluid h-100" onMouseUp={()=>{toggleFontStylePopup(); closeEmojiPicker();}}>
                 <div className="row">
                         <Toolbar/>
@@ -109,6 +112,7 @@ export default function Layout(){
                     </div>
                 </div>
             </div>
+        </ChatTypeContext.Provider>
         </EmojiPickerContext.Provider>
         </FontStylePopupContext.Provider>
         </ContactListRefContext.Provider>

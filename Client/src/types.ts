@@ -37,7 +37,8 @@ export interface ChatToolbarProps{
 }
 
 export interface ContactListProps{
-    contacts: User[] | [];
+    contacts: User[] | [],
+    groups: any[]
 }
 
 export interface MessageDropdownProps {

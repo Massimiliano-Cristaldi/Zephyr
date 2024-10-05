@@ -1,13 +1,23 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContactListRefContext, IsMobileContext } from "../utils.tsx";
+import { ChatTypeContext, ContactListRefContext, IsMobileContext } from "../utils.tsx";
 import "../css/Sidebar.css";
+import { UseStateArray } from "../types.ts";
 
 export default function Sidebar(){
 
+    const navigate = useNavigate();
     const isMobile = useContext(IsMobileContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
-    const navigate = useNavigate();
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
+
+    function changeChatType(){
+        if (chatType === "individualChat") {
+            setChatType("groupChat")
+        } else if (chatType === "groupChat"){
+            setChatType("individualChat")
+        }
+    }
 
     function backToContacts(){
         contactListRef.current.style.display = "block";
@@ -21,7 +31,9 @@ export default function Sidebar(){
     return(
         <div id="sidebarWrapper">
             <i className="fa-solid fa-inbox" style={{color: "white"}}/>
-            <i className="fa-solid fa-people-group" style={{color: "white"}}/>
+            <i className={`fa-solid ${chatType === "individualChat" ? "fa-people-group" : "fa-user"}`} 
+            style={{color: "white"}} 
+            onClick={changeChatType}/>
             <i className="fa-solid fa-angle-left" 
             style={{color: "white"}} 
             id="backButton"

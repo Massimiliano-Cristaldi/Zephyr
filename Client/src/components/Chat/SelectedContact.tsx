@@ -38,11 +38,14 @@ export default function SelectedContact(){
         async function fetchData(){
             try {
                 const response = await axios.get(`http://localhost:8800/contact/${params.authId}/${params.contactId}`);
-                const contacts = await axios.get(`http://localhost:8800/contactlist/${params.authId}`);                
-                const isInContactList = contacts.data.some((obj:User) => obj.id === Number(params.contactId));                
                 if (response.status !== 200 || response.data?.length === 0) {
                     throw new Error("Fetch failed");
                 }
+                const contacts = await axios.get(`http://localhost:8800/contactlist/${params.authId}`);                
+                if (contacts.status !== 200 || contacts.data?.length === 0) {
+                    throw new Error("Fetch failed");
+                }
+                const isInContactList = contacts.data.some((obj:User) => obj.id === Number(params.contactId));                
                 if (!isInContactList) {
                     setUserIsAdded(false);
                 }
