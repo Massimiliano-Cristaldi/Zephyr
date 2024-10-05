@@ -1,5 +1,7 @@
 import { Dispatch, RefObject, SetStateAction } from "react"
 
+export type UseStateArray = [any, Dispatch<SetStateAction<any>>];
+
 export interface User {
     id: number,
     username: string,

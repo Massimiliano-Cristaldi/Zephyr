@@ -11,15 +11,17 @@ export default function SelectedContact(){
     
     const params = useParams();    
     const isMobile = useContext(IsMobileContext);
+    
+    const viewProfileRef = useRef<HTMLDivElement>(null);
+    const contactNameRef = useRef<HTMLDivElement>(null);
+    const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
+
     const [contact, setContact] = useState<User>({
         id: 0, 
         username: "Loading...", 
         phone_number: 0, 
         icon_url: null});
     const [userIsAdded, setUserIsAdded] = useState(true);
-    const viewProfileRef = useRef<HTMLDivElement>(null);
-    const contactNameRef = useRef<HTMLDivElement>(null);
-    const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 
     useEffect(()=>{
         if (isMobile) {

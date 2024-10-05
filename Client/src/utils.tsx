@@ -177,8 +177,6 @@ export function getEmojis(emojiArray:any[], setName:string, onClickEvent:(entity
             emojiArray.push(<span onMouseDown={()=>{onClickEvent(10035)}} key={10035}>{String.fromCodePoint(10035)}</span>);
             emojiArray.push(<span onMouseDown={()=>{onClickEvent(10036)}} key={10036}>{String.fromCodePoint(10036)}</span>);
             break;
-        default:
-            break;
     }
 }
 

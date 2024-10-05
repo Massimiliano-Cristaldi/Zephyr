@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { animateScroll } from 'react-scroll';
 import axios from "axios";
 import { AuthUserContext, FontStylePopupContext, MessageCountContext, MessageReplyContext } from "../../utils.tsx";
-import { Message } from "../../types";
+import { Message, UseStateArray } from "../../types";
 import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";
 import ViewProfile from "../ViewProfile";
@@ -31,7 +31,7 @@ export default function ChatWindow(){
     const [deletedMessageCount, setDeletedMessageCount] = useState<number>(0);
     const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
     const [sessionMessageCount] = useContext(MessageCountContext);
-    const [selectedText, setSelectedText] = states;    
+    const [selectedText, setSelectedText]:UseStateArray = states;    
 
     //Fetch messages
     useEffect(()=>{

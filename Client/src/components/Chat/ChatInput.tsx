@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from 
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
-import { ChatInputProps } from "../../types";
+import { ChatInputProps, UseStateArray } from "../../types";
 import EmojiPicker from "./EmojiPicker";
 import "../../css/ChatInput.css"
 
@@ -16,13 +16,11 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     const tabIndexSetterRef = useRef<HTMLInputElement>(null);
 
     const [newMessage, setNewMessage] = newMessageState;
-    const [sessionMessageCount, setSessionMessageCount] = useContext(MessageCountContext);
+    const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
     const [currentPosition, setCurrentPosition] = useState<number|null>(null);
     const [selectedText, setSelectedText] = selectedTextState;
-    const [isSelectingEmoji, setIsSelectingEmoji] = useContext(EmojiPickerContext).states;
-
-    const toggleFontStylePopup = actions;
-
+    const [isSelectingEmoji, setIsSelectingEmoji]:UseStateArray = useContext(EmojiPickerContext).states;
+    
     //Cancel replying state when switching to a different chat
     useEffect(()=>{
         cancelReplyState();
@@ -52,7 +50,10 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
         }
     }
 
-    //Show/hide/move font style popup upon pressing certain keys
+    //Show/hide font style popup upon selecting/deselecting text with clicks
+    const toggleFontStylePopup = actions;
+
+    //Show/hide/move font style popup upon pressing keys that cause text selection to change
     function handleKeyboardEvents(e:React.KeyboardEvent<HTMLInputElement>){
         const triggers = ["ShiftLeft", "ShiftRight", "ArrowLeft", "ArrowRight", "Space", "Backspace", "Delete", "v"];
         if (fontStylePopupRef.current) {

@@ -1,21 +1,22 @@
 import {  useContext, useRef, useEffect, Dispatch, SetStateAction, RefObject } from "react";
 import axios from "axios";
 import { AuthUserContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
-import { MessageElementProps } from "../../types";
+import { MessageElementProps, UseStateArray } from "../../types";
 import MessageDropdown from "./MessageDropdown";
 import "../../css/MessageElement.css";
 
-//TODO: The reply box inside message element doesn't display the up-to-date name of the sender
 export default function MessageElement({message, refs, newMessageState, deletedMessageState}: MessageElementProps){
 
     const authUser = useContext(AuthUserContext);
+
     const messageContentRef = useRef<HTMLDivElement>(null);
     const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const replyContentRef = useRef<HTMLDivElement>(null);
     const inputReplyRef = refs;
+
     const [newMessage, setNewMessage] = newMessageState;
     const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
-    const [repliedMessage, setRepliedMessage] = useContext(MessageReplyContext).states;
+    const [repliedMessage, setRepliedMessage]:UseStateArray = useContext(MessageReplyContext).states;
 
     //Set message box content on loading the element or deleting the message
     useEffect(()=>{

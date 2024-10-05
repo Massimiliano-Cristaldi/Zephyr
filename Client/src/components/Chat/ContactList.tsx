@@ -29,8 +29,8 @@ export default function ContactList({contacts}: ContactListProps){
                         <div className="contactIcon" style={{backgroundImage: `url(/${contact.icon_url || "user.png"})`}}></div>
                         {contact.user_added_as}
                     </div>
-            ) : "")
-        ) : (
+                ) : "")
+            ) : (
                 <div className="text-center p-5">
                 Add contacts to your addess book to begin chatting
                 </div>

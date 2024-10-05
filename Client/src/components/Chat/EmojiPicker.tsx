@@ -1,6 +1,6 @@
 import { useContext, useRef } from "react";
 import { getEmojis, IsMobileContext, EmojiPickerContext } from "../../utils.tsx";
-import { EmojiPickerProps } from "../../types.ts";
+import { EmojiPickerProps, UseStateArray } from "../../types.ts";
 import "../../css/EmojiPicker.css";
 
 export default function EmojiPicker({refs, currentPositionState}: EmojiPickerProps){
@@ -13,7 +13,7 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
     const category3Ref = useRef<HTMLDivElement>(null);
     const category4Ref = useRef<HTMLDivElement>(null);
     const [currentPosition, setCurrentPosition] = currentPositionState;
-    const [isSelectingEmoji, setIsSelectingEmoji] = useContext(EmojiPickerContext).states;
+    const [isSelectingEmoji, setIsSelectingEmoji]:UseStateArray = useContext(EmojiPickerContext).states;
 
     //Push the individual spans containing each emoji into an array
     let peopleEmojis:NodeList | [] = [];
@@ -34,34 +34,58 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
             const categoryWidth = isMobile ? window.innerWidth * 0.7 : window.innerWidth * 0.245;
             switch (category) {
                 case "people":
+                    console.log("people");
                     emojiPickerRef.current.scrollTo({left: 0, behavior: "smooth"});
-                    category1Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
-                    category2Ref.current.style.backgroundColor = "black";
-                    category3Ref.current.style.backgroundColor = "black";
-                    category4Ref.current.style.backgroundColor = "black";
                     break;
                 case "nature":
+                    console.log("nature");
                     emojiPickerRef.current.scrollTo({left: categoryWidth -7, behavior: "smooth"});
-                    category1Ref.current.style.backgroundColor = "black";
-                    category2Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
-                    category3Ref.current.style.backgroundColor = "black";
-                    category4Ref.current.style.backgroundColor = "black";
                     break;
                 case "food":
+                    console.log("food");
                     emojiPickerRef.current.scrollTo({left: categoryWidth * 2 - 7, behavior: "smooth"});
-                    category1Ref.current.style.backgroundColor = "black";
-                    category2Ref.current.style.backgroundColor = "black";
-                    category3Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
-                    category4Ref.current.style.backgroundColor = "black";
                     break;
                 case "misc":
+                    console.log("misc");
                     emojiPickerRef.current.scrollTo({left: categoryWidth * 3, behavior: "smooth"});
+                    break;
+            }
+        }
+    }
+
+    function styleActiveCategory(){
+        const categoryWidth = isMobile ? window.innerWidth * 0.7 : window.innerWidth * 0.245;
+        if (emojiPickerRef.current && category1Ref.current && category2Ref.current && category3Ref.current && category4Ref.current) {
+            console.log(categoryWidth);
+            console.log(emojiPickerRef.current.scrollLeft);
+            switch (true) {
+                case emojiPickerRef.current.scrollLeft > categoryWidth * 2.8:
+                    console.log("case4")
                     category1Ref.current.style.backgroundColor = "black";
                     category2Ref.current.style.backgroundColor = "black";
                     category3Ref.current.style.backgroundColor = "black";
                     category4Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
                     break;
-                default:
+                case emojiPickerRef.current.scrollLeft > categoryWidth * 1.8:
+                    console.log("case3")
+                    category1Ref.current.style.backgroundColor = "black";
+                    category2Ref.current.style.backgroundColor = "black";
+                    category3Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
+                    category4Ref.current.style.backgroundColor = "black";
+                    break;
+                case emojiPickerRef.current.scrollLeft > categoryWidth - 7:
+                    console.log("case2")
+                    category1Ref.current.style.backgroundColor = "black";
+                    category2Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
+                    category3Ref.current.style.backgroundColor = "black";
+                    category4Ref.current.style.backgroundColor = "black";
+                    break;
+                case emojiPickerRef.current.scrollLeft === 0:
+                    console.log("case1")
+                    category1Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
+                    category2Ref.current.style.backgroundColor = "black";
+                    category3Ref.current.style.backgroundColor = "black";
+                    category4Ref.current.style.backgroundColor = "black";
                     break;
             }
         }
@@ -117,7 +141,7 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
                 <div ref={category3Ref}/>
                 <div ref={category4Ref}/>
             </div>
-            <div id="emojiPicker" ref={emojiPickerRef}>
+            <div id="emojiPicker" ref={emojiPickerRef} onScroll={styleActiveCategory}>
                 <input type="text" className="tabIndexSetter" ref={tabIndexSetterRef} onBlur={()=>{closeEmojiPicker(); console.log("should close")}}/>
                 <div>
                     {peopleEmojis}

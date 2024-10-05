@@ -48,9 +48,9 @@
 #emojiPicker{
     display: flex;
     align-items: baseline;
-    width: 100%;
     height: calc(30vh - 50px);
     overflow-x: scroll;
+    scroll-snap-type: x mandatory;
 }
 
 #emojiPicker>div{
@@ -60,6 +60,7 @@
     width: 100%;
     flex: 0 0 auto;
     padding: 0px 14px;
+    scroll-snap-align: start;
 }
 
 /* Fills the last row of the emojis in each list */
