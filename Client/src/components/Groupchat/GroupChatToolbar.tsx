@@ -1,23 +1,21 @@
+import { GroupChatToolbarProps } from "../../types";
+import ParticipantList from "./ParticipantList";
 import "../../css/GroupChatToolbar.css";
 
-export default function GroupChatToolbar({group}:any){
+export default function GroupChatToolbar({group}:GroupChatToolbarProps){
 
     return(
-        <div id="chatToolbar">
-        <div id="contactInfo">
+        <div id="groupChatToolbar">
+        <div id="groupInfo">
             <div 
-            className="contactIcon" 
+            className="groupIcon" 
             style={{backgroundImage: `url(/${group?.icon_url || "user.png"}`}}>
             </div>
-            <div className="d-flex flex-column pb-1" id="nameAndNumber">
+            <div className="d-flex flex-column pb-1" id="titleAndParticipants">
                 <div>
                     {group.title}
                 </div>
-                <small id="phoneNumber">
-                    {group.participants?.map((participant:any)=>(
-                        <span key={participant.participant_id}>{participant.participant_username}</span>
-                    ))}
-                </small>
+                <ParticipantList group={group}/>
             </div>
         </div>
     </div>

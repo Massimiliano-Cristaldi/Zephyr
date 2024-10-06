@@ -1,0 +1,44 @@
+#groupChatToolbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px 3px 20px;
+    height: 10%;
+    background-color: var(--chatToolbarBg);
+}
+
+#groupChatToolbar>div{
+    height: 100%;
+}
+
+#groupInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 15vw !important;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+}
+
+.groupIcon{
+    height: 75%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+}
+
+#titleAndParticipants>div{
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.3rem;
+}
+
+#titleAndParticipants>#participants{
+    font-size: 0.7rem;
+}

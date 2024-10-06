@@ -38,7 +38,7 @@ export default function SelectedGroup(){
             }
         }
         fetchData();
-    }, [])
+    }, [params])
 
     return(
         <>

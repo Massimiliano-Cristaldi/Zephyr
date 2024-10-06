@@ -2,7 +2,7 @@ import { Dispatch, RefObject, SetStateAction } from "react"
 
 export type UseStateArray = [any, Dispatch<SetStateAction<any>>];
 
-export interface User {
+export interface User{
     id: number,
     username: string,
     phone_number: number,
@@ -11,7 +11,23 @@ export interface User {
     user_added_as?: string
 }
 
-export interface Message {
+export interface Participant{
+    participant_id: number,
+    participant_username: string,
+    participant_added_as?: string,
+    is_participant_admin: boolean,
+    phone_number: number
+}
+
+export interface Group{
+    id: number,
+    title: string,
+    icon_url: string | null,
+    last_message: string | null,
+    participants: Participant[]
+}
+
+export interface Message{
     id?: number,
     content: string,
     attachments?: string | null,
@@ -24,7 +40,7 @@ export interface Message {
     replied_message_sender_username?: string
 }
 
-//Components
+//Chat
 export interface ChatInputProps{
     refs: RefObject<any>[],
     newMessageState: [Message, Dispatch<SetStateAction<Message>>],
@@ -62,6 +78,11 @@ export interface EmojiPickerProps{
 export interface ConfirmPopupProps{
     popupRef: RefObject<HTMLDivElement>,
     confirmAction: () => void
+}
+
+//Groupchat
+export interface GroupChatToolbarProps{
+    group: Group
 }
 
 //src
