@@ -5,7 +5,6 @@ import { ContactListProps, UseStateArray } from "../../types";
 import "../../css/ContactList.css";
 
 //TODO: Fix the look of the contact list when it's empty
-//TODO: Refreshing the page when on a groupchat URL causes the contact list to go back to individualChat mode
 export default function ContactList({contacts, groups}: ContactListProps){
 
     const navigate = useNavigate();
@@ -26,9 +25,6 @@ export default function ContactList({contacts, groups}: ContactListProps){
             navigate(`/groupchat/${chatId}`, {replace: true});
         }
     }
-
-    console.log(groups);
-    
 
     return(
         <>

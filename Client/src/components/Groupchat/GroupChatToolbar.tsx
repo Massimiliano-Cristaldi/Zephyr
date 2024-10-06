@@ -1,18 +1,6 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
 import "../../css/GroupChatToolbar.css";
 
-export default function GroupChatToolbar(){
-
-    const params = useParams();
-    const [group, setGroup] = useState<any>({});
-
-    useEffect(()=>{
-        async function fetchData(){
-            const response = await axios.get("htt://localhost:8800/")
-        }
-    }, [params])
+export default function GroupChatToolbar({group}:any){
 
     return(
         <div id="chatToolbar">
@@ -26,7 +14,9 @@ export default function GroupChatToolbar(){
                     {group.title}
                 </div>
                 <small id="phoneNumber">
-                    {group?.participants}
+                    {group.participants?.map((participant:any)=>(
+                        <span key={participant.participant_id}>{participant.participant_username}</span>
+                    ))}
                 </small>
             </div>
         </div>

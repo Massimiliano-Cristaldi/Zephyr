@@ -33,7 +33,10 @@ export default function Sidebar(){
             <i className="fa-solid fa-inbox" style={{color: "white"}}/>
             <i className={`fa-solid ${chatType === "individualChat" ? "fa-people-group" : "fa-user"}`} 
             style={{color: "white"}} 
-            onClick={changeChatType}/>
+            onClick={changeChatType}
+            data-toggle="tooltip"
+            title={chatType === "individualChat" ? "Group chats" : "Contacts"}
+            />
             <i className="fa-solid fa-angle-left" 
             style={{color: "white"}} 
             id="backButton"

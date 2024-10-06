@@ -26,7 +26,7 @@ export default function Body(){
                 console.error(err);
             }
             try {
-                const response = await axios.get(`http://localhost:8800/groupchats/${authUser.id}`)
+                const response = await axios.get(`http://localhost:8800/groupchatlist/${authUser.id}`)
                 if (response.status !== 200 || response.data.length === 0) {
                     throw new Error("Fetch failed");
                 }
