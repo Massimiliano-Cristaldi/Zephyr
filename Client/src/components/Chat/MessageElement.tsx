@@ -1,6 +1,6 @@
-import {  useContext, useRef, useEffect, Dispatch, SetStateAction, RefObject } from "react";
+import {  useContext, useRef, useEffect } from "react";
 import axios from "axios";
-import { AuthUserContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
+import { AuthUserContext, ChatTypeContext, FontStylePopupContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
 import { MessageElementProps, UseStateArray } from "../../types";
 import MessageDropdown from "./MessageDropdown";
 import "../../css/MessageElement.css";
@@ -13,10 +13,16 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const replyContentRef = useRef<HTMLDivElement>(null);
     const inputReplyRef = refs;
+    const [chatInputRef] = useContext(FontStylePopupContext).refs;
 
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [newMessage, setNewMessage] = newMessageState;
     const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
     const [repliedMessage, setRepliedMessage]:UseStateArray = useContext(MessageReplyContext).states;
+
+    useEffect(()=>{
+        chatInputRef.current?.focus();
+    }, [repliedMessage])
 
     //Set message box content on loading the element or deleting the message
     useEffect(()=>{
@@ -34,20 +40,13 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     
     //Connect current message to the message you're replying to, make the reply box above the chat input appear
     function handleReply(){
-        try {
-            axios.get(`http://localhost:8800/message/${message.id}`)
-            .then((response)=>{
-                setRepliedMessage(response.data[0]);
-                setNewMessage({...newMessage, replying_to_message_id: message.id});
-                if (replyRef.current && inputReplyRef.current) {
-                    replyRef.current.style.display = "block";
-                    replyNameRef.current.innerText = " " + (response.data[0].sender_id === authUser.id ?
-                        authUser.username : response.data[0].replied_message_sender_username);
-                    inputReplyRef.current.innerHTML = response.data[0].content;
-                }
-            })
-        } catch (err) {
-            console.error(err);
+        setRepliedMessage(message);
+        setNewMessage({...newMessage, replying_to_message_id: message.id});
+        if (replyRef.current && inputReplyRef.current) {
+            replyRef.current.style.display = "block";
+            replyNameRef.current.innerText = " " + (message.sender_id === authUser.id ?
+                authUser.username : (message.sender_added_as || message.sender_username));
+            inputReplyRef.current.innerHTML = message.content;
         }
     }
 
@@ -68,15 +67,23 @@ export default function MessageElement({message, refs, newMessageState, deletedM
 
     return(
         <>
+            {chatType === "groupChat" && 'sender_username' in message &&
+            (<div className={message.sender_id == authUser.id ? "messageSenderName" : "messageRecipientName"}>
+                ~ {message?.sender_added_as || message?.sender_username}:
+            </div>)}
             <div
             key={message.id} 
-            className={(message.sender_id == authUser.id) ? "senderMessage" : "recipientMessage"}
+            className={message.sender_id == authUser.id ? "senderMessage" : "recipientMessage"}
             >
                 <div className="pt-2">
                     {message.replied_message_content && 
-                    <div className={(message.sender_id == authUser.id) ? "senderRepliedMessage" : "recipientRepliedMessage"}>
-                        <i>Replying to 
-                            <b> {message.replied_message_sender_id == authUser.id ? authUser.username : message.replied_message_sender_username}</b>
+                    <div className={message.sender_id == authUser.id ? "senderRepliedMessage" : "recipientRepliedMessage"}>
+                        <i>Replying to
+                            <b>
+                                {message.replied_message_sender_id == authUser.id ? 
+                                " " + authUser.username : 
+                                (" " + message.replied_message_sender_added_as || message.replied_message_sender_username)}
+                            </b>
                             's message:
                         </i>
                         <div ref={replyContentRef}/>

@@ -41,4 +41,9 @@
 
 #titleAndParticipants>#participants{
     font-size: 0.7rem;
+    width: 58vw;
+    height: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

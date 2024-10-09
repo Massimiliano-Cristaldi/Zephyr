@@ -44,6 +44,30 @@
     margin-top: -1px;
 }
 
+.messageSenderName{
+    width: 50vw;
+    background-color: var(--senderMessageBg);
+    align-self: end;
+    /* text-align: end; */
+    padding: 10px 10px 0px 10px;
+    margin-bottom: -15px;
+    z-index: 1;
+    font-size: 0.8rem;
+    font-style: oblique;
+    font-weight: 600;
+}
+
+.messageRecipientName{
+    width: 50vw;
+    background-color: var(--recipientMessageBg);
+    padding: 5px 10px 0px 10px;
+    margin-bottom: -15px;
+    z-index: 1;
+    font-size: 0.8rem;
+    font-style: oblique;
+    font-weight: 600;
+}
+
 .timeSentSender{
     min-height: 30px;
     width: 50vw;
@@ -99,7 +123,7 @@
 }
 
 @media screen and (min-Width: 996px) {
-    .senderMessage, .recipientMessage, .timeSentSender, .timeSentRecipient{
+    .senderMessage, .recipientMessage, .messageSenderName, .messageRecipientName, .timeSentSender, .timeSentRecipient{
         width: 40vw;
     }
 

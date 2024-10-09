@@ -17,6 +17,7 @@ export default function Sidebar(){
         } else if (chatType === "groupChat"){
             setChatType("individualChat")
         }
+        navigate("/", {replace: true});
     }
 
     function backToContacts(){

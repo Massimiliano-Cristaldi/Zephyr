@@ -30,20 +30,41 @@ export interface Group{
 export interface Message{
     id?: number,
     content: string,
+    audio_content?: any,
     attachments?: string | null,
-    sender_id: number,
     recipient_id: number,
+    sender_id: number,
+    sender_username?: string,
+    sender_added_as?: string,
     replying_to_message_id?: number | null,
     replied_message_content?: string,
-    time_sent?: string,
     replied_message_sender_id?: number,
-    replied_message_sender_username?: string
+    replied_message_sender_username?: string,
+    replied_message_sender_added_as?: string,
+    time_sent?: string
+}
+
+export interface GroupMessage{
+    id?: number,
+    content: string,
+    audio_content?: any,
+    attachments?: string | null,
+    group_id: number | undefined,
+    sender_id: number,
+    sender_username: string,
+    sender_added_as?: string,
+    replied_message_id?: number | null,
+    replied_message_content?: string,
+    replied_message_sender_id?: number,
+    replied_message_sender_username?: string,
+    replied_message_sender_added_as?: string,
+    time_sent?: string
 }
 
 //Chat
 export interface ChatInputProps{
     refs: RefObject<any>[],
-    newMessageState: [Message, Dispatch<SetStateAction<Message>>],
+    newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
     selectedTextState: [string, Dispatch<SetStateAction<string>>], 
     actions: ()=>any
 }
@@ -57,16 +78,16 @@ export interface ContactListProps{
     groups: any[]
 }
 
-export interface MessageDropdownProps {
-    message: Message,
-    actions: [()=>void, ()=>void]
+export interface MessageElementProps{
+    message: Message | GroupMessage,
+    refs: RefObject<HTMLDivElement>,
+    newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
+    deletedMessageState: [number, Dispatch<SetStateAction<number>>]
 }
 
-export interface MessageElementProps{
-    message: Message,
-    refs: RefObject<HTMLDivElement>,
-    newMessageState: [Message, Dispatch<SetStateAction<Message>>],
-    deletedMessageState: [number, Dispatch<SetStateAction<number>>]
+export interface MessageDropdownProps {
+    message: Message | GroupMessage,
+    actions: [()=>void, ()=>void]
 }
 
 export interface EmojiPickerProps{
@@ -81,6 +102,7 @@ export interface ConfirmPopupProps{
 }
 
 //Groupchat
+
 export interface GroupChatToolbarProps{
     group: Group
 }

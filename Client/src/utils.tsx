@@ -197,3 +197,4 @@ export const FontStylePopupContext = createContext<any>([]);
 export const EmojiPickerContext = createContext<any>([]);
 export const ViewProfileContext = createContext<any>([]);
 export const MessageReplyContext = createContext<any>([]);
+export const GroupMessageReplyContext = createContext<any>([]);

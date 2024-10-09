@@ -1,9 +1,10 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
+import { ChatTypeContext, EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
 import { ChatInputProps, UseStateArray } from "../../types";
 import EmojiPicker from "./EmojiPicker";
+import AudioRecorder from "./AudioRecorder.tsx";
 import "../../css/ChatInput.css"
 
 export default function ChatInput({refs, newMessageState, selectedTextState, actions}:ChatInputProps){
@@ -15,6 +16,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     const emojiPickerWrapperRef = useContext(EmojiPickerContext).refs;
     const tabIndexSetterRef = useRef<HTMLInputElement>(null);
 
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [newMessage, setNewMessage] = newMessageState;
     const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
     const [currentPosition, setCurrentPosition] = useState<number|null>(null);
@@ -34,19 +36,18 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     //Send message and make the reply box disappear
     function sendMessage(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
-        if (chatInputRef && chatInputRef.current?.value !== "") {
-                axios.post("http://localhost:8800/sendmessage", newMessage)
-                .then(()=>{
-                    setNewMessage({...newMessage, replying_to_message_id: null});
-                    setSessionMessageCount(sessionMessageCount + 1);
-                    if (replyRef.current) {
-                        replyRef.current.style.innerHTML = "<div><i>Replying to:</i> <br/></div>";
-                        replyRef.current.style.display = "none";
-                    }
-                });
-                if (chatInputRef.current) {
-                    chatInputRef.current.value = "";
+        if (chatInputRef && chatInputRef.current && chatInputRef.current.value !== "") {
+            const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
+            axios.post(`http://localhost:8800/${q}`, newMessage)
+            .then(()=>{
+                setNewMessage({...newMessage, replying_to_message_id: null});
+                setSessionMessageCount(sessionMessageCount + 1);
+                if (replyRef.current) {
+                    replyRef.current.style.innerHTML = "<div><i>Replying to:</i> <br/></div>";
+                    replyRef.current.style.display = "none";
                 }
+            });
+            chatInputRef.current.value = "";
         }
     }
 
@@ -144,7 +145,8 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                     id="messageInput"
                     autoComplete="off"
                     />
-                    <button>
+                    <AudioRecorder/>
+                    <button id="sendMessageButton">
                         <i className="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>

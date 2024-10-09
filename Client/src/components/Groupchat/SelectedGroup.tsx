@@ -4,7 +4,7 @@ import axios from "axios";
 import { ChatTypeContext } from "../../utils";
 import { UseStateArray } from "../../types";
 import GroupChatToolbar from "./GroupChatToolbar";
-import GroupChatWindow from "./GroupChatWindow";
+import ChatWindow from "../Chat/ChatWindow";
 
 export default function SelectedGroup(){
 
@@ -43,7 +43,7 @@ export default function SelectedGroup(){
     return(
         <>
             <GroupChatToolbar group={group}/>
-            <GroupChatWindow/>
+            <ChatWindow/>
         </>
     )
 }

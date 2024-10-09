@@ -9,32 +9,32 @@ import EditForm from './components/EditThemes/EditForm';
 import './css/index.css';
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout/>,
-    children: [
-      {
+    {
         path: "/",
-        element: <AwaitContact/>
-      },
-      {
-        path: "chat/:authId/:contactId",
-        element: <SelectedContact/>,
-      },
-      {
-        path: "groupchat/:groupId",
-        element: <SelectedGroup/>,
-      },
-      {
-        path: "themes/edit",
-        element: <EditForm/>
-      }
-    ],
-  },
+        element: <Layout/>,
+        children: [
+            {
+                path: "/",
+                element: <AwaitContact/>
+            },
+            {
+                path: "chat/:authId/:contactId",
+                element: <SelectedContact/>,
+            },
+            {
+                path: "groupchat/:groupId",
+                element: <SelectedGroup/>,
+            },
+            {
+                path: "themes/edit",
+                element: <EditForm/>
+            }
+        ],
+    },
 ]);
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+    <StrictMode>
     <RouterProvider router={router}/>
-  </StrictMode>
+    </StrictMode>
 )

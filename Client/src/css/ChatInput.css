@@ -42,7 +42,7 @@
     outline: 0px solid black;
 }
 
-#chatInputWrapper button{
+#sendMessageButton{
     background-color: var(--sendButtonSecondary);
     border: 2px solid var(--sendButtonPrimary);
     border-radius: 50%;

@@ -22,7 +22,7 @@ export default function Toolbar(){
     useEffect(()=>{
         async function fetchData(){
             try {
-                const response = await axios.get("http://localhost:8800/getallusers");
+                const response = await axios.get(`http://localhost:8800/getallusers`);
                 if (response.status !== 200 || response.data.length === 0) {
                     throw new Error("Fetch failed");
                 }
