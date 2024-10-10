@@ -20,10 +20,6 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
     const [repliedMessage, setRepliedMessage]:UseStateArray = useContext(MessageReplyContext).states;
 
-    useEffect(()=>{
-        chatInputRef.current?.focus();
-    }, [repliedMessage])
-
     //Set message box content on loading the element or deleting the message
     useEffect(()=>{
         if (messageContentRef.current) {
@@ -67,9 +63,9 @@ export default function MessageElement({message, refs, newMessageState, deletedM
 
     return(
         <>
-            {chatType === "groupChat" && 'sender_username' in message &&
+            {chatType === "groupChat" &&
             (<div className={message.sender_id == authUser.id ? "messageSenderName" : "messageRecipientName"}>
-                ~ {message?.sender_added_as || message?.sender_username}:
+                ~ {message.sender_added_as || message.sender_username}:
             </div>)}
             <div
             key={message.id} 

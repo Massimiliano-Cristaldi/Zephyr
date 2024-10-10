@@ -40,7 +40,7 @@ export default function ChatWindow(){
     });
     const [deletedMessageCount, setDeletedMessageCount] = useState<number>(0);
     const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
-    const [sessionMessageCount] = useContext(MessageCountContext);
+    const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
     const [selectedText, setSelectedText]:UseStateArray = states;    
 
     //Fetch messages
@@ -71,6 +71,15 @@ export default function ChatWindow(){
     useEffect(()=>{
         animateScroll.scrollToBottom({containerId: "messagesWrapper", duration: 0});
     }, [messages])
+
+    //Focus chat input on page load and whener user clicks on "reply" in a message dropdown
+    useEffect(()=>{
+        requestAnimationFrame(()=>{
+            if (chatInputRef.current) {
+                chatInputRef.current.focus();
+            }
+        })
+    }, [repliedMessage])
 
     const [toggleFontStylePopup] = actions;    
 

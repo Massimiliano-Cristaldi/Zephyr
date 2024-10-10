@@ -65,12 +65,14 @@ export default function Layout(){
         const input = chatInputRef.current;
         const position = input?.selectionStart;
         const selection = window.getSelection();
+        console.log(selection);
+        
         if (input && position !== null && position !== undefined){
             const selectionLength = selection?.toString().length;
             const isSelectionInInput = selection?.getRangeAt(0).getBoundingClientRect().height === 0;
             const isNothingSelected = fontStylePopupRef.current && (selectionLength === 0 || selectionLength === undefined);
             const isValidSelection = fontStylePopupRef.current && !isNothingSelected && isSelectionInInput;
-            if (isValidSelection){
+            if (isValidSelection && selection.type === "Range"){
                 const leftOffset = getCaretCoordinates(input, position).left;
                 setSelectedText(selection!.toString());
                 fontStylePopupRef.current.style.display = "flex";

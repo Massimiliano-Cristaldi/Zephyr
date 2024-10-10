@@ -25,10 +25,10 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
     let miscEmojis:NodeList | [] = [];
     getEmojis(miscEmojis, "misc", addEmojiToMessage);
     
-    //Makes the window with all the emojis disappear when clicking out of it
+    //Make the window with all the emojis disappear when clicking out of it
     const closeEmojiPicker:()=>void = useContext(EmojiPickerContext).actions;
 
-    //Causes the window with all the emojis to scroll horizontally upon clicking the category icons
+    //Cause the window with all the emojis to scroll horizontally upon clicking the category icons
     function scrollEmojis(category:string){
         if (emojiPickerRef.current && category1Ref.current && category2Ref.current && category3Ref.current && category4Ref.current) {
             const categoryWidth = isMobile ? window.innerWidth * 0.7 : window.innerWidth * 0.245;
@@ -53,35 +53,30 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
         }
     }
 
+    //Put a grey line under the current emoji category whenever and however it gets scrolled to
     function styleActiveCategory(){
         const categoryWidth = isMobile ? window.innerWidth * 0.7 : window.innerWidth * 0.245;
         if (emojiPickerRef.current && category1Ref.current && category2Ref.current && category3Ref.current && category4Ref.current) {
-            console.log(categoryWidth);
-            console.log(emojiPickerRef.current.scrollLeft);
             switch (true) {
                 case emojiPickerRef.current.scrollLeft > categoryWidth * 2.8:
-                    console.log("case4")
                     category1Ref.current.style.backgroundColor = "black";
                     category2Ref.current.style.backgroundColor = "black";
                     category3Ref.current.style.backgroundColor = "black";
                     category4Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
                     break;
                 case emojiPickerRef.current.scrollLeft > categoryWidth * 1.8:
-                    console.log("case3")
                     category1Ref.current.style.backgroundColor = "black";
                     category2Ref.current.style.backgroundColor = "black";
                     category3Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
                     category4Ref.current.style.backgroundColor = "black";
                     break;
                 case emojiPickerRef.current.scrollLeft > categoryWidth - 7:
-                    console.log("case2")
                     category1Ref.current.style.backgroundColor = "black";
                     category2Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
                     category3Ref.current.style.backgroundColor = "black";
                     category4Ref.current.style.backgroundColor = "black";
                     break;
                 case emojiPickerRef.current.scrollLeft === 0:
-                    console.log("case1")
                     category1Ref.current.style.backgroundColor = "rgb(110, 110, 110)";
                     category2Ref.current.style.backgroundColor = "black";
                     category3Ref.current.style.backgroundColor = "black";
@@ -91,34 +86,32 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
         }
     }
 
-    //Interpolates chat input's value with the clicked emoji at the current position
+    //Interpolate chat input's value with the clicked emoji at the current position
     function addEmojiToMessage(entityNumber:number|number[]){
         if (chatInputRef.current) {
             let emoji:string;
             let initialPosition:number|null = chatInputRef.current.selectionStart;
             let text:string = chatInputRef.current.value;
+
             if (typeof entityNumber === "number"){
                 emoji = String.fromCodePoint(entityNumber);
-                if (currentPosition) {
-                    chatInputRef.current.value = text.slice(0, currentPosition) + emoji + text.slice(currentPosition, text.length);
-                    setCurrentPosition(currentPosition + emoji.length);
-                } else if (initialPosition) {
-                    setCurrentPosition(initialPosition + emoji.length);
-                    chatInputRef.current.value = text.slice(0, initialPosition) + emoji + text.slice(initialPosition, text.length);
-                } else {
-                    chatInputRef.current.value = text + emoji;
-                }
-            } else if (typeof entityNumber === "object"){
+            } else {
                 emoji = String.fromCodePoint(entityNumber[0]) + String.fromCodePoint(entityNumber[1]);
-                if (initialPosition) {
-                    setCurrentPosition(initialPosition);
-                    chatInputRef.current.value = text.slice(0, initialPosition) + emoji + text.slice(initialPosition, text.length);
-                } else if (currentPosition) {
-                    chatInputRef.current.value = text.slice(0, currentPosition) + emoji + text.slice(currentPosition, text.length);
-                } else {
-                    chatInputRef.current.value = text + emoji;
-                }
             }
+
+            if (emoji && currentPosition) {
+                chatInputRef.current.value = text.slice(0, currentPosition) + emoji + text.slice(currentPosition, text.length);
+                setCurrentPosition(currentPosition + emoji.length);
+            } else if (initialPosition) {
+                setCurrentPosition(initialPosition + emoji.length);
+                chatInputRef.current.value = text.slice(0, initialPosition) + emoji + text.slice(initialPosition, text.length);
+            } else {
+                chatInputRef.current.value = text + emoji;
+            }
+
+            requestAnimationFrame(()=>{
+                chatInputRef.current!.focus();
+            })
         }
     }
 

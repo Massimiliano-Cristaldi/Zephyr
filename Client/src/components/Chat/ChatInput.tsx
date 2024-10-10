@@ -142,6 +142,8 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                     onChange={handleChatInputChange} 
                     onKeyUp={handleKeyboardEvents}
                     onClick={()=>{setCurrentPosition(chatInputRef.current!.selectionStart)}}
+                    onMouseEnter={()=>{setIsSelectingEmoji(true)}}
+                    onMouseLeave={()=>{setIsSelectingEmoji(false)}}
                     id="messageInput"
                     autoComplete="off"
                     />

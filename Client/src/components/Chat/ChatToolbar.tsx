@@ -20,10 +20,10 @@ export default function ChatToolbar({contact}: ChatToolbarProps){
                     </div>
                     <div className="d-flex flex-column pb-1" id="nameAndNumber">
                         <div ref={contactNameRef}>
-                            {contact.user_added_as}
+                            {contact.user_added_as || contact.username}
                         </div>
                         <small id="phoneNumber">
-                            +39 {contact.phone_number}
+                            +39 {contact.phone_number || "Loading"}
                         </small>
                     </div>
                 </div>

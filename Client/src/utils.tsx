@@ -1,4 +1,4 @@
-import { createContext, MouseEventHandler, RefObject, SyntheticEvent } from "react";
+import { createContext, RefObject } from "react";
 import { User } from "./types";
 
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function
