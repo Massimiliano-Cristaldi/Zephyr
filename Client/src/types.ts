@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction } from "react"
+import { Dispatch, FormEvent, RefObject, SetStateAction } from "react"
 
 export type UseStateArray = [any, Dispatch<SetStateAction<any>>];
 
@@ -29,7 +29,7 @@ export interface Group{
 
 export interface Message{
     id?: number,
-    content: string,
+    content: string | null,
     audio_content?: any,
     attachments?: string | null,
     recipient_id: number,
@@ -46,7 +46,7 @@ export interface Message{
 
 export interface GroupMessage{
     id?: number,
-    content: string,
+    content: string | null,
     audio_content?: any,
     attachments?: string | null,
     group_id: number | undefined,
@@ -95,10 +95,15 @@ export interface EmojiPickerProps{
     currentPositionState: [number|null, Dispatch<SetStateAction<number|null>>],
 }
 
+export interface AudioRecorderProps{
+    newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
+    actions: (e:FormEvent<HTMLFormElement>)=>void
+}
+
 //EditThemes
 export interface ConfirmPopupProps{
     popupRef: RefObject<HTMLDivElement>,
-    confirmAction: () => void
+    confirmAction: ()=>void
 }
 
 //Groupchat

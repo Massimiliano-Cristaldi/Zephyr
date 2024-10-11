@@ -47,7 +47,6 @@
     width: 50vw;
     background-color: var(--senderMessageBg);
     align-self: end;
-    /* text-align: end; */
     padding: 10px 10px 0px 10px;
     margin-bottom: -15px;
     z-index: 1;
@@ -121,6 +120,22 @@
     font-size: 0.8rem;
 }
 
+.messageContent>audio{
+    width: 45vw;
+    height: 30px;
+    margin-left: -3px;
+    border-radius: var(--messageBorderRadius);
+}
+
+.messageContent>audio::-webkit-media-controls-panel{
+    background-color: var(--chatBodyBg);
+    padding: 0;
+}
+
+.messageContent>audio::-webkit-media-controls-timeline{
+    margin: -7px;
+}
+
 @media screen and (min-Width: 996px) {
     .senderMessage, .recipientMessage, .messageSenderName, .messageRecipientName, .timeSentSender, .timeSentRecipient{
         width: 40vw;
@@ -128,5 +143,9 @@
 
     .senderRepliedMessage, .recipientRepliedMessage{
         width: calc(40vw - 29px);
+    }
+
+    .messageContent>audio{
+        width: 35vw;
     }
 }

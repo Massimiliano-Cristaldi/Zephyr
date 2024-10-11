@@ -27,8 +27,6 @@ export default function SelectedGroup(){
             try {
                 const groupData = await axios.get(`http://localhost:8800/groupchat/${params.groupId}`);
                 const participantsData = await axios.get(`http://localhost:8800/groupparticipants/${authUser.id}/${params.groupId}`);
-                console.log(participantsData.data);
-                
                 if (groupData.status !== 200 || groupData.data.length === 0) {
                     throw new Error("Fetch failed at GroupChatToolbar");
                 }

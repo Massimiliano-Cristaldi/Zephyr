@@ -147,11 +147,14 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                     id="messageInput"
                     autoComplete="off"
                     />
-                    <AudioRecorder/>
                     <button id="sendMessageButton">
                         <i className="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
+                    <AudioRecorder
+                    newMessageState={[newMessage, setNewMessage]}
+                    actions={sendMessage}
+                    />
                 <div id="fontStylePopup" ref={fontStylePopupRef}>
                     <i className="fa-solid fa-italic" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("italics")}}/>
                     <i className="fa-solid fa-bold" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("bold")}}/>

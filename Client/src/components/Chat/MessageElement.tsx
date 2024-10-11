@@ -23,10 +23,12 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     //Set message box content on loading the element or deleting the message
     useEffect(()=>{
         if (messageContentRef.current) {
-            if (message.content) {
+            if (message.content){
                 messageContentRef.current.innerHTML = sanitizeMessageInput(message.content);
-            } else {
+            } else if (message.content === ""){
                 messageContentRef.current.innerHTML = "<i>This message has been deleted.</i>";
+            } else if (message.content === null && message.audio_content){
+                messageContentRef.current.innerHTML = `<audio controls src="${message.audio_content}"/>`;
             }
         }
         if (replyContentRef.current && message.replied_message_content) {
@@ -42,7 +44,11 @@ export default function MessageElement({message, refs, newMessageState, deletedM
             replyRef.current.style.display = "block";
             replyNameRef.current.innerText = " " + (message.sender_id === authUser.id ?
                 authUser.username : (message.sender_added_as || message.sender_username));
-            inputReplyRef.current.innerHTML = message.content;
+            if (message.content){
+                inputReplyRef.current.innerHTML = message.content;
+            } else if (message.audio_content){
+                inputReplyRef.current.innerHTML = `<audio controls src="${message.audio_content}"/>`;
+            }
         }
     }
 
@@ -67,6 +73,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
             (<div className={message.sender_id == authUser.id ? "messageSenderName" : "messageRecipientName"}>
                 ~ {message.sender_added_as || message.sender_username}:
             </div>)}
+
             <div
             key={message.id} 
             className={message.sender_id == authUser.id ? "senderMessage" : "recipientMessage"}
@@ -84,11 +91,12 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                         </i>
                         <div ref={replyContentRef}/>
                     </div>}
-                    <div ref={messageContentRef}/>
+                    <div ref={messageContentRef} className="messageContent"/>
                     {message.content &&
                     <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>}
                 </div>
             </div>
+
             <small 
             className={(message.sender_id == authUser.id) ? "timeSentSender" : "timeSentRecipient"} 
             data-toggle="tooltip" 

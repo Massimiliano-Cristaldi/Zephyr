@@ -65,8 +65,6 @@ export default function Layout(){
         const input = chatInputRef.current;
         const position = input?.selectionStart;
         const selection = window.getSelection();
-        console.log(selection);
-        
         if (input && position !== null && position !== undefined){
             const selectionLength = selection?.toString().length;
             const isSelectionInInput = selection?.getRangeAt(0).getBoundingClientRect().height === 0;

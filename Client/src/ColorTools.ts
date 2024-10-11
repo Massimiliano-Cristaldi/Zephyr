@@ -17,7 +17,7 @@ export const defaultTheme = {
     scrollbarColor: "#a654a6",
     scrollbarBg: "#00477a",
     sendButtonPrimary: "#eef0f2",
-    sendButtonSecondary:" transparent",
+    sendButtonSecondary:"#3f568d",
     chatToolbarBg: "#3f568d",
     recipientMessageBg: "#7289c0",
     senderMessageBg: "#a654a6",

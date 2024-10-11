@@ -1,9 +1,57 @@
+#audioControls{
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+    top: 33px;
+    margin-bottom: 61px;
+}
+
 .recordButton{
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
     height: 34px;
     aspect-ratio: 1/1;
-    margin-right: 5px
+    margin-right: 5px;
+    background-color: var(--sendButtonSecondary);
+    border-right: 2px solid var(--sendButtonPrimary);
+    border-left: 2px solid var(--sendButtonPrimary);
+    border-top: none;
+    border-bottom: none;
+    padding: 0px;
+}
+
+#startRecording{
+    border-radius: 50%;
+    border-top: 2px solid var(--sendButtonPrimary);
+    border-right: 2px solid var(--sendButtonPrimary);
+    border-bottom: 2px solid var(--sendButtonPrimary);
+    border-left: 2px solid var(--sendButtonPrimary);
+    /* border-radius: 0% 0% 50% 50%;
+    border-top: none; */
+}
+
+#stopRecording{
+    display: none;
+}
+
+#cancelRecording{
+    display: none;
+    border-top: 2px solid var(--sendButtonPrimary);
+    border-right: 2px solid var(--sendButtonPrimary);
+    border-left: 2px solid var(--sendButtonPrimary);
+    border-radius: 50% 50% 0% 0%;
+}
+
+.recordButtonBg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.recordButtonBg:hover{
+    background-color: hsl(222, 38%, 60%);
 }

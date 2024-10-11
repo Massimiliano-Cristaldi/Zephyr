@@ -21,7 +21,7 @@
     --scrollbarColor: hsl(300, 33%, 49%);
     --scrollbarBg: hsl(205, 100%, 24%);
     --sendButtonPrimary: hsl(210, 13%, 94%);
-    --sendButtonSecondary: transparent;
+    --sendButtonSecondary: hsl(222, 38%, 40%);
     --chatToolbarBg: hsl(222, 38%, 40%);
     /* Chat Window */
     --senderMessageBg: hsl(300, 33%, 49%);
