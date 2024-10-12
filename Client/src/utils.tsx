@@ -28,6 +28,18 @@ export function getTime(time: string, time_adjustment:number){
     }
 }
 
+//Expected input: an amount of time in seconds
+//Expected output: the amount of seconds in excess of whole minutes (e.g: 75 => [1 minute and] 15)
+export function formatTime(seconds:number, output:string){
+    if (output === "seconds"){
+        let result:number = seconds % 60;
+        return result < 10 ? "0" + Math.ceil(result).toString() : Math.ceil(result).toString();
+    } else if (output === "minutes"){
+        let result:number = Math.floor(seconds/60);
+        return result < 10 ? "0" + Math.ceil(result).toString() : Math.ceil(result).toString();
+    }
+}
+
 export function getCaretCoordinates (input: HTMLInputElement, position:number){
     const div = document.createElement("div");
     const style = window.getComputedStyle(input);

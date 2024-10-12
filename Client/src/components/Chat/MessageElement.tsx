@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthUserContext, ChatTypeContext, FontStylePopupContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
 import { MessageElementProps, UseStateArray } from "../../types";
 import MessageDropdown from "./MessageDropdown";
+import AudioElement from "./AudioElement.tsx";
 import "../../css/MessageElement.css";
 
 export default function MessageElement({message, refs, newMessageState, deletedMessageState}: MessageElementProps){
@@ -27,8 +28,6 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                 messageContentRef.current.innerHTML = sanitizeMessageInput(message.content);
             } else if (message.content === ""){
                 messageContentRef.current.innerHTML = "<i>This message has been deleted.</i>";
-            } else if (message.content === null && message.audio_content){
-                messageContentRef.current.innerHTML = `<audio controls src="${message.audio_content}"/>`;
             }
         }
         if (replyContentRef.current && message.replied_message_content) {
@@ -91,7 +90,13 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                         </i>
                         <div ref={replyContentRef}/>
                     </div>}
-                    <div ref={messageContentRef} className="messageContent"/>
+                    <div ref={messageContentRef} className="messageContent">
+                        {message.audio_content &&
+                            <AudioElement
+                            audioSrc={message.audio_content}
+                            />
+                        }
+                    </div>
                     {message.content &&
                     <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>}
                 </div>

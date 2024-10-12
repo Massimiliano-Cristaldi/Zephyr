@@ -100,6 +100,10 @@ export interface AudioRecorderProps{
     actions: (e:FormEvent<HTMLFormElement>)=>void
 }
 
+export interface AudioElementProps{
+    audioSrc: string
+}
+
 //EditThemes
 export interface ConfirmPopupProps{
     popupRef: RefObject<HTMLDivElement>,

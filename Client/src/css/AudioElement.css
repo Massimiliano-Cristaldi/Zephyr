@@ -1,0 +1,50 @@
+.audioMessageControls{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40vw;
+    margin-left: 1vw;
+}
+
+.audioMessageControls>button{
+    background-color: transparent;
+    border: none;
+}
+
+.audioMessageControls>input{
+    width: 20vw;
+    margin: 0px 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.audioMessageControls>input::-webkit-slider-runnable-track{
+    height: 7px;
+    background-color: var(--defaultFontColor);
+    border-radius: 5px;
+}
+
+.audioMessageControls>input::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -4.5px;
+    height: 15px;
+    width: 15px;
+    background-color: var(--defaultFontColor);
+    box-shadow: 0px 0px 3px black;
+    border-radius: 50%;
+}
+
+@media screen and (min-width: 996px) {
+    .audioMessageControls{
+        width: 35vw;
+        margin-left: 2vw;
+    }
+
+    .audioMessageControls>input{
+        width: 25vw;
+        margin: 0px 10px;
+    }
+}
