@@ -1,6 +1,6 @@
 import {  useContext, useRef, useEffect } from "react";
 import axios from "axios";
-import { AuthUserContext, ChatTypeContext, FontStylePopupContext, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
+import { AuthUserContext, ChatTypeContext, formatTime, getDate, getTime, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
 import { MessageElementProps, UseStateArray } from "../../types";
 import MessageDropdown from "./MessageDropdown";
 import AudioElement from "./AudioElement.tsx";
@@ -14,14 +14,15 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
     const replyContentRef = useRef<HTMLDivElement>(null);
     const inputReplyRef = refs;
-    const [chatInputRef] = useContext(FontStylePopupContext).refs;
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const repliedAudioRef = useRef<HTMLAudioElement>(null);
 
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [newMessage, setNewMessage] = newMessageState;
     const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
     const [repliedMessage, setRepliedMessage]:UseStateArray = useContext(MessageReplyContext).states;
 
-    //Set message box content on loading the element or deleting the message
+    //Set message box content
     useEffect(()=>{
         if (messageContentRef.current) {
             if (message.content){
@@ -30,11 +31,16 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                 messageContentRef.current.innerHTML = "<i>This message has been deleted.</i>";
             }
         }
-        if (replyContentRef.current && message.replied_message_content) {
-                replyContentRef.current.innerHTML = message.replied_message_content;
+        //Set replied message box text content/audio content
+        if (replyContentRef.current && message.replied_message_content){
+            replyContentRef.current.innerHTML = message.replied_message_content;
+        } else if (replyContentRef.current && repliedAudioRef.current?.duration && message.replied_message_audio_content){
+            replyContentRef.current.innerHTML = `<i class="fa-solid fa-microphone"/>
+                <span class="minutesAndSeconds">${formatTime(repliedAudioRef.current.duration, "minutes")
+                + ":" + formatTime(repliedAudioRef.current.duration, "seconds")}</span>`
         }
-    }, [deletedMessageCount])
-    
+    }, [deletedMessageCount, repliedAudioRef.current?.currentTime])
+
     //Connect current message to the message you're replying to, make the reply box above the chat input appear
     function handleReply(){
         setRepliedMessage(message);
@@ -43,10 +49,13 @@ export default function MessageElement({message, refs, newMessageState, deletedM
             replyRef.current.style.display = "block";
             replyNameRef.current.innerText = " " + (message.sender_id === authUser.id ?
                 authUser.username : (message.sender_added_as || message.sender_username));
+            //Set text content/audio content of the replied message box above the chat input 
             if (message.content){
                 inputReplyRef.current.innerHTML = message.content;
-            } else if (message.audio_content){
-                inputReplyRef.current.innerHTML = `<audio controls src="${message.audio_content}"/>`;
+            } else if (audioRef.current && message.content === null && message.audio_content){
+                inputReplyRef.current.innerHTML = `<i class="fa-solid fa-microphone"/>
+                <span class="minutesAndSeconds">${formatTime(audioRef.current.duration, "minutes")
+                + ":" + formatTime(audioRef.current.duration, "seconds")}</span>`;
             }
         }
     }
@@ -59,6 +68,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                 setDeletedMessageCount(deletedMessageCount + 1); 
                 setNewMessage({...newMessage, replying_to_message_id: null});
                 message.content = "";
+                message.audio_content = null;
                 message.replied_message_content = "";
             });
         } catch (err) {
@@ -66,8 +76,22 @@ export default function MessageElement({message, refs, newMessageState, deletedM
         }
     }
 
+    //Load the duration of the replied audio message when the audio metadata becomes available
+    function syncRepliedAudioMessage(){
+        if (replyContentRef.current && repliedAudioRef.current?.duration !== Infinity){
+            replyContentRef.current.innerHTML = `<i class="fa-solid fa-microphone"/>
+            <span class="minutesAndSeconds">${formatTime(repliedAudioRef.current!.duration, "minutes")
+                + ":" + formatTime(repliedAudioRef.current!.duration, "seconds")}</span>`
+        //Retry if the duration is still infinity (fixes inconsistencies)
+        } else if (repliedAudioRef.current && repliedAudioRef.current?.duration === Infinity){
+            repliedAudioRef.current.currentTime = 0;
+        }
+    }
+
     return(
-        <>
+        <div
+        className={message.sender_id == authUser.id ? "senderMessage" : "recipientMessage"}
+        >
             {chatType === "groupChat" &&
             (<div className={message.sender_id == authUser.id ? "messageSenderName" : "messageRecipientName"}>
                 ~ {message.sender_added_as || message.sender_username}:
@@ -75,10 +99,9 @@ export default function MessageElement({message, refs, newMessageState, deletedM
 
             <div
             key={message.id} 
-            className={message.sender_id == authUser.id ? "senderMessage" : "recipientMessage"}
             >
                 <div className="pt-2">
-                    {message.replied_message_content && 
+                    {(message.replied_message_content || message.replied_message_audio_content) && 
                     <div className={message.sender_id == authUser.id ? "senderRepliedMessage" : "recipientRepliedMessage"}>
                         <i>Replying to
                             <b>
@@ -97,9 +120,10 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                             />
                         }
                     </div>
-                    {message.content &&
-                    <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>}
+
                 </div>
+                {(message.content || message.audio_content) &&
+                <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>}
             </div>
 
             <small 
@@ -110,6 +134,24 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                 {message.time_sent ? getTime(message.time_sent, 2) : "N/A"}
                 <i className="fa-regular fa-clock ms-1"/>
             </small>
-        </>
+
+            {message.audio_content &&
+            <audio 
+            ref={audioRef}
+            className="d-none"
+            onLoadedMetadata={()=>{audioRef.current!.currentTime = 0}}>
+                <source src={message.audio_content}/>
+            </audio>}
+
+            {message.replied_message_audio_content &&
+            <audio 
+            ref={repliedAudioRef}
+            className="d-none"
+            onLoadedMetadata={()=>{repliedAudioRef.current!.currentTime = 0}}
+            onTimeUpdate={syncRepliedAudioMessage}
+            >
+                <source src={message.replied_message_audio_content}/>
+            </audio>}
+        </div>
     )
 }

@@ -13,7 +13,7 @@ export default function ParticipantList({group}:any){
                             (<span key={participant.participant_id}>
                                     {participant.participant_id === authUser.id ? 
                                     participant.participant_username : 
-                                    participant.participant_added_as}
+                                    (participant.participant_added_as || participant.participant_username)}
                                     {Math.max(...group.participants.map((el:any)=> el?.participant_id)) === participant.participant_id ?
                                     " " : ", "}
                             </span>)

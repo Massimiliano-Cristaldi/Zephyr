@@ -37,17 +37,20 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     function sendMessage(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
         if (chatInputRef && chatInputRef.current && chatInputRef.current.value !== "") {
-            const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
-            axios.post(`http://localhost:8800/${q}`, newMessage)
-            .then(()=>{
-                setNewMessage({...newMessage, replying_to_message_id: null});
-                setSessionMessageCount(sessionMessageCount + 1);
-                if (replyRef.current) {
-                    replyRef.current.style.innerHTML = "<div><i>Replying to:</i> <br/></div>";
-                    replyRef.current.style.display = "none";
-                }
-            });
-            chatInputRef.current.value = "";
+            try {
+                const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
+                axios.post(`http://localhost:8800/${q}`, newMessage)
+                .then(()=>{
+                    setNewMessage({...newMessage, replying_to_message_id: null});
+                    setSessionMessageCount(sessionMessageCount + 1);
+                    if (replyRef.current) {
+                        replyRef.current.style.display = "none";
+                    }
+                });
+                chatInputRef.current.value = "";
+            } catch (err) {
+                console.error("There was an error trying to post your message:" + err);
+            }
         }
     }
 
@@ -153,7 +156,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                 </form>
                     <AudioRecorder
                     newMessageState={[newMessage, setNewMessage]}
-                    actions={sendMessage}
+                    refs={[replyRef, chatInputRef]}
                     />
                 <div id="fontStylePopup" ref={fontStylePopupRef}>
                     <i className="fa-solid fa-italic" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("italics")}}/>

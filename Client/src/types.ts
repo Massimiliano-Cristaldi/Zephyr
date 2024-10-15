@@ -38,6 +38,7 @@ export interface Message{
     sender_added_as?: string,
     replying_to_message_id?: number | null,
     replied_message_content?: string,
+    replied_message_audio_content?: string,
     replied_message_sender_id?: number,
     replied_message_sender_username?: string,
     replied_message_sender_added_as?: string,
@@ -55,6 +56,7 @@ export interface GroupMessage{
     sender_added_as?: string,
     replied_message_id?: number | null,
     replied_message_content?: string,
+    replied_message_audio_content?: string,
     replied_message_sender_id?: number,
     replied_message_sender_username?: string,
     replied_message_sender_added_as?: string,
@@ -97,7 +99,7 @@ export interface EmojiPickerProps{
 
 export interface AudioRecorderProps{
     newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
-    actions: (e:FormEvent<HTMLFormElement>)=>void
+    refs: [RefObject<HTMLDivElement>, RefObject<HTMLInputElement>]
 }
 
 export interface AudioElementProps{

@@ -1,20 +1,20 @@
 .senderMessage{
     display: flex;
-    align-items: center;
+    flex-direction: column;
     align-self: end;
     position: relative;
     width: 50vw;
-    padding: 10px 15px 10px 0px;
     background-color: var(--senderMessageBg);
     text-align: justify;
     border-radius: var(--messageBorderRadius) var(--messageBorderRadius) 0px 0px;
+    margin: 15px 0px;
 }
 
 .senderMessage::before{
     content: '';
-    position: relative;
-    bottom: calc(-50% - 32px);
-    left: calc(100% + 14px);
+    position: absolute;
+    bottom: 0;
+    left: 100%;
     border-left: 7px solid var(--senderMessageBg);
     border-bottom: 7px solid var(--senderMessageBg);
     border-right: 7px solid transparent;
@@ -23,19 +23,19 @@
 
 .recipientMessage{
     display: flex;
-    align-items: center;
+    flex-direction: column;
     position: relative;
     width: 50vw;
-    padding: 10px 15px 10px 0px;
     background-color: var(--recipientMessageBg);
     text-align: justify;
     border-radius: var(--messageBorderRadius) var(--messageBorderRadius) 0px 0px;
+    margin: 15px 0px;
 }
 
-.recipientMessage::before {
+.recipientMessage::before{
     content: '';
-    position: relative;
-    bottom: calc(-50% - 32px);
+    position: absolute;
+    bottom: 0;
     left: -14px;
     border-right: 7px solid var(--recipientMessageBg);
     border-bottom: 7px solid var(--recipientMessageBg);
@@ -46,9 +46,8 @@
 .messageSenderName{
     width: 50vw;
     background-color: var(--senderMessageBg);
-    align-self: end;
-    padding: 10px 10px 0px 10px;
-    margin-bottom: -15px;
+    padding-left: 10px;
+    margin: 10px 0px -15px 0px;
     z-index: 1;
     font-size: 0.8rem;
     font-style: oblique;
@@ -58,12 +57,16 @@
 .messageRecipientName{
     width: 50vw;
     background-color: var(--recipientMessageBg);
-    padding: 5px 10px 0px 10px;
-    margin-bottom: -15px;
+    padding-left: 10px;
+    margin: 10px 0px -15px 0px;
     z-index: 1;
     font-size: 0.8rem;
     font-style: oblique;
     font-weight: 600;
+}
+
+.messageContent{
+    padding: 10px 15px 10px 15px;
 }
 
 .timeSentSender{
@@ -71,8 +74,6 @@
     width: 50vw;
     padding: 0px 15px 5px 0px;
     margin-top: -1px;
-    margin-bottom: 20px;
-    align-self: end;
     text-align: end;
     background-color: var(--senderMessageBg);
     cursor: default;
@@ -101,7 +102,7 @@
     justify-self: center;
     align-self: center;
     padding: 5px 10px;
-    margin: 5px 0px;
+    margin: 10px auto 5px auto;
     background-color: var(--senderReplyBg);
 }
 
@@ -112,12 +113,18 @@
     justify-self: center;
     align-self: center;
     padding: 5px 10px;
-    margin: 5px 0px;
+    margin: 10px auto 5px auto;
     background-color: var(--recipientReplyBg);
 }
 
 .senderRepliedMessage>i, .recipientRepliedMessage>i{
     font-size: 0.8rem;
+}
+
+.minutesAndSeconds{
+    all: unset;
+    font-family: var(--favoriteFont), Arial, Helvetica, sans-serif !important;
+    font-weight: 300;
 }
 
 @media screen and (min-Width: 996px) {

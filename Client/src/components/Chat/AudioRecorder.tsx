@@ -1,25 +1,24 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import axios from "axios";
-import { AudioRecorderProps } from "../../types";
+import { AudioRecorderProps, UseStateArray } from "../../types";
 import "../../css/AudioRecorder.css"
+import { ChatTypeContext, MessageCountContext } from "../../utils";
 
-//TODO: find a way to execute sendMessage without having the formevent available in this component
-//or rewrite the function in a different way, or make the api post call directly
-//TODO: sender_username is not being sent to the database on message post
-export default function AudioRecorder({newMessageState, actions}: AudioRecorderProps){
+export default function AudioRecorder({newMessageState, refs}: AudioRecorderProps){
     const audioControlsRef = useRef<HTMLDivElement>(null);
     const startRecordingRef = useRef<HTMLButtonElement>(null);
     const stopRecordingRef = useRef<HTMLButtonElement>(null);
     const cancelRecordingRef = useRef<HTMLButtonElement>(null);
+    const [replyRef, chatInputRef] = refs;
     
     const mediaStream = useRef<MediaStream | null>(null);
     const mediaRecorder = useRef<MediaRecorder | null>(null);
     const audioBlob = useRef<Blob[]>([]);
     let discarding:boolean = false;
 
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [newMessage, setNewMessage] = newMessageState;
-
-    const sendMessage = actions;
+    const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
 
     async function startRecording(){
         try {
@@ -39,9 +38,11 @@ export default function AudioRecorder({newMessageState, actions}: AudioRecorderP
             discarding = false;
         }
 
-        //(When recording is stopped) convert blob to .wav file and post it to public/audio recordings
+        //(When recording is stopped) convert blob to .wav file and post it to public/audio recordings, then post message to database,
+        //then close the small popup with the audio recording controls
         mediaRecorder.current.onstop = ()=>{
             if (!discarding) {
+                //Create a blob with the recorded audio and convert it to .wax file
                 const recordedBlob = new Blob(
                     audioBlob.current, { type: 'audio/wav' }
                 );
@@ -50,16 +51,32 @@ export default function AudioRecorder({newMessageState, actions}: AudioRecorderP
                 const timeNow = Date.now().toString();
                 formData.append("audioFile", audioFile);
                 formData.append("time", timeNow);
+                //Post .wav file to public folder
                 try {
                     axios.post("http://localhost:8800/postaudio", formData)
-                    .then(()=>{
-                        setNewMessage({
+                    const message = {
                         ...newMessage, 
                         content: null, 
                         audio_content: `/audio recordings/audio_recording_${timeNow}.wav`
-                        });
-                        (e:any)=>{sendMessage(e)};
-                    });
+                    };
+                    //Post message to database
+                        try {
+                            console.log("I'm in the second try block");
+                            const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
+                            axios.post(`http://localhost:8800/${q}`, message)
+                            .then(()=>{
+                                setNewMessage({...newMessage, replying_to_message_id: null});
+                                setSessionMessageCount(sessionMessageCount + 1);
+                                if (replyRef.current) {
+                                    replyRef.current.style.display = "none";
+                                }
+                            });
+                            if (chatInputRef.current) {
+                                chatInputRef.current.value = "";
+                            }
+                        } catch (err) {
+                            console.error("There was an error trying to post your message:" + err);
+                        }
                 } catch (err) {
                     console.error("The application encountered an error trying to save the audio file:" + err);
                 }
