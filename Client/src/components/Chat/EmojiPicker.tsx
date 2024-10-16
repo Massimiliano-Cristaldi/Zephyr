@@ -108,10 +108,6 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
             } else {
                 chatInputRef.current.value = text + emoji;
             }
-
-            requestAnimationFrame(()=>{
-                chatInputRef.current!.focus();
-            })
         }
     }
 

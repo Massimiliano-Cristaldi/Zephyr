@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { animateScroll } from 'react-scroll';
 import axios from "axios";
 import { AuthUserContext, ChatTypeContext, FontStylePopupContext, MessageCountContext, MessageReplyContext } from "../../utils.tsx";
 import { GroupMessage, Message, UseStateArray } from "../../types";
@@ -8,6 +7,7 @@ import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";
 import ViewProfile from "../ViewProfile";
 import "../../css/ChatWindow.css";
+import DragAndDrop from "./DragAndDrop.tsx";
 
 export default function ChatWindow(){
 
@@ -20,6 +20,7 @@ export default function ChatWindow(){
     const replyNameRef = useRef<HTMLElement>(null);
     const inputReplyRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const dropZoneRef = useRef<HTMLDivElement>(null);
     
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [messages, setMessages] = useState<Message[] | GroupMessage[] | []>();
@@ -69,7 +70,9 @@ export default function ChatWindow(){
 
     //Scroll to bottom when chat is loaded or a new message is posted
     useEffect(()=>{
-        animateScroll.scrollToBottom({containerId: "messagesWrapper", duration: 0});
+        if (scrollRef.current) {
+            scrollRef.current.scrollTo(0, scrollRef.current.scrollHeight);
+        }
     }, [messages])
 
     //Focus chat input on page load and whener user clicks on "reply" in a message dropdown
@@ -81,13 +84,23 @@ export default function ChatWindow(){
         })
     }, [repliedMessage])
 
-    const [toggleFontStylePopup] = actions;    
+    const toggleFontStylePopup:()=>void = actions;
+
+    //Display the attachment drag and drop overlay when a file is dragged inside messagesWrapper
+    function handleDragEnter(e: React.DragEvent){
+        e.preventDefault();
+        if (dropZoneRef.current) {
+            dropZoneRef.current.style.display = "flex";
+        }
+    }
 
     return(
         <MessageReplyContext.Provider value={{refs: [replyRef, replyNameRef], states: [repliedMessage, setRepliedMessage]}}>
             <div id="chatBody">
                 {messages && messages.length ?
-                (<div id="messagesWrapper" ref={scrollRef}>
+                (<div id="messagesWrapper" 
+                ref={scrollRef}
+                onDragEnter={handleDragEnter}>
                     {messages.map((el)=>(
                             <MessageElement 
                             key={el.id}
@@ -97,6 +110,10 @@ export default function ChatWindow(){
                             deletedMessageState={[deletedMessageCount, setDeletedMessageCount]}/>
                     ))}
                     <ViewProfile/>
+                    <DragAndDrop
+                    newMessageState={[newMessage, setNewMessage]}
+                    refs={dropZoneRef}
+                    />
                 </div>) : (
                     <div id="noMessages">
                         <i className="fa-regular fa-comments mb-5"></i>

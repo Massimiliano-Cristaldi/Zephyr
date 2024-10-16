@@ -98,7 +98,7 @@ export default function Layout(){
         <AuthUserContext.Provider value={authUser}>
         <IsMobileContext.Provider value={isMobile}>
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
-        <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: [toggleFontStylePopup]}}>
+        <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: toggleFontStylePopup}}>
         <EmojiPickerContext.Provider value={{refs: emojiPickerWrapperRef, states: [isSelectingEmoji, setIsSelectingEmoji], actions: closeEmojiPicker}}>
         <ChatTypeContext.Provider value={[chatType, setChatType]}>
             <div className="container-fluid h-100" onMouseUp={()=>{toggleFontStylePopup(); closeEmojiPicker();}}>

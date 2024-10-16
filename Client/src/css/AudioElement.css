@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: center;
     width: 40vw;
-    margin-left: 1vw;
+    margin: 10px 0px 10px 1vw;
 }
 
 .audioMessageControls>button{

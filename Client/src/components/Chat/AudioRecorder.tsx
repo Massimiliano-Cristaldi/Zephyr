@@ -61,7 +61,6 @@ export default function AudioRecorder({newMessageState, refs}: AudioRecorderProp
                     };
                     //Post message to database
                         try {
-                            console.log("I'm in the second try block");
                             const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
                             axios.post(`http://localhost:8800/${q}`, message)
                             .then(()=>{

@@ -106,6 +106,11 @@ export interface AudioElementProps{
     audioSrc: string
 }
 
+export interface DragAndDropProps{
+    newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
+    refs: RefObject<HTMLDivElement>
+}
+
 //EditThemes
 export interface ConfirmPopupProps{
     popupRef: RefObject<HTMLDivElement>,

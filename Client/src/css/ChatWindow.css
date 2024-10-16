@@ -21,6 +21,14 @@
     overflow-x: hidden;
 }
 
+#messagesWrapper::-webkit-scrollbar{
+    width: 5px;
+}
+
+#messagesWrapper::-webkit-scrollbar-thumb{
+    background-color: var(--senderMessageBg);
+}
+
 #noMessages{
     display: flex;
     flex-direction: column;

@@ -1,0 +1,27 @@
+#dndWrapper{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 8vh;
+    right: 0;
+    height: 75.65vh;
+    width: 80vw !important;
+    color: black;
+    background-color: red;
+}
+
+#dropZone{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 8vh;
+    right: 0;
+    height: 75.65vh;
+    width: 80vw !important;
+    color: black;
+    background-color: rgb(214, 213, 213);
+    z-index: 3;
+    opacity: 50%;
+}

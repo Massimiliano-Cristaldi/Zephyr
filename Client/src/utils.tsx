@@ -40,6 +40,10 @@ export function formatTime(seconds:number, output:string){
     }
 }
 
+export function formatFileExt(filename: string){
+    return filename.match(/\.[A-z]+(?<!a)$/g);
+}
+
 export function getCaretCoordinates (input: HTMLInputElement, position:number){
     const div = document.createElement("div");
     const style = window.getComputedStyle(input);
