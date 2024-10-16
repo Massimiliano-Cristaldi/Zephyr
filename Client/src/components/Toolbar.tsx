@@ -64,7 +64,7 @@ export default function Toolbar(){
         <>
         <div id="toolbarWrapper">
             <div id="authUserInfo">
-                <div id="userIcon" style={{backgroundImage: `url(/${authUser?.icon_url || "user.png"}`}}/>
+                <div id="userIcon" style={{backgroundImage: `url(/public/${authUser?.icon_url || "user.png"}`}}/>
                 {authUser ? authUser.username : "Loading..."}
             </div>
             <div id="icons">

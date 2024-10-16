@@ -63,13 +63,19 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     //Change the message content to empty string and remove connection to replied message
     function deleteMessage(){
         try {
-            axios.post("http://localhost:8800/deletemessage", {messageId: message.id})
+            const q = chatType === "individualChat" ? "deletemessage" : "deletegroupmessage";
+            axios.post(`http://localhost:8800/${q}`, {messageId: message.id})
             .then(()=>{
-                setDeletedMessageCount(deletedMessageCount + 1); 
-                setNewMessage({...newMessage, replying_to_message_id: null});
+                setDeletedMessageCount(deletedMessageCount + 1);
                 message.content = "";
                 message.audio_content = null;
                 message.replied_message_content = "";
+                if (newMessage.replying_to_message_id === message.id) {
+                    setNewMessage({...newMessage, replying_to_message_id: null});
+                    if (replyRef.current) {
+                        replyRef.current.style.display = "none";
+                    }
+                }
             });
         } catch (err) {
             console.error(err);

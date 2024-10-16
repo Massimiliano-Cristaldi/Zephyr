@@ -31,14 +31,14 @@ export default function ContactList({contacts, groups}: ContactListProps){
         {contacts.length !== 0 && chatType === "individualChat" &&
             (contacts.map((contact)=> contact.id !== authUser.id && (
                 <div key={contact.id} onClick={()=>openChat(contact.id)}>
-                    <div className="contactIcon" style={{backgroundImage: `url(/${contact.icon_url || "user.png"})`}}></div>
+                    <div className="contactIcon" style={{backgroundImage: `url(/public${contact.icon_url || "/user_icons/user.png"})`}}></div>
                     {contact.user_added_as}
                 </div>))
         )}
         {groups.length !== 0 && chatType === "groupChat" &&
             (groups.map((group)=>(
                 <div key={group.id} onClick={()=>{openChat(group.id)}}>
-                    <div className="contactIcon" style={{backgroundImage: `url(/${group.icon_url || "user.png"})`}}></div>
+                    <div className="contactIcon" style={{backgroundImage: `url(/public${group.icon_url || "/user_icons/user.png"})`}}></div>
                     {group.title}
                 </div>))
         )}

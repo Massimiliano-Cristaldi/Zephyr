@@ -1,15 +1,15 @@
+import { useContext } from "react";
 import axios from "axios";
-import "../../css/DragAndDrop.css";
+import { AuthUserContext, getFileExt } from "../../utils";
 import { DragAndDropProps } from "../../types";
-import { formatFileExt } from "../../utils";
+import "../../css/DragAndDrop.css";
 
 export default function DragAndDrop({newMessageState, refs}: DragAndDropProps){
-
+    const authUser = useContext(AuthUserContext);
     const dropZoneRef = refs;
-
     const [newMessage, setNewMessage] = newMessageState;
 
-    //TODO: finish handling the setting of the newMessage state; give visual feedback for successful attachment; display attachment inside messageElement
+    //TODO: give visual feedback for successful attachment; display attachment inside messageElement
     function handleDrop(e: React.DragEvent){
         e.preventDefault();
         if (dropZoneRef.current) {
@@ -21,7 +21,7 @@ export default function DragAndDrop({newMessageState, refs}: DragAndDropProps){
                 reader.onload = (e)=>{
                     const fileContent = e.target?.result;
                     const fileObject = new File([fileContent as ArrayBuffer], file.name, {type: file.type});
-                    const fileName = "/attachments/attachment_" + Date.now() + formatFileExt(fileObject.name);
+                    const fileName = "/attachments/attachment_" + authUser.id + "_" + Date.now() + getFileExt(fileObject.name);                    
                     const formData = new FormData();
                     formData.append("attachment", fileObject);
                     formData.append("filename", fileName)

@@ -54,7 +54,7 @@ export interface GroupMessage{
     sender_id: number,
     sender_username: string,
     sender_added_as?: string,
-    replied_message_id?: number | null,
+    replying_to_message_id?: number | null,
     replied_message_content?: string,
     replied_message_audio_content?: string,
     replied_message_sender_id?: number,

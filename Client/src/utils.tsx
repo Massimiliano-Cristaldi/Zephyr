@@ -40,7 +40,9 @@ export function formatTime(seconds:number, output:string){
     }
 }
 
-export function formatFileExt(filename: string){
+//Expected input: a full filename without path, e.g. "example.jpg"
+//Expected output: only the file extension, e.g. ".jpg"
+export function getFileExt(filename: string){
     return filename.match(/\.[A-z]+(?<!a)$/g);
 }
 

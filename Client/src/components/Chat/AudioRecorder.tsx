@@ -2,9 +2,11 @@ import { useContext, useRef } from "react";
 import axios from "axios";
 import { AudioRecorderProps, UseStateArray } from "../../types";
 import "../../css/AudioRecorder.css"
-import { ChatTypeContext, MessageCountContext } from "../../utils";
+import { AuthUserContext, ChatTypeContext, MessageCountContext } from "../../utils";
 
 export default function AudioRecorder({newMessageState, refs}: AudioRecorderProps){
+    const authUser = useContext(AuthUserContext);
+
     const audioControlsRef = useRef<HTMLDivElement>(null);
     const startRecordingRef = useRef<HTMLButtonElement>(null);
     const stopRecordingRef = useRef<HTMLButtonElement>(null);
@@ -14,11 +16,12 @@ export default function AudioRecorder({newMessageState, refs}: AudioRecorderProp
     const mediaStream = useRef<MediaStream | null>(null);
     const mediaRecorder = useRef<MediaRecorder | null>(null);
     const audioBlob = useRef<Blob[]>([]);
-    let discarding:boolean = false;
-
+    
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [newMessage, setNewMessage] = newMessageState;
     const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
+    
+    let discarding:boolean = false;
 
     async function startRecording(){
         try {
@@ -48,34 +51,36 @@ export default function AudioRecorder({newMessageState, refs}: AudioRecorderProp
                 );
                 const audioFile = new File([recordedBlob], "voice.wav", {type: "audio/wav"});
                 const formData = new FormData();
-                const timeNow = Date.now().toString();
-                formData.append("audioFile", audioFile);
-                formData.append("time", timeNow);
+                const fileName = "/audio_recordings/audio_recording_" + authUser.id + "_" + Date.now() + ".wav";
+                // const timeNow = Date.now().toString();
+                formData.append("audiofile", audioFile);
+                formData.append("filename", fileName);
                 //Post .wav file to public folder
                 try {
                     axios.post("http://localhost:8800/postaudio", formData)
-                    const message = {
-                        ...newMessage, 
-                        content: null, 
-                        audio_content: `/audio recordings/audio_recording_${timeNow}.wav`
-                    };
-                    //Post message to database
-                        try {
-                            const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
-                            axios.post(`http://localhost:8800/${q}`, message)
-                            .then(()=>{
-                                setNewMessage({...newMessage, replying_to_message_id: null});
-                                setSessionMessageCount(sessionMessageCount + 1);
-                                if (replyRef.current) {
-                                    replyRef.current.style.display = "none";
-                                }
-                            });
-                            if (chatInputRef.current) {
-                                chatInputRef.current.value = "";
-                            }
-                        } catch (err) {
-                            console.error("There was an error trying to post your message:" + err);
+                    .then(()=>{
+                        //Post message to database
+                        const message = {
+                            ...newMessage, 
+                            content: null, 
+                            audio_content: fileName
+                        };
+                        const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
+                        axios.post(`http://localhost:8800/${q}`, message)
+                    })
+                    .then(()=>{
+                        setNewMessage({...newMessage, replying_to_message_id: null});
+                        setSessionMessageCount(sessionMessageCount + 1);
+                        if (replyRef.current) {
+                            replyRef.current.style.display = "none";
                         }
+                        if (chatInputRef.current) {
+                            chatInputRef.current.value = "";
+                        }
+                    })
+                    .catch((err)=>{
+                        console.error("There was an error trying to post your message:" + err);
+                    })
                 } catch (err) {
                     console.error("The application encountered an error trying to save the audio file:" + err);
                 }

@@ -1,6 +1,6 @@
 import { ChangeEvent, RefObject, useContext, useRef, useState } from "react";
 import axios from "axios";
-import { AuthUserContext, closeModal, IsMobileContext } from "../utils.tsx";
+import { AuthUserContext, closeModal, IsMobileContext, getFileExt } from "../utils.tsx";
 import { EditProfileProps, User } from "../types";
 import "../css/EditProfile.css"
 
@@ -24,12 +24,19 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         const target = e.target as HTMLInputElement & {files: FileList};
         const uploadedImage = target.files[0];
         if (uploadedImage){
+            const fileName = "/user_icons/user_icon_" + authUser.id + "_" + Date.now() + getFileExt(uploadedImage.name);
+            console.log(fileName);
+
             const formdata = new FormData();
             formdata.append("icon", uploadedImage);
-            formdata.append("userId", authUser.id.toString());
+            formdata.append("filename", fileName);
+            formdata.append("userid", authUser.id.toString());
             axios.post(`http://localhost:8800/updateicon`, formdata)
-            .then(async ()=>{return await axios.get(`http://localhost:8800/geticon/${authUser.id}`)})
-            .then((res)=>{iconRef.current!.style.backgroundImage = `url(/${res.data[0].icon_url})`; setIsChanged(true);})
+            .then(()=>{
+                if (iconRef.current){
+                iconRef.current.style.backgroundImage = `url(/public${fileName})`
+                }; 
+                setIsChanged(true);})
             .catch((err)=>{console.error(err)});
         }
     }
