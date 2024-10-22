@@ -21,6 +21,7 @@ export default function ChatWindow(){
     const inputReplyRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
     const dropZoneRef = useRef<HTMLDivElement>(null);
+    const inputAttachmentRef = useRef<HTMLDivElement>(null);
     
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [messages, setMessages] = useState<Message[] | GroupMessage[] | []>();
@@ -39,6 +40,8 @@ export default function ChatWindow(){
             sender_username: authUser.username
         }
     });
+    const [attachment, setAttachment] = useState<FormData | null>(null);
+    const [attachmentName, setAttachmentName] = useState<string>("");
     const [deletedMessageCount, setDeletedMessageCount] = useState<number>(0);
     const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
     const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
@@ -112,7 +115,9 @@ export default function ChatWindow(){
                     <ViewProfile/>
                     <DragAndDrop
                     newMessageState={[newMessage, setNewMessage]}
-                    refs={dropZoneRef}
+                    attachmentState={[attachment, setAttachment]}
+                    attachmentNameState={[attachmentName, setAttachmentName]}
+                    refs={[dropZoneRef, inputAttachmentRef]}
                     />
                 </div>) : (
                     <div id="noMessages">
@@ -123,8 +128,10 @@ export default function ChatWindow(){
                     </div>
                 )}
             <ChatInput
-            refs={[chatInputRef, inputReplyRef, fontStylePopupRef]}
+            refs={[chatInputRef, inputReplyRef, fontStylePopupRef, inputAttachmentRef]}
             newMessageState={[newMessage, setNewMessage]}
+            attachmentState={[attachment, setAttachment]}
+            attachmentNameState={[attachmentName, setAttachmentName]}
             selectedTextState={[selectedText, setSelectedText]}
             actions={toggleFontStylePopup}
             />

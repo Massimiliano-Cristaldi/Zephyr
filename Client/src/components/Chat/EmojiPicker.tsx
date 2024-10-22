@@ -34,19 +34,15 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
             const categoryWidth = isMobile ? window.innerWidth * 0.7 : window.innerWidth * 0.245;
             switch (category) {
                 case "people":
-                    console.log("people");
                     emojiPickerRef.current.scrollTo({left: 0, behavior: "smooth"});
                     break;
                 case "nature":
-                    console.log("nature");
                     emojiPickerRef.current.scrollTo({left: categoryWidth -7, behavior: "smooth"});
                     break;
                 case "food":
-                    console.log("food");
                     emojiPickerRef.current.scrollTo({left: categoryWidth * 2 - 7, behavior: "smooth"});
                     break;
                 case "misc":
-                    console.log("misc");
                     emojiPickerRef.current.scrollTo({left: categoryWidth * 3, behavior: "smooth"});
                     break;
             }
@@ -102,11 +98,20 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
             if (emoji && currentPosition) {
                 chatInputRef.current.value = text.slice(0, currentPosition) + emoji + text.slice(currentPosition, text.length);
                 setCurrentPosition(currentPosition + emoji.length);
+                setTimeout(()=>{
+                    if (chatInputRef.current) {
+                        chatInputRef.current.focus();
+                        chatInputRef.current.setSelectionRange(currentPosition + emoji.length, currentPosition + emoji.length);
+                    }
+                }, 0);
             } else if (initialPosition) {
                 setCurrentPosition(initialPosition + emoji.length);
                 chatInputRef.current.value = text.slice(0, initialPosition) + emoji + text.slice(initialPosition, text.length);
+                chatInputRef.current.focus();
+                chatInputRef.current.setSelectionRange(initialPosition + emoji.length, initialPosition + emoji.length);
             } else {
                 chatInputRef.current.value = text + emoji;
+                chatInputRef.current.focus();
             }
         }
     }

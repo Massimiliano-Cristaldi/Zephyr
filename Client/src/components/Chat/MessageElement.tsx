@@ -5,6 +5,7 @@ import { MessageElementProps, UseStateArray } from "../../types";
 import MessageDropdown from "./MessageDropdown";
 import AudioElement from "./AudioElement.tsx";
 import "../../css/MessageElement.css";
+import AttachmentElement from "./AttachmentElement.tsx";
 
 export default function MessageElement({message, refs, newMessageState, deletedMessageState}: MessageElementProps){
 
@@ -27,7 +28,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
         if (messageContentRef.current) {
             if (message.content){
                 messageContentRef.current.innerHTML = sanitizeMessageInput(message.content);
-            } else if (message.content === ""){
+            } else if (message.content === "" && message.audio_content === null && message.attachments === null){
                 messageContentRef.current.innerHTML = "<i>This message has been deleted.</i>";
             }
         }
@@ -69,6 +70,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                 setDeletedMessageCount(deletedMessageCount + 1);
                 message.content = "";
                 message.audio_content = null;
+                message.attachments = null;
                 message.replied_message_content = "";
                 if (newMessage.replying_to_message_id === message.id) {
                     setNewMessage({...newMessage, replying_to_message_id: null});
@@ -106,7 +108,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
             <div
             key={message.id} 
             >
-                <div className="pt-2">
+                <div className="d-flex flex-column">
                     {(message.replied_message_content || message.replied_message_audio_content) && 
                     <div className={message.sender_id == authUser.id ? "senderRepliedMessage" : "recipientRepliedMessage"}>
                         <i>Replying to
@@ -119,6 +121,13 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                         </i>
                         <div ref={replyContentRef}/>
                     </div>}
+
+                    {message.attachments &&
+                    <AttachmentElement
+                    attachment={message.attachments}
+                    senderId={message.sender_id}
+                    />}
+
                     <div ref={messageContentRef} className="messageContent">
                         {message.audio_content &&
                             <AudioElement
@@ -126,9 +135,8 @@ export default function MessageElement({message, refs, newMessageState, deletedM
                             />
                         }
                     </div>
-
                 </div>
-                {(message.content || message.audio_content) &&
+                {(message.content || message.audio_content || message.attachments) &&
                 <MessageDropdown message={message} actions={[handleReply, deleteMessage]}/>}
             </div>
 

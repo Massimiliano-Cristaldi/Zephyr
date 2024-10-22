@@ -3,11 +3,10 @@ import { AuthUserContext } from "../../utils.tsx";
 import { MessageDropdownProps } from "../../types";
 import "../../css/MessageDropdown.css";
 
-export default function MessageDropdown(props: MessageDropdownProps){
+export default function MessageDropdown({message, actions}: MessageDropdownProps){
 
     const authUser = useContext(AuthUserContext);
     const messageDropdownRef = useRef<HTMLUListElement>(null);
-    const message = props.message;
 
     function toggleMessageDropdown(){
         if (messageDropdownRef.current) {
@@ -25,7 +24,7 @@ export default function MessageDropdown(props: MessageDropdownProps){
         }
     }
 
-    const [handleReply, deleteMessage] = props.actions;
+    const [handleReply, deleteMessage] = actions;
 
     return(
         <div className="messageDropdownWrapper">

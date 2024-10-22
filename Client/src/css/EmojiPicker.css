@@ -6,6 +6,7 @@
     width: 70vw;
     background-color: rgba(36, 36, 36, 0.9);
     font-size: 5vw;
+    z-index: 3;
 }
 
 #emojiPickerWrapper>div::-webkit-scrollbar{

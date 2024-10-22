@@ -66,7 +66,7 @@
 }
 
 .messageContent{
-    padding: 10px 15px 10px 15px;
+    padding: 10px 15px 0px 15px;
 }
 
 .timeSentSender{
@@ -98,22 +98,19 @@
 .senderRepliedMessage{
     display: flex;
     flex-direction: column;
-    width: calc(50vw - 29px);
-    justify-self: center;
+    width: calc(50vw - 19px);
     align-self: center;
-    padding: 5px 10px;
-    margin: 10px auto 5px auto;
+    padding: 10px 10px 5px 10px;
+    margin-top: 10px;
     background-color: var(--senderReplyBg);
 }
 
 .recipientRepliedMessage{
     display: flex;
     flex-direction: column;
-    width: calc(50vw - 29px);
-    justify-self: center;
+    width: calc(50vw - 19px);
     align-self: center;
-    padding: 5px 10px;
-    margin: 10px auto 5px auto;
+    padding: 10px 10px 5px 10px;
     background-color: var(--recipientReplyBg);
 }
 
@@ -133,7 +130,7 @@
     }
 
     .senderRepliedMessage, .recipientRepliedMessage{
-        width: calc(40vw - 29px);
+        width: calc(40vw - 19px);
     }
 
     .messageContent>audio{

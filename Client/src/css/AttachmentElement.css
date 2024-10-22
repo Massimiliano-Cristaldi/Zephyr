@@ -1,0 +1,59 @@
+.senderImageAttachment{
+    display: flex;
+    align-items: center;
+    gap: 1.5vmin;
+    padding: 5px;
+    margin: 10px;
+    background-color: var(--senderReplyBg);
+    cursor: pointer;
+}
+
+.recipientImageAttachment{
+    display: flex;
+    align-items: center;
+    gap: 1.5vmin;
+    padding: 10px;
+    margin: 10px;
+    background-color: var(--recipientReplyBg);
+    cursor: pointer;
+}
+
+.attachedImage{
+    width: 30vw;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: 0px 0px 2px rgb(66, 66, 66);
+}
+
+.senderFileAttachment{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5vmin;
+    padding: 10px 5px 10px 10px;
+    margin: 10px 10px 0px 10px;
+    background-color: var(--senderReplyBg);
+}
+
+.recipientFileAttachment{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5vmin;
+    padding: 10px 5px 10px 10px;
+    margin: 10px 10px 0px 10px;
+    background-color: var(--recipientReplyBg);
+}
+
+.attachmentCaption{
+    display: block;
+    text-align: start;
+}
+
+@media screen and (min-width: 996px) {
+    .attachedImage{
+        width: 5vw;
+    }
+}

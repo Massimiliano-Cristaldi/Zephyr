@@ -1,23 +1,27 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { ChatTypeContext, EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput } from "../../utils.tsx";
+import { AuthUserContext, ChatTypeContext, EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput, getFileExt } from "../../utils.tsx";
 import { ChatInputProps, UseStateArray } from "../../types";
 import EmojiPicker from "./EmojiPicker";
 import AudioRecorder from "./AudioRecorder.tsx";
 import "../../css/ChatInput.css"
 
-export default function ChatInput({refs, newMessageState, selectedTextState, actions}:ChatInputProps){
+export default function ChatInput({refs, newMessageState, attachmentState, attachmentNameState, selectedTextState, actions}:ChatInputProps){
 
     const params = useParams();
+    const authUser = useContext(AuthUserContext);
 
     const [replyRef, replyNameRef] = useContext(MessageReplyContext).refs;
-    const [chatInputRef, inputReplyRef, fontStylePopupRef] = refs;
+    const [chatInputRef, inputReplyRef, fontStylePopupRef, inputAttachmentRef] = refs;
+    const attachmentButtonRef = useRef<HTMLInputElement>(null);
     const emojiPickerWrapperRef = useContext(EmojiPickerContext).refs;
     const tabIndexSetterRef = useRef<HTMLInputElement>(null);
 
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
     const [newMessage, setNewMessage] = newMessageState;
+    const [attachment, setAttachment] = attachmentState;
+    const [attachmentName, setAttachmentName] = attachmentNameState;
     const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
     const [currentPosition, setCurrentPosition] = useState<number|null>(null);
     const [selectedText, setSelectedText] = selectedTextState;
@@ -26,6 +30,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     //Cancel replying state when switching to a different chat
     useEffect(()=>{
         cancelReplyState();
+        chatInputRef.current.focus();
     }, [params])
 
     //Set new message content every time the chat input's value changes
@@ -36,20 +41,42 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
     //Send message and make the reply box disappear
     function sendMessage(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
-        if (chatInputRef && chatInputRef.current && chatInputRef.current.value !== "") {
+        if (chatInputRef && chatInputRef.current && (chatInputRef.current.value !== "" || newMessage.attachments)) {
             try {
                 const q = chatType === "individualChat" ? "sendmessage" : "sendgroupmessage";
-                axios.post(`http://localhost:8800/${q}`, newMessage)
-                .then(()=>{
-                    setNewMessage({...newMessage, replying_to_message_id: null});
-                    setSessionMessageCount(sessionMessageCount + 1);
-                    if (replyRef.current) {
-                        replyRef.current.style.display = "none";
-                    }
-                });
-                chatInputRef.current.value = "";
+                if (attachment) {
+                    axios.post("http://localhost:8800/postattachment", attachment)
+                    .then(()=>{
+                        axios.post(`http://localhost:8800/${q}`, newMessage)
+                    })
+                    .then(()=>{
+                        setNewMessage({...newMessage, content: '', audio_content: null, attachments: null, replying_to_message_id: null});
+                        setSessionMessageCount(sessionMessageCount + 1);
+                        if (replyRef.current) {
+                            replyRef.current.style.display = "none";
+                        }
+                    })
+                    .catch((err)=>{
+                        console.error("There was an error trying to post your attachment:" + err);
+                    })
+                } else {
+                    axios.post(`http://localhost:8800/${q}`, newMessage)
+                    .then(()=>{
+                        setNewMessage({...newMessage, replying_to_message_id: null});
+                        setSessionMessageCount(sessionMessageCount + 1);
+                        if (replyRef.current) {
+                            replyRef.current.style.display = "none";
+                        }
+                    })
+                    .catch((err)=>{
+                        console.error("There was an error trying to post your attachment:" + err);
+                    })
+                }
             } catch (err) {
                 console.error("There was an error trying to post your message:" + err);
+            } finally {
+                chatInputRef.current.value = "";
+                inputAttachmentRef.current.style.display = "none";
             }
         }
     }
@@ -59,7 +86,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
 
     //Show/hide/move font style popup upon pressing keys that cause text selection to change
     function handleKeyboardEvents(e:React.KeyboardEvent<HTMLInputElement>){
-        const triggers = ["ShiftLeft", "ShiftRight", "ArrowLeft", "ArrowRight", "Space", "Backspace", "Delete", "v"];
+        const triggers = ["ShiftLeft", "ShiftRight", "ArrowLeft", "ArrowRight", "Space", "Backspace", "Delete", "v", "x"];
         if (fontStylePopupRef.current) {
             if (e.key === "Escape"){
                 window.getSelection()?.removeAllRanges();
@@ -76,6 +103,32 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
         if (replyRef.current) {
             replyRef.current.style.display = "none";
             setNewMessage({...newMessage, replying_to_message_id: null});
+        }
+    }
+
+    //Set attachment through the button inside the chat input (no drag and drop)
+    function handleFileAttachment(){
+        if (attachmentButtonRef.current?.files) {
+            const fileObject = attachmentButtonRef.current.files[0];
+            const fileName = "/attachments/attachment_" + authUser.id + "_" + Date.now() + getFileExt(fileObject.name);                    
+            const formData = new FormData();
+            formData.append("attachment", fileObject);
+            formData.append("filename", fileName);
+            setAttachment(formData);
+            setAttachmentName(fileObject.name);
+            setNewMessage({...newMessage, attachments: fileName});
+            if (inputAttachmentRef.current) {
+                inputAttachmentRef.current.style.display = "block";
+            }
+        }
+    }
+
+    //Remove the attachment from the current message, hide the attachment box
+    function unsetAttachment(){
+        if (inputAttachmentRef.current) {
+            inputAttachmentRef.current.style.display = "none";
+            setNewMessage({...newMessage, attachments: null});
+            setAttachmentName("");
         }
     }
         
@@ -101,7 +154,7 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
         }
     }
 
-    //Show the box containing all the emojis
+    //Show/hide the box containing all the emojis
     function toggleEmojiPicker(){
         if (emojiPickerWrapperRef.current) {
             if (emojiPickerWrapperRef.current.style.display === "block") {
@@ -112,6 +165,8 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                 emojiPickerWrapperRef.current.style.display = "block";
             }
         }
+        chatInputRef.current.focus();
+        chatInputRef.current.setSelectionRange(currentPosition, currentPosition);
     }
 
     return(
@@ -120,15 +175,25 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                 <div>
                     <i>Replying to
                         <b ref={replyNameRef}/>
-                        's message
+                        's message:
                     </i>
                     <br />
                     <div ref={inputReplyRef}/>
                     <i className="fa-solid fa-xmark" onClick={cancelReplyState}/>
                 </div>
             </div>
+
+            <div id="inputAttachmentWrapper" ref={inputAttachmentRef}>
+                <div>
+                    <i>Attachment:</i> <br/>
+                    <i className="fa-solid fa-paperclip"/> {attachmentName}
+                    <i className="fa-solid fa-xmark" onClick={unsetAttachment}/>
+                </div>
+            </div>
+
             <div id="chatInputWrapper">
                 <form onSubmit={sendMessage}>
+
                     <EmojiPicker 
                     refs={[emojiPickerWrapperRef, tabIndexSetterRef, chatInputRef]} 
                     currentPositionState={[currentPosition, setCurrentPosition]}
@@ -136,9 +201,10 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                     <i 
                     className="fa-regular fa-face-smile fa-lg" 
                     id="emojiButton" 
-                    style={{color: "#ebebeb"}}
+                    style={{color: "var(--defaultFontColor)"}}
                     onClick={toggleEmojiPicker}
                     />
+
                     <input 
                     type="text" 
                     ref={chatInputRef}
@@ -150,14 +216,28 @@ export default function ChatInput({refs, newMessageState, selectedTextState, act
                     id="messageInput"
                     autoComplete="off"
                     />
+
+                    <label htmlFor="attachment" id="attachmentButton">
+                        <i className="fa-solid fa-paperclip"/>
+                    </label>
+                    <input 
+                    type="file" 
+                    name="attachment" 
+                    id="attachment"
+                    className="d-none" 
+                    ref={attachmentButtonRef}
+                    onChange={handleFileAttachment}/>
+
                     <button id="sendMessageButton">
                         <i className="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
-                    <AudioRecorder
-                    newMessageState={[newMessage, setNewMessage]}
-                    refs={[replyRef, chatInputRef]}
-                    />
+
+                <AudioRecorder
+                newMessageState={[newMessage, setNewMessage]}
+                refs={[replyRef, chatInputRef]}
+                />
+
                 <div id="fontStylePopup" ref={fontStylePopupRef}>
                     <i className="fa-solid fa-italic" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("italics")}}/>
                     <i className="fa-solid fa-bold" style={{color: "#f2f2f2"}} onClick={()=>{changeTextStyle("bold")}}/>

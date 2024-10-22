@@ -13,7 +13,6 @@
     justify-content: center;
     height: 34px;
     aspect-ratio: 1/1;
-    margin-right: 5px;
     background-color: var(--sendButtonSecondary);
     border-right: 2px solid var(--sendButtonPrimary);
     border-left: 2px solid var(--sendButtonPrimary);
@@ -55,4 +54,10 @@
 
 .recordButtonBg:hover{
     background-color: hsl(222, 38%, 60%);
+}
+
+@media screen and (min-width: 996px) {
+    .recordButton{
+        margin-right: 5px;
+    }
 }

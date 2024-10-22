@@ -40,10 +40,19 @@ export function formatTime(seconds:number, output:string){
     }
 }
 
-//Expected input: a full filename without path, e.g. "example.jpg"
+//Expected input: a full filename without file path, e.g. "example.jpg"
 //Expected output: only the file extension, e.g. ".jpg"
 export function getFileExt(filename: string){
     return filename.match(/\.[A-z]+(?<!a)$/g);
+}
+
+//Expected input: a full filename without file path, e.g. "example.jpg"
+//Expected output: a boolean indicating whether or not the filename matches an image extension
+export function isImageFile(filename: string){
+    const fileExt = getFileExt(filename);
+    if (fileExt) {
+        return (/\.(jpg|jpeg|avif|gif|tiff|png|svg|bmp|webp)/g).test(fileExt[0]);
+    }
 }
 
 export function getCaretCoordinates (input: HTMLInputElement, position:number){

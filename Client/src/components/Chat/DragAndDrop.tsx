@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import axios from "axios";
 import { AuthUserContext, getFileExt } from "../../utils";
 import { DragAndDropProps } from "../../types";
 import "../../css/DragAndDrop.css";
 
-export default function DragAndDrop({newMessageState, refs}: DragAndDropProps){
+export default function DragAndDrop({newMessageState, attachmentState, attachmentNameState, refs}: DragAndDropProps){
     const authUser = useContext(AuthUserContext);
-    const dropZoneRef = refs;
+    const [dropZoneRef, inputAttachmentRef] = refs;
     const [newMessage, setNewMessage] = newMessageState;
+    const [attachment, setAttachment] = attachmentState;
+    const [attachmentName, setAttachmentName] = attachmentNameState;
 
-    //TODO: give visual feedback for successful attachment; display attachment inside messageElement
     function handleDrop(e: React.DragEvent){
         e.preventDefault();
         if (dropZoneRef.current) {
@@ -24,14 +24,12 @@ export default function DragAndDrop({newMessageState, refs}: DragAndDropProps){
                     const fileName = "/attachments/attachment_" + authUser.id + "_" + Date.now() + getFileExt(fileObject.name);                    
                     const formData = new FormData();
                     formData.append("attachment", fileObject);
-                    formData.append("filename", fileName)
-                    try {
-                        axios.post("http://localhost:8800/postattachment", formData)
-                        .then(()=>{
-                            setNewMessage({...newMessage, attachments: fileName});
-                        });
-                    } catch (err) {
-                        console.error("There was an error trying to upload your attachment:" + err);
+                    formData.append("filename", fileName);
+                    setAttachment(formData);
+                    setAttachmentName(fileObject.name);
+                    setNewMessage({...newMessage, attachments: fileName});
+                    if (inputAttachmentRef.current) {
+                        inputAttachmentRef.current.style.display = "block";
                     }
                 }
                 reader.readAsArrayBuffer(file);
@@ -47,7 +45,8 @@ export default function DragAndDrop({newMessageState, refs}: DragAndDropProps){
             onDrop={(e)=>{handleDrop(e)}}
             onDragLeave={()=>{if (dropZoneRef.current){dropZoneRef.current.style.display = "none";}}}
             >
-                Dropzone
+                <i className="fa-solid fa-file-arrow-up" style={{color: "#868484"}}/>
+                Release file to attach
             </div>
     )
 }

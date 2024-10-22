@@ -67,6 +67,8 @@ export interface GroupMessage{
 export interface ChatInputProps{
     refs: RefObject<any>[],
     newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
+    attachmentState: [FormData | null, Dispatch<SetStateAction<FormData | null>>],
+    attachmentNameState: [string, Dispatch<SetStateAction<string>>],
     selectedTextState: [string, Dispatch<SetStateAction<string>>], 
     actions: ()=>any
 }
@@ -97,6 +99,11 @@ export interface EmojiPickerProps{
     currentPositionState: [number|null, Dispatch<SetStateAction<number|null>>],
 }
 
+export interface AttachmentElementProps{
+    attachment: string,
+    senderId: number
+}
+
 export interface AudioRecorderProps{
     newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
     refs: [RefObject<HTMLDivElement>, RefObject<HTMLInputElement>]
@@ -108,7 +115,9 @@ export interface AudioElementProps{
 
 export interface DragAndDropProps{
     newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
-    refs: RefObject<HTMLDivElement>
+    attachmentState: [FormData | null, Dispatch<SetStateAction<FormData | null>>],
+    attachmentNameState: [string, Dispatch<SetStateAction<string>>],
+    refs: [RefObject<HTMLDivElement>, RefObject<HTMLDivElement>]
 }
 
 //EditThemes

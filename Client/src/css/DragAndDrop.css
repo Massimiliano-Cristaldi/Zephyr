@@ -1,27 +1,83 @@
-#dndWrapper{
-    display: none;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    bottom: 8vh;
-    right: 0;
-    height: 75.65vh;
-    width: 80vw !important;
-    color: black;
-    background-color: red;
-}
-
 #dropZone{
     display: none;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+
     position: absolute;
     bottom: 8vh;
     right: 0;
-    height: 75.65vh;
-    width: 80vw !important;
-    color: black;
-    background-color: rgb(214, 213, 213);
+
+    height: 73vh;
+    width: 85vw;
+
+    background-color: rgba(214, 213, 213, 0.6);
+    opacity: 100%;
+    backdrop-filter: blur(3px);
+    animation-name: blurDropZone;
+    animation-duration: 0.3s;
+    
+    font-size: 1rem;
+    font-weight: 500;
+    color: #868484;
+
     z-index: 3;
-    opacity: 50%;
+}
+
+#dropZone::after{
+    position: absolute;
+    content: '';
+    height: 50vh;
+    width: 50vw;
+    margin: auto;
+    z-index: 2;
+    background: linear-gradient(90deg, #868484 50%, transparent 50%), 
+        linear-gradient(90deg, #868484 50%, transparent 50%), 
+        linear-gradient(0deg, #868484 50%, transparent 50%), 
+        linear-gradient(0deg, #868484 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 15px 4px, 15px 4px, 4px 15px, 4px 15px;
+    animation: border-dance 4s infinite linear;
+}
+
+#dropZone>.fa-file-arrow-up{
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+@keyframes blurDropZone{
+    0% {
+        backdrop-filter: blur(0px);
+        opacity: 0%;
+    }
+    100% {
+        backdrop-filter: blur(3px);
+        opacity: 100%;
+    }
+}
+
+@keyframes border-dance{
+    0% {
+        background-position: 0px 0px, 20vmax calc(50vh - 4px), 0px 20vmax, calc(50vw - 4px) 0px;
+    }
+    100% {
+        background-position: 20vmax 0px, 0px calc(50vh - 4px), 0px 0px, calc(50vw - 4px) 150px;
+    }
+}
+
+@media screen and (min-width: 996px){
+    #dropZone{
+        width: 80vw;
+        height: 76vh;
+        font-size: 2rem;
+    }
+
+    @keyframes border-dance {
+        0% {
+            background-position: 0px 0px, 14vmax calc(50vh - 4px), 0px 14vmax, calc(50vw - 4px) 0px;
+        }
+        100% {
+            background-position: 14vmax 0px, 0px calc(50vh - 4px), 0px 0px, calc(50vw - 4px) 150px;
+        }
+    }
 }

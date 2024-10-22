@@ -23,6 +23,7 @@ export default function SelectedContact(){
         icon_url: null});
     const [userIsAdded, setUserIsAdded] = useState(true);
 
+    //Hide contact list when a chat is opened if using mobile layout
     useEffect(()=>{
         if (isMobile) {
             contactListRef.current.style.display = "none";

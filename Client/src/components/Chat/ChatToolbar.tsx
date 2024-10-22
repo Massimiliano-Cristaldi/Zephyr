@@ -16,7 +16,7 @@ export default function ChatToolbar({contact}: ChatToolbarProps){
                 <div id="contactInfo" onClick={showViewProfileModal}>
                     <div 
                     className="contactIcon" 
-                    style={{backgroundImage: `url(/${contact?.icon_url || "user.png"}`}}>
+                    style={{backgroundImage: `url(/public/${contact?.icon_url || "/user_icons/user.png"}`}}>
                     </div>
                     <div className="d-flex flex-column pb-1" id="nameAndNumber">
                         <div ref={contactNameRef}>
