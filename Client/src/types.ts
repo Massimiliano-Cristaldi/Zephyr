@@ -12,11 +12,12 @@ export interface User{
 }
 
 export interface Participant{
+    group_id?: number,
     participant_id: number,
     participant_username: string,
     participant_added_as?: string,
     is_participant_admin: boolean,
-    phone_number: number
+    participant_phone_number: number
 }
 
 export interface Group{
@@ -129,6 +130,14 @@ export interface ConfirmPopupProps{
 //Groupchat
 
 export interface GroupChatToolbarProps{
+    group: Group
+}
+
+export interface ParticipantListProps{
+    group: Group
+}
+
+export interface GroupDetailsProps{
     group: Group
 }
 

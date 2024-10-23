@@ -23,7 +23,7 @@ export default function ChatWindow(){
     const dropZoneRef = useRef<HTMLDivElement>(null);
     const inputAttachmentRef = useRef<HTMLDivElement>(null);
     
-    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
     const [messages, setMessages] = useState<Message[] | GroupMessage[] | []>();
     const [newMessage, setNewMessage] = useState<Message | GroupMessage>(()=>{
         return chatType === "individualChat" ? {

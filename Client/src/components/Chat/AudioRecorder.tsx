@@ -17,7 +17,7 @@ export default function AudioRecorder({newMessageState, refs}: AudioRecorderProp
     const mediaRecorder = useRef<MediaRecorder | null>(null);
     const audioBlob = useRef<Blob[]>([]);
     
-    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
     const [newMessage, setNewMessage] = newMessageState;
     const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
     

@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { ContactListRefContext, IsMobileContext, ViewProfileContext } from "../../utils.tsx";
+import { AuthUserContext, ContactListRefContext, IsMobileContext, ViewProfileContext } from "../../utils.tsx";
 import { User } from "../../types";
 import ChatToolbar from "./ChatToolbar";
 import ChatWindow from "./ChatWindow";
 import UserNotAdded from "./UserNotAdded";
 
+//TODO: Contact info in ChatToolbar doesn't load when refreshing the page, but it does when navigating
 export default function SelectedContact(){
     
     const params = useParams();    
+    const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
     
     const viewProfileRef = useRef<HTMLDivElement>(null);
@@ -35,29 +37,40 @@ export default function SelectedContact(){
         }
     }, [isMobile])
 
+    //Fetch contact list
     useEffect(()=>{
         async function fetchData(){
             try {
-                const response = await axios.get(`http://localhost:8800/contact/${params.authId}/${params.contactId}`);
-                if (response.status !== 200 || response.data?.length === 0) {
-                    throw new Error("Fetch failed");
-                }
-                const contacts = await axios.get(`http://localhost:8800/contactlist/${params.authId}`);                
+                const contacts = await axios.get(`http://localhost:8800/contactlist/${authUser.id}`);                
                 if (contacts.status !== 200 || contacts.data?.length === 0) {
-                    throw new Error("Fetch failed");
+                    throw new Error("Fetch failed at SelectedContact");
                 }
-                const isInContactList = contacts.data.some((obj:User) => obj.id === Number(params.contactId));                
+                const isInContactList = contacts.data.some((el:User) => el.id === Number(params.contactId));
                 if (!isInContactList) {
                     setUserIsAdded(false);
                 }
-                setContact(response.data[0]);
             } catch (err) {
                 console.error(err);
             }
         }
         fetchData();
-    }, [params.contactId])
+    }, [])
     
+    //Fetch current contact info
+    useEffect(()=>{
+        async function fetchData(){
+            try {
+                const response = await axios.get(`http://localhost:8800/contact/${authUser.id}/${params.contactId}`);
+                if (response.status !== 200 || response.data?.length === 0) {
+                    throw new Error("Fetch failed at SelectedContact");
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        fetchData();
+    }, [params])
+
     return(
         <ViewProfileContext.Provider value={[viewProfileRef, contactNameRef]}>
             {userIsAdded || <UserNotAdded/>}

@@ -11,7 +11,7 @@ export default function ContactList({contacts, groups}: ContactListProps){
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
-    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
 
     function openChat(chatId: number){
         if (isMobile) {
@@ -20,7 +20,7 @@ export default function ContactList({contacts, groups}: ContactListProps){
             backButtonRef.current.style.visibility = "visible";
         }
         if (chatType === "individualChat") {
-            navigate(`/chat/${authUser.id}/${chatId}`, {replace: true});
+            navigate(`/chat/${chatId}`, {replace: true});
         } else if (chatType === "groupChat"){
             navigate(`/groupchat/${chatId}`, {replace: true});
         }

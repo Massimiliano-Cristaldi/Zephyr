@@ -1,13 +1,14 @@
 import { useContext, useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import axios from "axios";
 import ContactList from "./ContactList";
-import { AuthUserContext, ChatTypeContext, ContactListRefContext, MessageCountContext } from "../../utils.tsx";
-import { User, UseStateArray } from "../../types";
+import { AuthUserContext, ContactListRefContext, MessageCountContext } from "../../utils.tsx";
+import { User } from "../../types";
 import "../../css/Body.css";
 
 export default function Body(){
 
+    const params = useParams();
     const authUser = useContext(AuthUserContext);
     const [contactListRef, chatWrapperRef] = useContext(ContactListRefContext);
     const [contacts, setContacts] = useState<User[] | []>([]);
@@ -25,6 +26,7 @@ export default function Body(){
             } catch (err) {
                 console.error(err);
             }
+            
             try {
                 const response = await axios.get(`http://localhost:8800/groupchatlist/${authUser.id}`)
                 if (response.status !== 200 || response.data.length === 0) {
@@ -36,7 +38,7 @@ export default function Body(){
             }
         }
         fetchData();
-    }, [authUser.id, sessionMessageCount])
+    }, [authUser.id, sessionMessageCount, params])
 
     return(
         <MessageCountContext.Provider value={[sessionMessageCount, setSessionMessageCount]}>

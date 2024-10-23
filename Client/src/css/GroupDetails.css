@@ -1,0 +1,105 @@
+#groupDetailsWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 73vh;
+    width: 85vw;
+    background-color: rgba(68, 68, 68, 0.678);
+    backdrop-filter: blur(5px);
+    animation-name: modalDarkenBg;
+    animation-duration: 0.5s;
+    z-index: 5;
+}
+
+#groupDetailsModal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 60vh;
+    width: 75vw;
+    padding: 2rem 1.3rem 0.3rem 1.3rem;
+
+    border-radius: 20px;
+    background-color: hsl(210, 13%, 94%);
+    color: rgb(80, 80, 80);
+    font-size: 30px;
+    font-weight: 600;
+
+    animation-name: modalSlide;
+    animation-duration: 0.5s;
+}
+
+#groupDetailIcon{
+    height: 23vh;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+#groupDetailsModal>ul{
+    list-style: none;
+    padding: unset;
+    min-width: 80%;
+    overflow-y: scroll;
+}
+
+#groupDetailsModal>ul::-webkit-scrollbar{
+    width: 4px;
+}
+
+#groupDetailsModal>ul::-webkit-scrollbar-thumb{
+    background-color: rgba(165, 165, 165, 0.774);
+}
+
+#groupDetailsModal>ul>li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    min-height: 5vh;
+    margin: 5px 5px;
+    padding: 5px 10px;
+    border-top: 1px solid rgba(128, 128, 128, 0.411);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.411);
+    font-size: 1.15rem;
+    word-break: break-all;
+}
+
+#groupDetailsModal>ul>li>div, #groupDetailsModal>ul>li>div>small{
+    color: rgb(80, 80, 80);
+}
+
+.participantNumber{
+    font-size: 0.9rem;
+}
+
+@keyframes modalDarkenBg {
+    0% {background-color: transparent; backdrop-filter: blur(0px);}
+    100%{background-color: rgba(68, 68, 68, 0.678); backdrop-filter: blur(5px);}
+}
+
+@keyframes modalSlide {
+    0% {top: -100vh}
+    100%{top: 0}
+}
+
+@media screen and (min-width: 996px) {
+    #groupDetailsWrapper{
+        height: 75.3vh;
+        width: 80vw;
+    }
+
+    #groupDetailsModal{
+        width: 40vw;
+        height: 70vh;
+    }
+
+    #groupDetailIcon{
+        height: 17vh;
+    }
+}

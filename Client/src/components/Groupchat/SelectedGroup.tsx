@@ -10,7 +10,7 @@ export default function SelectedGroup(){
 
     const params = useParams();
     const authUser = useContext(AuthUserContext);
-    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
     const [group, setGroup] = useState<any>({});
 
     //Set chat type as group chat every time this component is loaded

@@ -6,7 +6,6 @@ import AwaitContact from './components/Chat/AwaitContact';
 import SelectedContact from './components/Chat/SelectedContact';
 import SelectedGroup from './components/Groupchat/SelectedGroup';
 import EditForm from './components/EditThemes/EditForm';
-import DragAndDrop from './components/Chat/DragAndDrop';
 import './css/index.css';
 
 const router = createBrowserRouter([
@@ -19,7 +18,7 @@ const router = createBrowserRouter([
                 element: <AwaitContact/>
             },
             {
-                path: "chat/:authId/:contactId",
+                path: "chat/:contactId",
                 element: <SelectedContact/>,
             },
             {
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
             {
                 path: "themes/edit",
                 element: <EditForm/>
-            },
-            {
-                path: "dndtest",
-                element: <DragAndDrop/>
             }
         ],
     },

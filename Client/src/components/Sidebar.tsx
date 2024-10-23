@@ -9,26 +9,9 @@ export default function Sidebar(){
     const navigate = useNavigate();
     const isMobile = useContext(IsMobileContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
-    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
-
-    function changeChatType(){
-        if (chatType === "individualChat") {
-            setChatType("groupChat")
-        } else if (chatType === "groupChat"){
-            setChatType("individualChat")
-        }
-        navigate("/", {replace: true});
-    }
-
-    function backToContacts(){
-        contactListRef.current.style.display = "block";
-        backButtonRef.current.style.visibility = "hidden";
-        if (isMobile){
-            chatWrapperRef.current.style.display = "none";
-        }
-        navigate("/", {replace: true});
-    }
-
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
+    const [backToContacts, changeChatType]: Array<()=>void> = useContext(ChatTypeContext).actions;
+    
     return(
         <div id="sidebarWrapper">
             <i className="fa-solid fa-inbox" style={{color: "white"}}/>

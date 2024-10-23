@@ -18,7 +18,7 @@ export default function ChatInput({refs, newMessageState, attachmentState, attac
     const emojiPickerWrapperRef = useContext(EmojiPickerContext).refs;
     const tabIndexSetterRef = useRef<HTMLInputElement>(null);
 
-    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
     const [newMessage, setNewMessage] = newMessageState;
     const [attachment, setAttachment] = attachmentState;
     const [attachmentName, setAttachmentName] = attachmentNameState;

@@ -47,7 +47,7 @@
     width: 50vw;
     background-color: var(--senderMessageBg);
     padding-left: 10px;
-    margin: 10px 0px -15px 0px;
+    margin: 10px 0px -5px 0px;
     z-index: 1;
     font-size: 0.8rem;
     font-style: oblique;
@@ -58,7 +58,7 @@
     width: 50vw;
     background-color: var(--recipientMessageBg);
     padding-left: 10px;
-    margin: 10px 0px -15px 0px;
+    margin: 10px 0px -5px 0px;
     z-index: 1;
     font-size: 0.8rem;
     font-style: oblique;

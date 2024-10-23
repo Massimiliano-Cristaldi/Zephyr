@@ -18,7 +18,7 @@ export default function MessageElement({message, refs, newMessageState, deletedM
     const audioRef = useRef<HTMLAudioElement>(null);
     const repliedAudioRef = useRef<HTMLAudioElement>(null);
 
-    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext);
+    const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
     const [newMessage, setNewMessage] = newMessageState;
     const [deletedMessageCount, setDeletedMessageCount] = deletedMessageState;
     const [repliedMessage, setRepliedMessage]:UseStateArray = useContext(MessageReplyContext).states;

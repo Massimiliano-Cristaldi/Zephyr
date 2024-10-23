@@ -7,8 +7,11 @@ import Sidebar from "./Sidebar";
 import Body from "./Chat/Body";
 import "../css/StyleVariables.css";
 import "../css/index.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Layout(){
+
+    const navigate = useNavigate();
 
     const contactListRef = useRef<HTMLDivElement>(null);
     const chatWrapperRef = useRef<HTMLDivElement>(null);
@@ -24,7 +27,7 @@ export default function Layout(){
         phone_number: 0,
         icon_url: null
     });
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 996);
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 996);
     const [chatType, setChatType] = useState<string>("individualChat");
     const [selectedText, setSelectedText] = useState<string>("");
     const [isSelectingEmoji, setIsSelectingEmoji] = useState<boolean>(false);
@@ -93,6 +96,27 @@ export default function Layout(){
         setIsMobile(window.innerWidth < 996);
     })
 
+    function backToContacts(){
+        if (contactListRef.current && backButtonRef.current && chatWrapperRef.current) {
+            
+            contactListRef.current.style.display = "block";
+            backButtonRef.current.style.visibility = "hidden";
+            if (isMobile){
+                chatWrapperRef.current.style.display = "none";
+            }
+            navigate("/", {replace: true});
+        }
+    }
+    
+    function changeChatType(){
+        if (chatType === "individualChat") {
+            setChatType("groupChat")
+        } else if (chatType === "groupChat"){
+            setChatType("individualChat")
+        }
+        backToContacts();
+    }
+
     return(
         <AuthIdContext.Provider value={[authId, setAuthId]}>
         <AuthUserContext.Provider value={authUser}>
@@ -100,7 +124,7 @@ export default function Layout(){
         <ContactListRefContext.Provider value={[contactListRef, chatWrapperRef, backButtonRef]}>
         <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: toggleFontStylePopup}}>
         <EmojiPickerContext.Provider value={{refs: emojiPickerWrapperRef, states: [isSelectingEmoji, setIsSelectingEmoji], actions: closeEmojiPicker}}>
-        <ChatTypeContext.Provider value={[chatType, setChatType]}>
+        <ChatTypeContext.Provider value={{state: [chatType, setChatType], actions: [backToContacts, changeChatType]}}>
             <div className="container-fluid h-100" onMouseUp={()=>{toggleFontStylePopup(); closeEmojiPicker();}}>
                 <div className="row">
                         <Toolbar/>
