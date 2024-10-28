@@ -36,6 +36,11 @@ export default function ChatInput({refs, newMessageState, attachmentState, attac
     //Set new message content every time the chat input's value changes
     function handleChatInputChange(e: ChangeEvent<HTMLInputElement>){
         setNewMessage({...newMessage, content: sanitizeMessageInput(e.target.value)});
+        if (currentPosition) {
+            setCurrentPosition(currentPosition + 1);
+        } else {
+            setCurrentPosition(1);
+        }
     }
 
     //Send message and make the reply box disappear

@@ -15,6 +15,7 @@ export default function Body(){
     const [groups, setGroups] = useState<any>([]);
     const [sessionMessageCount, setSessionMessageCount] = useState(0);
 
+    //Fetch contact list and group list
     useEffect(()=>{
         async function fetchData(){
             try {
@@ -46,7 +47,7 @@ export default function Body(){
                 <ContactList contacts={contacts} groups={groups}/>
             </div>
             <div className="col-12 col-lg-10" id="chatWrapper" ref={chatWrapperRef}>
-                <Outlet/>
+                <Outlet context={[contacts, groups]}/>
             </div>
         </MessageCountContext.Provider>
     )

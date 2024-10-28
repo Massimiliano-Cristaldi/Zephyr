@@ -124,6 +124,7 @@
     height: 35px;
     width: 120px;
     background-color: rgba(36, 36, 36, 0.9);
+    z-index: 5;
 }
 
 #fontStylePopup>i{

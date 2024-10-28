@@ -4,6 +4,7 @@ import { AuthUserContext, closeModal, IsMobileContext, getFileExt } from "../uti
 import { EditProfileProps, User } from "../types";
 import "../css/EditProfile.css"
 
+//TODO: chatType changes to default when going to this page
 export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
     const authUser = useContext(AuthUserContext);
@@ -88,7 +89,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         <div id="editProfileWrapper" ref={editProfileRef}>
             <div id="editProfileModal">
 
-                <div id="currentIcon" style={{backgroundImage: `url(/${user?.icon_url || "/user.png"})`}} ref={iconRef}>
+                <div id="currentIcon" style={{backgroundImage: `url(/public${user?.icon_url || "/user.png"})`}} ref={iconRef}>
                     <label htmlFor="uploadIcon">
                         <i className="fa-solid fa-upload" style={{color: "#868484"}}/>
                     </label>

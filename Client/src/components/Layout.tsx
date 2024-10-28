@@ -22,7 +22,7 @@ export default function Layout(){
 
     const [authId, setAuthId] = useState<number>(1);
     const [authUser, setAuthUser] = useState<User>({
-        id: 0,
+        id: 1,
         username: "Loading...",
         phone_number: 0,
         icon_url: null
@@ -96,6 +96,7 @@ export default function Layout(){
         setIsMobile(window.innerWidth < 996);
     })
 
+    //Go back to contact list (on mobile, where opening a chat hides the contact list)
     function backToContacts(){
         if (contactListRef.current && backButtonRef.current && chatWrapperRef.current) {
             
@@ -108,6 +109,7 @@ export default function Layout(){
         }
     }
     
+    //Toggle between individual chat and group chat state
     function changeChatType(){
         if (chatType === "individualChat") {
             setChatType("groupChat")

@@ -1,66 +1,35 @@
-#groupDetailsWrapper{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    height: 73vh;
-    width: 85vw;
-    background-color: rgba(68, 68, 68, 0.678);
-    backdrop-filter: blur(5px);
-    animation-name: modalDarkenBg;
-    animation-duration: 0.5s;
-    z-index: 5;
-}
-
-#groupDetailsModal{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 60vh;
-    width: 75vw;
-    padding: 2rem 1.3rem 0.3rem 1.3rem;
-
-    border-radius: 20px;
-    background-color: hsl(210, 13%, 94%);
-    color: rgb(80, 80, 80);
-    font-size: 30px;
-    font-weight: 600;
-
-    animation-name: modalSlide;
-    animation-duration: 0.5s;
-}
-
-#groupDetailIcon{
+#groupDetailsIcon{
     height: 23vh;
+    width: 23vh;
     aspect-ratio: 1/1;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    align-self: center;
 }
 
-#groupDetailsModal>ul{
+#participantList{
     list-style: none;
     padding: unset;
     min-width: 80%;
     overflow-y: scroll;
+    align-self: center;
 }
 
-#groupDetailsModal>ul::-webkit-scrollbar{
+#participantList::-webkit-scrollbar{
     width: 4px;
 }
 
-#groupDetailsModal>ul::-webkit-scrollbar-thumb{
+#participantList::-webkit-scrollbar-thumb{
     background-color: rgba(165, 165, 165, 0.774);
 }
 
-#groupDetailsModal>ul>li{
+#participantList>li{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 1.3rem;
+    position: relative;
     min-height: 5vh;
     margin: 5px 5px;
     padding: 5px 10px;
@@ -70,12 +39,65 @@
     word-break: break-all;
 }
 
-#groupDetailsModal>ul>li>div, #groupDetailsModal>ul>li>div>small{
+#participantList>li>div, #participantList>li>div>small{
     color: rgb(80, 80, 80);
 }
 
 .participantNumber{
     font-size: 0.9rem;
+}
+
+#groupDetailsActions>i{
+    height: 20px;
+    width: 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+#addParticipantIcon{
+    position:absolute;
+    right: calc(1.3rem + 10px);
+    top: calc(25.2vh + 2.2rem + 10px);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.kickUserPopup{
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 30vw;
+    height: 9vh;
+    position: absolute;
+    right: 0px;
+    bottom: calc(9vh - 15px);
+    color: rgb(36, 36, 36);
+    background-color: hsl(210, 13%, 94%);
+    border: 1px solid rgb(36, 36, 36);
+    cursor: default;
+    z-index: 4;
+}
+
+.kickUserPopup>div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50%;
+    width: 100%;
+}
+
+.kickUserPopup>div>i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 50%;
+    cursor: pointer;
+}
+
+.kickUserPopup>div>i:hover{
+    background-color: rgb(201, 201, 201);
 }
 
 @keyframes modalDarkenBg {
@@ -96,10 +118,28 @@
 
     #groupDetailsModal{
         width: 40vw;
-        height: 70vh;
     }
 
-    #groupDetailIcon{
+    #groupDetailsIcon{
         height: 17vh;
+        width: 17vh;
+    }
+
+    #groupDetailsActions>i{
+        height: 35px;
+        width: 35px;
+        font-size: 1.2rem;
+        padding: 7px;
+    }
+
+    #addParticipantIcon{
+        right: calc(1.3rem + 10% + 10px);
+        top: calc(19.5vh + 2rem + 10px);
+    }
+
+    .kickUserPopup{
+        width: 30%;
+        height: 7vh;
+        bottom: calc(7vh - 15px);
     }
 }

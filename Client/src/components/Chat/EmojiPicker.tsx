@@ -46,6 +46,12 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
                     emojiPickerRef.current.scrollTo({left: categoryWidth * 3, behavior: "smooth"});
                     break;
             }
+            setTimeout(()=>{
+                if (chatInputRef.current) {
+                    chatInputRef.current.focus();
+                    chatInputRef.current.setSelectionRange(currentPosition, currentPosition);
+                }
+            }, 10)
         }
     }
 
@@ -107,11 +113,20 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
             } else if (initialPosition) {
                 setCurrentPosition(initialPosition + emoji.length);
                 chatInputRef.current.value = text.slice(0, initialPosition) + emoji + text.slice(initialPosition, text.length);
-                chatInputRef.current.focus();
-                chatInputRef.current.setSelectionRange(initialPosition + emoji.length, initialPosition + emoji.length);
+                setTimeout(()=>{
+                    if (chatInputRef.current) {
+                        chatInputRef.current.focus();
+                        chatInputRef.current.setSelectionRange(initialPosition + emoji.length, initialPosition + emoji.length);
+                        }
+                    }, 0);
             } else {
+                setCurrentPosition(emoji.length);
                 chatInputRef.current.value = text + emoji;
-                chatInputRef.current.focus();
+                setTimeout(()=>{
+                    if (chatInputRef.current) {
+                        chatInputRef.current.focus();
+                    }
+                })
             }
         }
     }
@@ -136,7 +151,7 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
                 <div ref={category4Ref}/>
             </div>
             <div id="emojiPicker" ref={emojiPickerRef} onScroll={styleActiveCategory}>
-                <input type="text" className="tabIndexSetter" ref={tabIndexSetterRef} onBlur={()=>{closeEmojiPicker(); console.log("should close")}}/>
+                <input type="text" className="tabIndexSetter" ref={tabIndexSetterRef} onBlur={closeEmojiPicker}/>
                 <div>
                     {peopleEmojis}
                 </div>

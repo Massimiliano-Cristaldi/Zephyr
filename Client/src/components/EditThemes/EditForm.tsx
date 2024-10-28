@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext, useRef, RefObject } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import ConfirmPopup from "./ConfirmPopup";
 import { defaultTheme, hexToHslString, getLightnessFromHex, formatColorProperty } from "../../ColorTools";
-import { ContactListRefContext, fonts, IsMobileContext } from "../../utils.tsx";
+import { ContactListRefContext, fonts, IsMobileContext, togglePopup } from "../../utils.tsx";
 import { StyleProperties } from "../../types";
 import "../../css/EditForm.css";
 
@@ -57,12 +57,6 @@ export default function EditForm(){
         window.location.reload();
     }
 
-    function showPopup(ref:RefObject<HTMLDivElement>){
-        if (ref.current){
-            ref.current.style.display = "flex";
-        }
-    }
-
     const excludeTheseProperties = ["iconHoverBg", "favoriteFont", "messageBorderRadius", "recipientReplyBg", "senderReplyBg", "senderMessageDropdownBorder", "recipientMessageDropdownBorder"];
     
     return(
@@ -93,13 +87,13 @@ export default function EditForm(){
             </div>
             <div id="editThemeButtonWrapper">
                 <div>
-                    <button onClick={()=>{showPopup(confirmApplyRef)}}>
+                    <button onClick={()=>{togglePopup(confirmApplyRef, "show"); togglePopup(confirmResetRef, "hide")}}>
                         Apply changes
                     </button>
                     <ConfirmPopup popupRef={confirmApplyRef} confirmAction={()=>{saveTheme(currentTheme)}}/>
                 </div>
                 <div>
-                    <button onClick={()=>{showPopup(confirmResetRef)}}>
+                    <button onClick={()=>{togglePopup(confirmResetRef, "show"); togglePopup(confirmApplyRef, "hide")}}>
                         Reset default theme
                     </button>
                     <ConfirmPopup popupRef={confirmResetRef} confirmAction={()=>{saveTheme(defaultTheme)}}/>

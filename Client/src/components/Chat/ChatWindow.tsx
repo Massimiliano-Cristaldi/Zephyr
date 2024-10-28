@@ -6,8 +6,8 @@ import { GroupMessage, Message, UseStateArray } from "../../types";
 import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";
 import ViewProfile from "../ViewProfile";
-import "../../css/ChatWindow.css";
 import DragAndDrop from "./DragAndDrop.tsx";
+import "../../css/ChatWindow.css";
 
 export default function ChatWindow(){
 

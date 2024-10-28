@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthUserContext, ContactListRefContext, IsMobileContext, ViewProfileContext } from "../../utils.tsx";
 import { User } from "../../types";
@@ -13,6 +13,7 @@ export default function SelectedContact(){
     const params = useParams();    
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
+    const [contacts, groups]: User[][] = useOutletContext();
     
     const viewProfileRef = useRef<HTMLDivElement>(null);
     const contactNameRef = useRef<HTMLDivElement>(null);
@@ -37,25 +38,14 @@ export default function SelectedContact(){
         }
     }, [isMobile])
 
-    //Fetch contact list
+    //Check if contact is in contact list
     useEffect(()=>{
-        async function fetchData(){
-            try {
-                const contacts = await axios.get(`http://localhost:8800/contactlist/${authUser.id}`);                
-                if (contacts.status !== 200 || contacts.data?.length === 0) {
-                    throw new Error("Fetch failed at SelectedContact");
-                }
-                const isInContactList = contacts.data.some((el:User) => el.id === Number(params.contactId));
-                if (!isInContactList) {
-                    setUserIsAdded(false);
-                }
-            } catch (err) {
-                console.error(err);
-            }
+        const isInContactList = contacts.some((el:User) => el.id === Number(params.contactId));
+        if (!isInContactList) {
+            setUserIsAdded(false);
         }
-        fetchData();
     }, [])
-    
+
     //Fetch current contact info
     useEffect(()=>{
         async function fetchData(){
@@ -64,12 +54,13 @@ export default function SelectedContact(){
                 if (response.status !== 200 || response.data?.length === 0) {
                     throw new Error("Fetch failed at SelectedContact");
                 }
+                setContact(response.data[0]);
             } catch (err) {
                 console.error(err);
             }
         }
         fetchData();
-    }, [params])
+    }, [params, authUser.id])
 
     return(
         <ViewProfileContext.Provider value={[viewProfileRef, contactNameRef]}>

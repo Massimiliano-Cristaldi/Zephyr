@@ -1,7 +1,7 @@
 import { GroupChatToolbarProps } from "../../types";
 import ParticipantList from "./ParticipantList";
 import "../../css/GroupChatToolbar.css";
-import GroupDetails from "./GroupDetails";
+import GroupChatModal from "./GroupChatModal";
 
 export default function GroupChatToolbar({group}:GroupChatToolbarProps){
 
@@ -22,7 +22,7 @@ export default function GroupChatToolbar({group}:GroupChatToolbarProps){
                 </div>
             </div>
 
-            <GroupDetails group={group}/>
+            <GroupChatModal group={group}/>
         </>
     )
 }

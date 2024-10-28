@@ -124,7 +124,7 @@ export interface DragAndDropProps{
 //EditThemes
 export interface ConfirmPopupProps{
     popupRef: RefObject<HTMLDivElement>,
-    confirmAction: ()=>void
+    confirmAction: (...args:any[])=>any | void
 }
 
 //Groupchat
@@ -137,8 +137,13 @@ export interface ParticipantListProps{
     group: Group
 }
 
-export interface GroupDetailsProps{
+export interface GroupChatModalProps{
     group: Group
+}
+
+export interface KickUserPopupProps{
+    popupRef: RefObject<HTMLDivElement>,
+    confirmAction: (...args:any[])=>any | void
 }
 
 //src

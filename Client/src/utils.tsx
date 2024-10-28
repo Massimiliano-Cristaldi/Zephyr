@@ -2,6 +2,7 @@ import { createContext, RefObject } from "react";
 import { User } from "./types";
 
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function
+//Expected output: the same date in format dd/mm/yy
 export function getDate(date: string){
     const unformattedYear:RegExpMatchArray | null = date.match(/\d{4}/g);
     const monthAndDay:RegExpMatchArray | null = date.match(/-\d{2}/g);
@@ -15,6 +16,7 @@ export function getDate(date: string){
 
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function, and an integer between -12 and 12
 //Time adjustment is calculated based on GMT
+//Expected output: the same timestamp in hh:mm AM/PM format
 export function getTime(time: string, time_adjustment:number){
     const hoursAndMinutes:RegExpMatchArray | null = time.match(/T\d{2}:\d{2}/g);
     if (hoursAndMinutes) {
@@ -55,6 +57,8 @@ export function isImageFile(filename: string){
     }
 }
 
+//Get the coordinates of the text cursor when typing inside the chat input
+//(getBoundingClientRect doesn't work with input elements, as it always returns 0 for all coordinates) 
 export function getCaretCoordinates (input: HTMLInputElement, position:number){
     const div = document.createElement("div");
     const style = window.getComputedStyle(input);
@@ -78,6 +82,7 @@ export function getCaretCoordinates (input: HTMLInputElement, position:number){
         return rect;
 };
 
+//Prevent form injection by filtering all HMTL tags except <b/>, <i/>, and <u/>
 export function sanitizeMessageInput(message:string){
     return message.replace(/(<\/?([a-z]|[A-Z]){2,}\/?>)|(<([a-z]|[A-Z])\/>)/g, "");
 }
@@ -88,6 +93,14 @@ export function closeModal(ref: RefObject<HTMLDivElement>, refresh:boolean){
         if (refresh) {
             window.location.reload();
         }
+    }
+}
+
+export function togglePopup(ref:RefObject<HTMLDivElement>, showHide:string = "show"){
+    if (ref.current && showHide === "show"){
+        ref.current.style.display = "flex";
+    } else if (ref.current && showHide === "hide"){
+        ref.current.style.display = "none";
     }
 }
 
@@ -225,3 +238,4 @@ export const EmojiPickerContext = createContext<any>([]);
 export const ViewProfileContext = createContext<any>([]);
 export const MessageReplyContext = createContext<any>([]);
 export const GroupMessageReplyContext = createContext<any>([]);
+export const GroupStateContext = createContext<any>([]);

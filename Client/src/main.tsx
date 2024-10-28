@@ -6,7 +6,9 @@ import AwaitContact from './components/Chat/AwaitContact';
 import SelectedContact from './components/Chat/SelectedContact';
 import SelectedGroup from './components/Groupchat/SelectedGroup';
 import EditForm from './components/EditThemes/EditForm';
+import GroupDetails from './components/Groupchat/GroupDetails';
 import './css/index.css';
+import AddParticipant from './components/Groupchat/AddParticipant';
 
 const router = createBrowserRouter([
     {
@@ -24,6 +26,16 @@ const router = createBrowserRouter([
             {
                 path: "groupchat/:groupId",
                 element: <SelectedGroup/>,
+                children: [
+                    {
+                        path: "",
+                        element: <GroupDetails/>
+                    },
+                    {
+                        path: "add",
+                        element: <AddParticipant/>
+                    },
+                ]
             },
             {
                 path: "themes/edit",
