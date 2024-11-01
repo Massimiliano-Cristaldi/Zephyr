@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import axios from "axios";
 import ContactList from "./ContactList";
-import { AuthUserContext, ContactListRefContext, MessageCountContext } from "../../utils.tsx";
+import { AuthUserContext, ContactListRefContext, ContactsContext, MessageCountContext } from "../../utils.tsx";
 import { User } from "../../types";
 import "../../css/Body.css";
 
@@ -43,12 +43,14 @@ export default function Body(){
 
     return(
         <MessageCountContext.Provider value={[sessionMessageCount, setSessionMessageCount]}>
+        <ContactsContext.Provider value={contacts}>
             <div className="col-12 col-lg-2" id="contactList" ref={contactListRef}>
-                <ContactList contacts={contacts} groups={groups}/>
+                <ContactList groups={groups}/>
             </div>
             <div className="col-12 col-lg-10" id="chatWrapper" ref={chatWrapperRef}>
-                <Outlet context={[contacts, groups]}/>
+                <Outlet context={groups}/>
             </div>
+        </ContactsContext.Provider>
         </MessageCountContext.Provider>
     )
 }

@@ -1,4 +1,4 @@
-import { Dispatch, FormEvent, RefObject, SetStateAction } from "react"
+import { Dispatch, RefObject, SetStateAction } from "react"
 
 export type UseStateArray = [any, Dispatch<SetStateAction<any>>];
 
@@ -79,8 +79,7 @@ export interface ChatToolbarProps{
 }
 
 export interface ContactListProps{
-    contacts: User[] | [],
-    groups: any[]
+    groups: Group[]
 }
 
 export interface MessageElementProps{
@@ -138,13 +137,16 @@ export interface ParticipantListProps{
 }
 
 export interface GroupChatModalProps{
-    group: Group
+    group: Group,
+    refs: RefObject<HTMLDivElement>
 }
 
 export interface KickUserPopupProps{
     popupRef: RefObject<HTMLDivElement>,
     confirmAction: (...args:any[])=>any | void
 }
+
+export type GroupChatModalContext = [Group, RefObject<HTMLDivElement>]
 
 //src
 export interface AddContactProps{

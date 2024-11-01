@@ -1,14 +1,23 @@
+import { useRef } from "react";
 import { GroupChatToolbarProps } from "../../types";
 import ParticipantList from "./ParticipantList";
-import "../../css/GroupChatToolbar.css";
 import GroupChatModal from "./GroupChatModal";
+import "../../css/GroupChatToolbar.css";
 
 export default function GroupChatToolbar({group}:GroupChatToolbarProps){
+
+    const groupDetailsWrapperRef = useRef<HTMLDivElement>(null);
 
     return(
         <>
             <div id="groupChatToolbar">
-                <div id="groupInfo">
+                <div 
+                id="groupInfo"
+                onClick={()=>{
+                    if (groupDetailsWrapperRef.current){
+                        groupDetailsWrapperRef.current.style.display = "flex";
+                    }
+                }}>
                     <div 
                     className="groupIcon" 
                     style={{backgroundImage: `url(/public${group?.icon_url || "user.png"}`}}>
@@ -22,7 +31,7 @@ export default function GroupChatToolbar({group}:GroupChatToolbarProps){
                 </div>
             </div>
 
-            <GroupChatModal group={group}/>
+            <GroupChatModal group={group} refs={groupDetailsWrapperRef}/>
         </>
     )
 }

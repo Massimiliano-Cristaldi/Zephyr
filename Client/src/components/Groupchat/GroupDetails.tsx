@@ -1,15 +1,15 @@
 import { useContext, useRef, RefObject, createRef } from "react";
 import { useNavigate, useOutletContext, Link } from "react-router-dom";
 import axios from "axios";
-import { AuthUserContext, ChatTypeContext, GroupStateContext, togglePopup } from "../../utils";
-import { Group, Participant, UseStateArray } from "../../types";
+import { AuthUserContext, ChatTypeContext, GroupStateContext, togglePopup, closeModal } from "../../utils";
+import { GroupChatModalContext, Participant, UseStateArray } from "../../types";
 import KickUserPopup from "./KickUserPopup";
 import "../../css/GroupDetails.css";
 
 export default function GroupDetails(){
     const navigate = useNavigate();
     const authUser = useContext(AuthUserContext);
-    const group:Group = useOutletContext();
+    const [group, groupDetailsWrapperRef]:GroupChatModalContext = useOutletContext();
     const [prevGroupState, setGroup]:UseStateArray = useContext(GroupStateContext);
     const confirmApplyRefs = useRef<{[key: number]: RefObject<HTMLDivElement>}>({});
     
@@ -25,8 +25,10 @@ export default function GroupDetails(){
     
     //Check if participant.is_participant_admin === true
     function checkAdminRights(){
-        const authParticipant = group.participants.find(participant=>participant.participant_id === authUser.id);
-        return authParticipant?.is_participant_admin;
+        if (group.participants) {
+            const authParticipant = group.participants.find(participant=>participant.participant_id === authUser.id);
+            return authParticipant?.is_participant_admin;
+        }
     }
     
     //Redirect to individual chat with the chosen group participant
@@ -51,10 +53,10 @@ export default function GroupDetails(){
         try {
             axios.post(`http://localhost:8800/removeparticipant/${group.id}/${userId}`)
             .then(()=>{
-                const participants = group.participants;
-                const kickedParticipantId = group.participants.findIndex((participant:Participant)=>{participant.participant_id === userId});
-                participants.splice(kickedParticipantId, 1);
-                setGroup({...prevGroupState, participants: participants})
+                const filteredParticipants = group.participants.filter((participant:Participant)=>
+                    participant.participant_id !== userId
+                );
+                setGroup({...prevGroupState, participants: filteredParticipants})
             });
         } catch (err) {
             console.error("There was an error trying to remove this user:", err);
@@ -65,46 +67,59 @@ export default function GroupDetails(){
         <>
             <div id="groupDetailsIcon" style={{backgroundImage: `url(/public${group.icon_url})`}}/>
             <h2 className="text-center">{group.title}</h2>
-            <Link to={"add"}>
-                <i 
-                className="fa-solid fa-user-plus" 
-                id="addParticipantIcon"
-                style={{color: "rgb(175, 175, 175)"}}
-                />
-            </Link>
+            {checkAdminRights() && 
+                <Link to={"add"}>
+                    <i 
+                    className="fa-solid fa-user-plus" 
+                    id="addParticipantIcon"
+                    style={{color: "rgb(175, 175, 175)"}}
+                    />
+                </Link>
+            }
             <ul id="participantList">
-            {group.participants?.map((participant:Participant)=>(
-                <li key={participant.participant_id}>
-                <div className={participant.participant_id === authUser.id ? 
-                    "col-12 d-flex flex-column" :
-                    "col-9 d-flex flex-column"}>
-                    {participant.participant_username || participant.participant_added_as}
-                    <small className="participantNumber">
-                    +39 {participant.participant_phone_number}
-                    </small>
-                    </div>
-                    {participant.participant_id !== authUser.id &&
-                        <div className="col-3 text-end" id="groupDetailsActions">
-                        {checkAdminRights() && participant.participant_id !== authUser.id &&
-                            <>
-                            <i 
-                            className="fa-solid fa-user-xmark me-2 me-lg-1" 
-                            style={{color: "rgb(175, 175, 175)"}}
-                            onClick={()=>{handlePopups(confirmApplyRefs.current[participant.participant_id])}}
-                            />
-                            <KickUserPopup popupRef={setRef(participant.participant_id)} confirmAction={()=>{kickUser(participant.participant_id)}}/>
-                            </>
-                        }
-                        <i 
-                        className="fa-regular fa-comment" 
-                        style={{color: "rgb(175, 175, 175)"}} 
-                        onClick={()=>{goToIndividualChat(participant.participant_id)}}
-                        />
+                {group.participants?.map((participant:Participant)=>(
+                    <li key={participant.participant_id}>
+                    <div className={participant.participant_id === authUser.id ? 
+                        "col-12 d-flex flex-column" :
+                        "col-9 d-flex flex-column"}>
+                        {participant.participant_username || participant.participant_added_as}
+                        <small className="isAdmin">
+                            {participant.is_participant_admin ? " (Group admin)" : ""}
+                        </small>
+                        <small className="participantNumber">
+                        +39 {participant.participant_phone_number}
+                        </small>
                         </div>
-                    }
+                        {participant.participant_id !== authUser.id &&
+                            <div className="col-3 text-end" id="groupDetailsActions">
+                            {checkAdminRights() && participant.participant_id !== authUser.id &&
+                                <>
+                                <i 
+                                className="fa-solid fa-user-xmark me-2 me-lg-1" 
+                                style={{color: "rgb(175, 175, 175)"}}
+                                onClick={()=>{handlePopups(confirmApplyRefs.current[participant.participant_id])}}
+                                />
+                                <KickUserPopup 
+                                popupRef={setRef(participant.participant_id)} 
+                                confirmAction={()=>{kickUser(participant.participant_id)}}/>
+                                </>
+                            }
+                            <i 
+                            className="fa-regular fa-comment" 
+                            style={{color: "rgb(175, 175, 175)"}} 
+                            onClick={()=>{goToIndividualChat(participant.participant_id)}}
+                            />
+                            </div>
+                        }
                     </li>
                 ))}
             </ul>
+            <i 
+            id="closeGroupChatModal"
+            className="fa-solid fa-xmark" 
+            style={{color: "rgb(180, 180, 180)"}} 
+            onClick={()=>{closeModal(groupDetailsWrapperRef, false); navigate(`/groupchat/${group.id}`);}}
+            />
         </>
         )
     }

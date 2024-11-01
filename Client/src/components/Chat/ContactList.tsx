@@ -1,15 +1,16 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthUserContext, ChatTypeContext, ContactListRefContext, IsMobileContext } from "../../utils.tsx";
+import { AuthUserContext, ChatTypeContext, ContactListRefContext, ContactsContext, IsMobileContext } from "../../utils.tsx";
 import { ContactListProps, UseStateArray } from "../../types";
 import "../../css/ContactList.css";
 
 //TODO: Fix the look of the contact list when it's empty
-export default function ContactList({contacts, groups}: ContactListProps){
+export default function ContactList({groups}: ContactListProps){
 
     const navigate = useNavigate();
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
+    const contacts = useContext(ContactsContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
 

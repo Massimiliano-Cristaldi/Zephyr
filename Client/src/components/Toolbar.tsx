@@ -1,7 +1,7 @@
 import { useRef, useContext, RefObject, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthIdContext, AuthUserContext } from "../utils.tsx";
-import { User } from "../types";
+import { User, UseStateArray } from "../types";
 import EditProfile from "./EditProfile";
 import AddContact from "./AddContact";
 import "../css/Toolbar.css";
@@ -14,7 +14,7 @@ export default function Toolbar(){
     const toolbarAddRef = useRef<HTMLUListElement>(null);
     const addContactRef = useRef<HTMLDivElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
-    const [authId, setAuthId] = useContext(AuthIdContext);
+    const [authId, setAuthId]:UseStateArray = useContext(AuthIdContext);
     const [users, setUsers] = useState<User[] | []>([]);
     const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ export default function Toolbar(){
         <>
         <div id="toolbarWrapper">
             <div id="authUserInfo">
-                <div id="userIcon" style={{backgroundImage: `url(/public/${authUser?.icon_url || "user.png"}`}}/>
+                <div id="userIcon" style={{backgroundImage: `url(/public/${authUser?.icon_url || "/user_icons/user.png"}`}}/>
                 {authUser ? authUser.username : "Loading..."}
             </div>
             <div id="icons">

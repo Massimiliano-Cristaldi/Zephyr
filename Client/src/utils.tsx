@@ -230,6 +230,7 @@ export const AuthUserContext = createContext<User>({
     icon_url: null
 });
 export const IsMobileContext = createContext<boolean>(false);
+export const ContactsContext = createContext<User[] | []>([]);
 export const ContactListRefContext = createContext<any>([]);
 export const ChatTypeContext = createContext<any>(null);
 export const MessageCountContext = createContext<any>([]);

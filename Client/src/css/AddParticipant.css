@@ -1,0 +1,114 @@
+#addParticipantWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#addParticipantWrapper *{
+    color: rgb(80, 80, 80);
+}
+
+#addParticipantWrapper>h3{
+    margin: 5px 0px 20px 0px;
+}
+
+#addParticipantWrapper>ul{
+    max-height: 50vh;
+    list-style: none;
+    padding: unset;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-weight: 500;
+}
+
+#addParticipantWrapper>ul::-webkit-scrollbar{
+    width: 4px;
+}
+
+#addParticipantWrapper>ul::-webkit-scrollbar-thumb{
+    background-color: rgba(165, 165, 165, 0.774);
+}
+
+#addParticipantWrapper>ul>li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    min-height: 5vh;
+    margin: 5px 5px;
+    padding: 5px 10px;
+    border-top: 1px solid rgba(128, 128, 128, 0.411);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.411);
+    font-size: 1rem;
+}
+
+.addParticipantIcon{
+    height: 50px;
+    width: 50px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px gray;
+}
+
+.addParticipantCheck{
+    height: 20px;
+    width: 20px;
+    accent-color: var(--accents);
+}
+
+#addParticipantButton{
+    width: 70%;
+    font-size: 1rem;
+    background-color: var(--accents);
+    color: var(--defaultFontColor);
+    border: unset;
+    padding: 3px;
+}
+
+#addParticipantButton:disabled{
+    background-color: rgba(184, 184, 184, 0.5);
+}
+
+#addParticipantButton>span{
+    color: var(--defaultFontColor);
+}
+
+#addParticipantButton:disabled>span{
+    color: rgb(80, 80, 80);
+}
+
+#backToGroupDetails{
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#closeGroupChatModal{
+    position: absolute;
+    top: 12px;
+    right: 17px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 996px) {
+    #addParticipantWrapper>ul{
+        width: 80%;
+    }
+
+    #addParticipantButton{
+        width: 35%;
+    }
+
+    #backToGroupDetails{
+        font-size: 25px;
+    }
+    
+    #closeGroupChatModal{
+        font-size: 30px;
+    }
+}
