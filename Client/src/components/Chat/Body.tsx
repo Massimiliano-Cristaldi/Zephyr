@@ -25,6 +25,7 @@ export default function Body(){
                 }
                 setContacts(response.data);
             } catch (err) {
+                setContacts([]);
                 console.error(err);
             }
             
@@ -35,6 +36,7 @@ export default function Body(){
                 }
                 setGroups(response.data);
             } catch (err) {
+                setGroups([]);
                 console.error(err);
             }
         }

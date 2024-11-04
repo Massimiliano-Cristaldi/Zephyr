@@ -6,6 +6,7 @@ import { GroupChatModalContext, Participant, UseStateArray } from "../../types";
 import KickUserPopup from "./KickUserPopup";
 import "../../css/GroupDetails.css";
 
+//TODO: Add the possibility to change group title
 export default function GroupDetails(){
     const navigate = useNavigate();
     const authUser = useContext(AuthUserContext);

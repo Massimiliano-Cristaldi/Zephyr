@@ -98,7 +98,7 @@ export default function Toolbar(){
         style={{display: "none"}} 
         ref={toolbarOptionsRef}>
             <li onMouseDown={()=>{showModal(editProfileRef)}}>Profile</li>
-            <li onMouseDown={()=>{window.location.assign("/themes/edit")}}>Change themes</li>
+            <li onMouseDown={()=>{navigate("/themes/edit")}}>Change themes</li>
             <li id="changeProfile">
                 <i className="fa-solid fa-chevron-left fa-2xs"/>
                 Change profile
@@ -112,7 +112,7 @@ export default function Toolbar(){
             </li>
         </ul>
         <div id="addContactWrapper" ref={addContactRef}>
-            <AddContact addContactRef={addContactRef}/>
+            <AddContact users={users} addContactRef={addContactRef}/>
         </div>
         <EditProfile user={authUser} editProfileRef={editProfileRef}/>
         </>

@@ -4,7 +4,6 @@ import { AuthUserContext, ChatTypeContext, ContactListRefContext, ContactsContex
 import { ContactListProps, UseStateArray } from "../../types";
 import "../../css/ContactList.css";
 
-//TODO: Fix the look of the contact list when it's empty
 export default function ContactList({groups}: ContactListProps){
 
     const navigate = useNavigate();
@@ -44,7 +43,7 @@ export default function ContactList({groups}: ContactListProps){
                 </div>))
         )}
         {contacts.length === 0 && groups.length === 0 && (
-                <div className="text-center p-5">
+                <div id="noContacts">
                 Add contacts to your address book to begin chatting
                 </div>
         )}

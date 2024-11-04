@@ -5,8 +5,8 @@ export default function KickUserPopup({popupRef, confirmAction} : KickUserPopupP
 
     //Add event listener that allows the confirm action popup to close upon clicking outside of it
     useEffect(()=>{
-        function handleClickOutside(event:any) {
-            if (popupRef.current && !popupRef.current.contains(event.target)){
+        function handleClickOutside(e:any) {
+            if (popupRef.current && !popupRef.current.contains(e.target)){
                 cancelAction();
             }
         }

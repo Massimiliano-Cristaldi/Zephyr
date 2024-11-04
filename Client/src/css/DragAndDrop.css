@@ -22,6 +22,7 @@
     color: #868484;
 
     z-index: 3;
+    cursor: grabbing;
 }
 
 #dropZone::after{

@@ -4,7 +4,6 @@ import { AuthUserContext, closeModal, IsMobileContext, getFileExt } from "../uti
 import { EditProfileProps, User } from "../types";
 import "../css/EditProfile.css"
 
-//TODO: chatType changes to default when going to this page
 export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
     const authUser = useContext(AuthUserContext);

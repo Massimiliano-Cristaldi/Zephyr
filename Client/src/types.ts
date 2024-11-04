@@ -11,6 +11,12 @@ export interface User{
     user_added_as?: string
 }
 
+export interface NewContact{
+    contact_list_owner_id: number,
+    phone_number: number,
+    user_added_as: string
+}
+
 export interface Participant{
     group_id?: number,
     participant_id: number,
@@ -150,6 +156,7 @@ export type GroupChatModalContext = [Group, RefObject<HTMLDivElement>]
 
 //src
 export interface AddContactProps{
+    users: User[],
     addContactRef: RefObject<HTMLDivElement>
 }
 
