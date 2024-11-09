@@ -6,6 +6,7 @@ import EditProfile from "./EditProfile";
 import AddContact from "./AddContact";
 import "../css/Toolbar.css";
 import axios from "axios";
+import CreateGroup from "./CreateGroup.tsx";
 
 export default function Toolbar(){
 
@@ -13,6 +14,7 @@ export default function Toolbar(){
     const toolbarOptionsRef = useRef<HTMLUListElement>(null);
     const toolbarAddRef = useRef<HTMLUListElement>(null);
     const addContactRef = useRef<HTMLDivElement>(null);
+    const createGroupRef = useRef<HTMLDivElement>(null);
     const editProfileRef = useRef<HTMLDivElement>(null);
     const [authId, setAuthId]:UseStateArray = useContext(AuthIdContext);
     const [users, setUsers] = useState<User[] | []>([]);
@@ -91,7 +93,7 @@ export default function Toolbar(){
         style={{display: "none", right: "60px", borderRight: "3px solid var(--toolbarOptionsBorder)"}} 
         ref={toolbarAddRef}>
             <li onMouseDown={()=>{showModal(addContactRef)}}>New chat</li>
-            <li>New group chat</li>
+            <li onMouseDown={()=>{showModal(createGroupRef)}}>New group chat</li>
         </ul>
         <ul 
         className="toolbarDropdown" 
@@ -111,9 +113,8 @@ export default function Toolbar(){
                 </ul>
             </li>
         </ul>
-        <div id="addContactWrapper" ref={addContactRef}>
-            <AddContact users={users} addContactRef={addContactRef}/>
-        </div>
+        <AddContact addContactRef={addContactRef}/>
+        <CreateGroup createGroupRef={createGroupRef}/>
         <EditProfile user={authUser} editProfileRef={editProfileRef}/>
         </>
     )

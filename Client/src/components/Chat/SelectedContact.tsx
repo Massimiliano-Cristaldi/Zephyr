@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthUserContext, ContactListRefContext, ContactsContext, IsMobileContext, ViewProfileContext } from "../../utils.tsx";
-import { Group, User } from "../../types";
+import { User } from "../../types";
 import ChatToolbar from "./ChatToolbar";
 import ChatWindow from "./ChatWindow";
 import UserNotAdded from "./UserNotAdded";
@@ -12,8 +12,7 @@ export default function SelectedContact(){
     const params = useParams();    
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
-    const contacts:User[] = useContext(ContactsContext);
-    const groups:Group[] = useOutletContext();
+    const [contacts, groups] = useContext(ContactsContext);
     
     const viewProfileRef = useRef<HTMLDivElement>(null);
     const contactNameRef = useRef<HTMLDivElement>(null);

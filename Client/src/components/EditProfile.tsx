@@ -25,8 +25,6 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         const uploadedImage = target.files[0];
         if (uploadedImage){
             const fileName = "/user_icons/user_icon_" + authUser.id + "_" + Date.now() + getFileExt(uploadedImage.name);
-            console.log(fileName);
-
             const formdata = new FormData();
             formdata.append("icon", uploadedImage);
             formdata.append("filename", fileName);
@@ -36,7 +34,8 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 if (iconRef.current){
                 iconRef.current.style.backgroundImage = `url(/public${fileName})`
                 }; 
-                setIsChanged(true);})
+                setIsChanged(true);
+            })
             .catch((err)=>{console.error(err)});
         }
     }

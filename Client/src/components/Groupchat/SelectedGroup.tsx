@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import { AuthUserContext, ChatTypeContext, ContactListRefContext, ContactsContext, GroupStateContext, IsMobileContext } from "../../utils";
-import { Group, UseStateArray, User } from "../../types";
+import { AuthUserContext, ChatTypeContext, ContactListRefContext, GroupStateContext, IsMobileContext } from "../../utils";
+import { UseStateArray } from "../../types";
 import GroupChatToolbar from "./GroupChatToolbar";
 import ChatWindow from "../Chat/ChatWindow";
 
@@ -11,8 +11,6 @@ export default function SelectedGroup(){
     const params = useParams();
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
-    const contacts:User[] = useContext(ContactsContext);
-    const groups:Group[] = useOutletContext();
 
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 

@@ -1,0 +1,208 @@
+#createGroupWrapper{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    background-color: rgba(68, 68, 68, 0.678);
+    backdrop-filter: blur(5px);
+    animation-name: modalDarkenBg;
+    animation-duration: 0.5s;
+}
+
+#createGroupModal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    height: 90vh;
+    width: 80vw;
+    padding: 2rem 1.3rem;
+
+    background-color: hsl(210, 13%, 94%);
+    font-size: 30px;
+    font-weight: 600;
+    border-radius: 20px;
+
+    animation-name: modalSlide;
+    animation-duration: 0.5s;
+}
+
+#createGroupModal>form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+#createGroupModal>form>label{
+    color: rgb(80, 80, 80);
+}
+
+#groupTitleInput{
+    width: 100%;
+    height: 5vh;
+    margin: 10px 0px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgb(80, 80, 80);
+}
+
+#groupleTitleH4{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 5vh;
+    margin: 10px 0px;
+    padding: 2.5px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgb(80, 80, 80);
+}
+
+#uploadGroupIcon{
+    position: relative;
+    height: 10vh;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
+    background-image: url("../assets/users.png");
+}
+
+#uploadGroupIcon>label{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    font-size: 1.2rem;
+    padding: 10px;
+    border: 1px solid #868484;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#createGroupModal>form>h3{
+    font-size: 30px;
+    font-weight: 600;
+    color: rgb(80, 80, 80);
+    margin-bottom: 15px;
+}
+
+#createGroupModal>form>ul{
+    max-height: 35vh;
+    list-style: none;
+    padding: unset;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-weight: 500;
+}
+
+#createGroupModal>form>ul::-webkit-scrollbar{
+    width: 4px;
+}
+
+#createGroupModal>form>ul::-webkit-scrollbar-thumb{
+    background-color: rgba(165, 165, 165, 0.774);
+}
+
+#createGroupModal>form>ul>li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    min-height: 5vh;
+    margin: 5px 5px;
+    padding: 5px 10px;
+    border-top: 1px solid rgba(128, 128, 128, 0.411);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.411);
+    text-align: center;
+    font-size: 1rem;
+}
+
+#createGroupModal>form>ul>li>span{
+    color: rgb(80, 80, 80);
+}
+
+.addParticipantIcon{
+    height: 50px;
+    width: 50px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px gray;
+}
+
+.addParticipantCheck{
+    height: 20px;
+    width: 20px;
+    accent-color: var(--accents);
+}
+
+#addParticipantButton{
+    width: 70%;
+    font-size: 1rem;
+    background-color: var(--accents);
+    color: var(--defaultFontColor);
+    border: unset;
+    padding: 3px;
+}
+
+#addParticipantButton:disabled{
+    background-color: rgba(184, 184, 184, 0.5);
+}
+
+#addParticipantButton>span{
+    color: var(--defaultFontColor);
+}
+
+#addParticipantButton:disabled>span{
+    color: rgb(80, 80, 80);
+}
+
+@keyframes modalSlide {
+    0% {top: -100vh}
+    100%{top: 0}
+}
+
+@keyframes modalDarkenBg {
+    0% {background-color: transparent; backdrop-filter: blur(0px);}
+    100%{background-color: rgba(68, 68, 68, 0.678); backdrop-filter: blur(5px);}
+}
+
+@media screen and (min-width: 996px) {
+    #createGroupModal{
+        width: 40vw;
+        height: 80vh;
+    }
+
+    #groupTitleInput{
+        width: 70%;
+    }
+
+    #uploadGroupIcon{
+        height: 11vh;
+    }
+
+    #uploadGroupIcon>label{
+        width: 40px;
+        height: 40px;
+    }
+
+    #createGroupModal>form>ul{
+        width: 80%;
+    }
+}

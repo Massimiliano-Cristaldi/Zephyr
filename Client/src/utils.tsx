@@ -1,5 +1,5 @@
 import { createContext, RefObject } from "react";
-import { User } from "./types";
+import { User, Group } from "./types";
 
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function
 //Expected output: the same date in format dd/mm/yy
@@ -230,7 +230,7 @@ export const AuthUserContext = createContext<User>({
     icon_url: null
 });
 export const IsMobileContext = createContext<boolean>(false);
-export const ContactsContext = createContext<User[] | []>([]);
+export const ContactsContext = createContext<[User[], Group[]]>([[], []]);
 export const ContactListRefContext = createContext<any>([]);
 export const ChatTypeContext = createContext<any>(null);
 export const MessageCountContext = createContext<any>([]);

@@ -30,7 +30,6 @@ export default function GroupChatToolbar({group}:GroupChatToolbarProps){
                     </div>
                 </div>
             </div>
-
             <GroupChatModal group={group} refs={groupDetailsWrapperRef}/>
         </>
     )

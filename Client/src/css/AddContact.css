@@ -68,7 +68,7 @@
 #prefix{
     width: 15vw;
     height: 7vh;
-    padding: 1px 9px;
+    padding: 1px 9px 0px 9px;
     background-color: hsl(210, 13%, 99%);
     color: rgb(80, 80, 80);
     border-top: 1px solid rgb(80, 80, 80);

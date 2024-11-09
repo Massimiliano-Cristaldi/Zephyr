@@ -1,15 +1,15 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthUserContext, ChatTypeContext, ContactListRefContext, ContactsContext, IsMobileContext } from "../../utils.tsx";
-import { ContactListProps, UseStateArray } from "../../types";
+import { UseStateArray } from "../../types";
 import "../../css/ContactList.css";
 
-export default function ContactList({groups}: ContactListProps){
+export default function ContactList(){
 
     const navigate = useNavigate();
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
-    const contacts = useContext(ContactsContext);
+    const [contacts, groups] = useContext(ContactsContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
 

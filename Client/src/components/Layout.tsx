@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext,IsMobileContext, AuthIdContext, EmojiPickerContext, ChatTypeContext } from "../utils.tsx";
+import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext,IsMobileContext, AuthIdContext, EmojiPickerContext, ChatTypeContext, ContactsContext, MessageCountContext } from "../utils.tsx";
 import { User } from "../types";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
 import Body from "./Chat/Body";
 import "../css/StyleVariables.css";
 import "../css/index.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Layout(){
 
     const navigate = useNavigate();
+    const params = useParams();
 
     const contactListRef = useRef<HTMLDivElement>(null);
     const chatWrapperRef = useRef<HTMLDivElement>(null);
@@ -29,6 +30,9 @@ export default function Layout(){
     });
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 996);
     const [chatType, setChatType] = useState<string>("individualChat");
+    const [contacts, setContacts] = useState<User[] | []>([]);
+    const [groups, setGroups] = useState<any>([]);
+    const [sessionMessageCount, setSessionMessageCount] = useState(0);
     const [selectedText, setSelectedText] = useState<string>("");
     const [isSelectingEmoji, setIsSelectingEmoji] = useState<boolean>(false);
 
@@ -47,6 +51,34 @@ export default function Layout(){
         }
         fetchData();
     }, [authId])
+
+    //Fetch contact list and group list
+    useEffect(()=>{
+        async function fetchData(){
+            try {
+                const response = await axios.get(`http://localhost:8800/contactlist/${authUser.id}`)
+                if (response.status !== 200 || response.data.length === 0) {
+                    throw new Error("Fetch failed");
+                }
+                setContacts(response.data);
+            } catch (err) {
+                setContacts([]);
+                console.error(err);
+            }
+            
+            try {
+                const response = await axios.get(`http://localhost:8800/groupchatlist/${authUser.id}`)
+                if (response.status !== 200 || response.data.length === 0) {
+                    throw new Error("Fetch failed");
+                }
+                setGroups(response.data);
+            } catch (err) {
+                setGroups([]);
+                console.error(err);
+            }
+        }
+        fetchData();
+    }, [authUser.id, sessionMessageCount, params])
 
     //Load custom theme (if any)
     useEffect(()=>{
@@ -68,19 +100,19 @@ export default function Layout(){
         const input = chatInputRef.current;
         const position = input?.selectionStart;
         const selection = window.getSelection();
-        if (input && position !== null && position !== undefined){
-            const selectionLength = selection?.toString().length;
-            const isSelectionInInput = selection?.getRangeAt(0).getBoundingClientRect().height === 0;
-            const isNothingSelected = fontStylePopupRef.current && (selectionLength === 0 || selectionLength === undefined);
-            const isValidSelection = fontStylePopupRef.current && !isNothingSelected && isSelectionInInput;
-            if (isValidSelection && selection.type === "Range"){
-                const leftOffset = getCaretCoordinates(input, position).left;
-                setSelectedText(selection!.toString());
-                fontStylePopupRef.current.style.display = "flex";
-                fontStylePopupRef.current.style.left = `${leftOffset + 20}px`;
-            } else if (isNothingSelected){
-                fontStylePopupRef.current.style.display = "none";
-            }
+        if (input && position !== null && position !== undefined && selection?.focusNode){
+                const selectionLength = selection?.toString().length;
+                const isSelectionInInput = selection?.getRangeAt(0).getBoundingClientRect().height === 0;
+                const isNothingSelected = fontStylePopupRef.current && (selectionLength === 0 || selectionLength === undefined);
+                const isValidSelection = fontStylePopupRef.current && !isNothingSelected && isSelectionInInput;
+                if (isValidSelection && selection.type === "Range"){
+                    const leftOffset = getCaretCoordinates(input, position).left;
+                    setSelectedText(selection!.toString());
+                    fontStylePopupRef.current.style.display = "flex";
+                    fontStylePopupRef.current.style.left = `${leftOffset + 20}px`;
+                } else if (isNothingSelected){
+                    fontStylePopupRef.current.style.display = "none";
+                }
         }
     }
 
@@ -127,6 +159,8 @@ export default function Layout(){
         <FontStylePopupContext.Provider value={{refs: [chatInputRef, fontStylePopupRef], states: [selectedText, setSelectedText], actions: toggleFontStylePopup}}>
         <EmojiPickerContext.Provider value={{refs: emojiPickerWrapperRef, states: [isSelectingEmoji, setIsSelectingEmoji], actions: closeEmojiPicker}}>
         <ChatTypeContext.Provider value={{state: [chatType, setChatType], actions: [backToContacts, changeChatType]}}>
+        <MessageCountContext.Provider value={[sessionMessageCount, setSessionMessageCount]}>
+        <ContactsContext.Provider value={[contacts, groups]}>
             <div className="container-fluid h-100" onMouseUp={()=>{toggleFontStylePopup(); closeEmojiPicker();}}>
                 <div className="row">
                         <Toolbar/>
@@ -138,6 +172,8 @@ export default function Layout(){
                     </div>
                 </div>
             </div>
+        </ContactsContext.Provider>
+        </MessageCountContext.Provider>
         </ChatTypeContext.Provider>
         </EmojiPickerContext.Provider>
         </FontStylePopupContext.Provider>

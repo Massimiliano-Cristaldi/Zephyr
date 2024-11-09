@@ -5,7 +5,7 @@ import "../css/AddContact.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function AddContact({users, addContactRef}:AddContactProps){
+export default function AddContact({addContactRef}:AddContactProps){
 
     const authUser = useContext(AuthUserContext);
     const navigate = useNavigate();
@@ -61,45 +61,47 @@ export default function AddContact({users, addContactRef}:AddContactProps){
     }
 
     return(
-        <div id="addContactModal">
-            {(numberError || nameError) &&
-            <div id="addContactError">
-                <i className="fa-solid fa-circle-exclamation me-2" style={{color: "rgb(199, 8, 8)"}}/>
-                {errorMessage}
-            </div>
-            }
-            <form onSubmit={(e)=>{addContact(e)}}>
-                    <label htmlFor="phoneNumberInput">Phone number:</label>
-                <div>
-                    <span id="prefix">
-                        +39 
-                    </span>
+        <div id="addContactWrapper" ref={addContactRef}>
+            <div id="addContactModal">
+                {(numberError || nameError) &&
+                <div id="addContactError">
+                    <i className="fa-solid fa-circle-exclamation me-2" style={{color: "rgb(199, 8, 8)"}}/>
+                    {errorMessage}
+                </div>
+                }
+                <form onSubmit={(e)=>{addContact(e)}}>
+                        <label htmlFor="phoneNumberInput">Phone number:</label>
+                    <div>
+                        <span id="prefix">
+                            +39 
+                        </span>
+                        <input 
+                        type="number" 
+                        id="phoneNumberInput" 
+                        className={numberError ? "inputError" : ""}
+                        name="phone_number"
+                        onChange={updateNewContactInfo}
+                        autoComplete="off"
+                        max={9999999999}
+                        />
+                    </div>
+                    <label htmlFor="phoneNumberInput">Save contact as:</label>
                     <input 
-                    type="number" 
-                    id="phoneNumberInput" 
-                    className={numberError ? "inputError" : ""}
-                    name="phone_number"
+                    type="text" 
+                    id="saveAsInput" 
+                    className={nameError ? "inputError" : ""}
+                    name="user_added_as" 
                     onChange={updateNewContactInfo}
                     autoComplete="off"
-                    max={9999999999}
                     />
-                </div>
-                <label htmlFor="phoneNumberInput">Save contact as:</label>
-                <input 
-                type="text" 
-                id="saveAsInput" 
-                className={nameError ? "inputError" : ""}
-                name="user_added_as" 
-                onChange={updateNewContactInfo}
-                autoComplete="off"
-                />
-                <button>Add contact</button>
-            </form>
+                    <button>Add contact</button>
+                </form>
 
-            <i className="fa-solid fa-xmark closeModal" 
-                style={{color: "rgb(180, 180, 180)"}} 
-                onClick={()=>{closeModal(addContactRef, false)}}
-            />
+                <i className="fa-solid fa-xmark closeModal" 
+                    style={{color: "rgb(180, 180, 180)"}} 
+                    onClick={()=>{closeModal(addContactRef, false)}}
+                />
+            </div>
         </div>
     )
 }

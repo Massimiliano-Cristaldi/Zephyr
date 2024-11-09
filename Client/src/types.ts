@@ -84,10 +84,6 @@ export interface ChatToolbarProps{
     contact: User
 }
 
-export interface ContactListProps{
-    groups: Group[]
-}
-
 export interface MessageElementProps{
     message: Message | GroupMessage,
     refs: RefObject<HTMLDivElement>,
@@ -156,8 +152,11 @@ export type GroupChatModalContext = [Group, RefObject<HTMLDivElement>]
 
 //src
 export interface AddContactProps{
-    users: User[],
     addContactRef: RefObject<HTMLDivElement>
+}
+
+export interface CreateGroupProps{
+    createGroupRef: RefObject<HTMLDivElement>
 }
 
 export interface EditProfileProps {
