@@ -3,13 +3,15 @@ import { GroupChatToolbarProps } from "../../types";
 import ParticipantList from "./ParticipantList";
 import GroupChatModal from "./GroupChatModal";
 import "../../css/GroupChatToolbar.css";
+import { GroupModalContext } from "../../utils";
 
 export default function GroupChatToolbar({group}:GroupChatToolbarProps){
 
     const groupDetailsWrapperRef = useRef<HTMLDivElement>(null);
+    const groupTitleRef = useRef<HTMLDivElement>(null);
 
     return(
-        <>
+        <GroupModalContext.Provider value={{group: group, refs: [groupDetailsWrapperRef, groupTitleRef]}}>
             <div id="groupChatToolbar">
                 <div 
                 id="groupInfo"
@@ -20,17 +22,17 @@ export default function GroupChatToolbar({group}:GroupChatToolbarProps){
                 }}>
                     <div 
                     className="groupIcon" 
-                    style={{backgroundImage: `url(/public${group?.icon_url || "user.png"}`}}>
+                    style={{backgroundImage: `url(/public${group?.icon_url || "/group_icons/users.png"}`}}>
                     </div>
                     <div className="d-flex flex-column pb-1" id="titleAndParticipants">
-                        <div>
-                            {group.title}
+                        <div ref={groupTitleRef}>
+                            {group.title || "Loading..."}
                         </div>
-                        <ParticipantList group={group}/>
+                        <ParticipantList/>
                     </div>
                 </div>
             </div>
-            <GroupChatModal group={group} refs={groupDetailsWrapperRef}/>
-        </>
+            <GroupChatModal/>
+        </GroupModalContext.Provider>
     )
 }

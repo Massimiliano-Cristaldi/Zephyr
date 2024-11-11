@@ -240,3 +240,4 @@ export const ViewProfileContext = createContext<any>([]);
 export const MessageReplyContext = createContext<any>([]);
 export const GroupMessageReplyContext = createContext<any>([]);
 export const GroupStateContext = createContext<any>([]);
+export const GroupModalContext = createContext<any>({});

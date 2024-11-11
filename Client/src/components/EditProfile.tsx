@@ -43,9 +43,9 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
     //Set a new value for user's username or custom_status; change is not applied until the input is blurred
     function changeUserProperty(inputElement: RefObject<any>, staticElement: RefObject<any>, property: keyof User){
         if (user && inputElement.current && staticElement.current) {
+            staticElement.current.style.display = "none";
             inputElement.current.style.display = "block";
             inputElement.current.focus();
-            staticElement.current.style.display = "none";
             if (user[property]) {
                 inputElement.current.value = user[property];
                 inputElement.current.select();
@@ -101,10 +101,12 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 </div>
 
                 <h2 
-                {...(isMobile 
-                    ? {onClick: ()=>{changeUserProperty(usernameInputRef, usernameH2Ref, "username")}, ref: usernameH2Ref} 
-                    : {onDoubleClick: ()=>{changeUserProperty(usernameInputRef, usernameH2Ref, "username")}, ref: usernameH2Ref})}
-                >{user?.username}</h2>
+                onClick={isMobile ? ()=>{changeUserProperty(usernameInputRef, usernameH2Ref, "username")} : undefined} 
+                onDoubleClick={!isMobile ? ()=>{changeUserProperty(usernameInputRef, usernameH2Ref, "username")} : undefined} 
+                ref={usernameH2Ref}
+                >
+                    {user?.username}
+                </h2>
                 <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>
                     <input type="text"
                     id="newUsernameInput"
@@ -117,10 +119,9 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 </form>
 
                 <p
-                {...(isMobile 
-                    ? {onClick: ()=>{changeUserProperty(statusInputRef, statusPRef, "custom_status")}, ref: statusPRef} 
-                    : {onDoubleClick: ()=>{changeUserProperty(statusInputRef, statusPRef, "custom_status")}, ref: statusPRef})}
-                >
+                onClick={isMobile ? ()=>{changeUserProperty(statusInputRef, statusPRef, "custom_status")} : undefined}
+                onDoubleClick={!isMobile ? ()=>{changeUserProperty(statusInputRef, statusPRef, "custom_status")} : undefined}
+                ref={statusPRef}>
                     {user?.custom_status || "This user hasn't chosen a status yet"}
                 </p>
                 <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>

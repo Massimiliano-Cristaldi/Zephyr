@@ -18,17 +18,16 @@
 }
 
 #contactList>div{
-    height: 12%;
-    min-height: 12%;
     display: flex;
     align-items: center;
     gap: 15px;
     padding: 0px 10px;
+    border-bottom: 2px solid var(--accents);
+    background-color: var(--contactBg);
     font-size: 1rem;
     font-weight: 500;
-    background-color: var(--contactBg);
     color: var(--contactListFontColor);
-    border-bottom: 2px solid var(--accents);
+    word-break: break-all;
     cursor: pointer;
 }
 

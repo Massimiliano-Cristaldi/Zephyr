@@ -138,17 +138,10 @@ export interface ParticipantListProps{
     group: Group
 }
 
-export interface GroupChatModalProps{
-    group: Group,
-    refs: RefObject<HTMLDivElement>
-}
-
 export interface KickUserPopupProps{
     popupRef: RefObject<HTMLDivElement>,
     confirmAction: (...args:any[])=>any | void
 }
-
-export type GroupChatModalContext = [Group, RefObject<HTMLDivElement>]
 
 //src
 export interface AddContactProps{

@@ -14,7 +14,7 @@
 }
 
 #addParticipantWrapper>ul{
-    max-height: 50vh;
+    max-height: 42vh;
     list-style: none;
     padding: unset;
     overflow-y: scroll;
@@ -97,6 +97,7 @@
 
 @media screen and (min-width: 996px) {
     #addParticipantWrapper>ul{
+        max-height: 50vh;
         width: 80%;
     }
 

@@ -1,19 +1,17 @@
 import { useContext } from "react"
-import { AuthUserContext } from "../../utils"
-import { Participant, ParticipantListProps } from "../../types";
+import { AuthUserContext, GroupModalContext } from "../../utils"
+import { Participant } from "../../types";
 
-export default function ParticipantList({group}: ParticipantListProps){
+export default function ParticipantList(){
 
     const authUser = useContext(AuthUserContext);
-
-    console.log(group.participants);
-    
+    const group = useContext(GroupModalContext).group;
 
     return(
         <small id="participants">
             {group.participants?.length > 0 &&
                 (group.participants.length <= 3 ?
-                group.participants.map((participant:Participant, index)=>
+                group.participants.map((participant:Participant, index:number)=>
                     (<span key={participant.participant_id}>
                         {participant.participant_id === authUser.id ? 
                         participant.participant_username : 

@@ -1,8 +1,8 @@
 import { ChangeEvent, useContext, useState, useRef, useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ContactsContext, closeModal } from "../../utils";
-import { GroupChatModalContext, User } from "../../types";
+import { ContactsContext, GroupModalContext, closeModal } from "../../utils";
+import { Participant, User } from "../../types";
 import "../../css/AddParticipant.css";
 
 export default function AddParticipant(){
@@ -10,9 +10,10 @@ export default function AddParticipant(){
     const navigate = useNavigate();
 
     const [contacts, groups] = useContext(ContactsContext);
-    const [group, groupDetailsWrapperRef]:GroupChatModalContext = useOutletContext();
+    const group = useContext(GroupModalContext).group;
+    const [groupDetailsWrapperRef, groupTitleRef] = useContext(GroupModalContext).refs;
     const participantList = group.participants?.map(
-        (participant)=>{return participant.participant_id}
+        (participant:Participant)=>{return participant.participant_id}
     );
 
     const plusSignRef = useRef<HTMLElement>(null);
@@ -76,6 +77,7 @@ export default function AddParticipant(){
                     </li>
                 ))}
             </ul>
+            
             <button 
             onClick={(e)=>{addParticipants(e)}}
             disabled={contactIds.length ? false : true}
@@ -88,12 +90,14 @@ export default function AddParticipant(){
                     Add participants
                 </span>
             </button>
+
             <i 
             id="backToGroupDetails"
             className="fa-solid fa-chevron-left"
             style={{color: "rgb(180, 180, 180)"}} 
             onClick={()=>{navigate(`/groupchat/${group.id}`)}}
             />
+
             <i 
             id="closeGroupChatModal"
             className="fa-solid fa-xmark" 
