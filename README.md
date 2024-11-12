@@ -3,6 +3,7 @@ While the frontend is fully fleshed out, the backend is just a mimicry that allo
 
 Key features:
 - Add contacts, create groups, switch to different profiles
+- Change nickname, icon, and (if you are a group admin) group title and group icon
 - Save users into your contact list with custom nicknames
 - Text messages, audio messages and attachments, with the ability to reply to your own or others' messages
 - Emojis and text-styling (bold, italics, underlined)
