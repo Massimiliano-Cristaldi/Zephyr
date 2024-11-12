@@ -1,4 +1,4 @@
-import { useContext, useRef, RefObject, createRef, FormEvent, useState, ChangeEvent } from "react";
+import { useContext, useRef, RefObject, createRef, FormEvent, useState, ChangeEvent, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { AuthUserContext, ChatTypeContext, GroupStateContext, togglePopup, closeModal, IsMobileContext, GroupModalContext, getFileExt, ModalsContext } from "../../utils";
@@ -59,8 +59,8 @@ export default function GroupDetails(){
                 axios.post(`http://localhost:8800/updategrouptitle/${group.id}`, title)
                 .then(()=>{
                     setIsChanged(true);
-                    titleH2Ref.current!.innerText = e.currentTarget.value;
-                    groupTitleRef.current.innerText = e.currentTarget.value;
+                    titleH2Ref.current!.innerText = title.title;
+                    groupTitleRef.current.innerText = title.title;
                 })
                 .catch((err)=>{console.error(err)});
             }
@@ -104,7 +104,7 @@ export default function GroupDetails(){
     }
     
     //Remove a participant from the group
-    function kickUser(userId: number){
+    function kickUser (userId: number){
         try {
             axios.post(`http://localhost:8800/removeparticipant/${group.id}/${userId}`)
             .then(()=>{

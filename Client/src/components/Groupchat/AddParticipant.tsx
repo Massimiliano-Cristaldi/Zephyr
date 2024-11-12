@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ContactsContext, GroupModalContext, closeModal } from "../../utils";
+import { ContactsContext, GroupModalContext, ModalsContext, closeModal } from "../../utils";
 import { Participant, User } from "../../types";
 import "../../css/AddParticipant.css";
 
@@ -11,7 +11,7 @@ export default function AddParticipant(){
 
     const [contacts, groups] = useContext(ContactsContext);
     const group = useContext(GroupModalContext).group;
-    const [groupDetailsWrapperRef, groupTitleRef] = useContext(GroupModalContext).refs;
+    const groupDetailsWrapperRef = useContext(ModalsContext).refs[4];
     const participantList = group.participants?.map(
         (participant:Participant)=>{return participant.participant_id}
     );

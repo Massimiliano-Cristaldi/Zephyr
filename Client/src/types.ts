@@ -76,8 +76,6 @@ export interface ChatInputProps{
     newMessageState: [Message | GroupMessage, Dispatch<SetStateAction<Message | GroupMessage>>],
     attachmentState: [FormData | null, Dispatch<SetStateAction<FormData | null>>],
     attachmentNameState: [string, Dispatch<SetStateAction<string>>],
-    selectedTextState: [string, Dispatch<SetStateAction<string>>], 
-    actions: ()=>any
 }
 
 export interface ChatToolbarProps{
@@ -140,7 +138,7 @@ export interface ParticipantListProps{
 
 export interface KickUserPopupProps{
     popupRef: RefObject<HTMLDivElement>,
-    confirmAction: (...args:any[])=>any | void
+    confirmAction: (x: any)=>void
 }
 
 //src

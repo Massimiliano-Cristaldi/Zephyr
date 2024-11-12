@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useMemo, useRef } from "react";
 import { getEmojis, IsMobileContext, EmojiPickerContext } from "../../utils.tsx";
 import { EmojiPickerProps, UseStateArray } from "../../types.ts";
 import "../../css/EmojiPicker.css";
@@ -15,15 +15,27 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
     const [currentPosition, setCurrentPosition] = currentPositionState;
     const [isSelectingEmoji, setIsSelectingEmoji]:UseStateArray = useContext(EmojiPickerContext).states;
 
-    //Push the individual spans containing each emoji into an array
-    let peopleEmojis:NodeList | [] = [];
-    getEmojis(peopleEmojis, "people", addEmojiToMessage);
-    let natureEmojis:NodeList | [] = [];
-    getEmojis(natureEmojis, "nature", addEmojiToMessage);
-    let foodEmojis:NodeList | [] = [];
-    getEmojis(foodEmojis, "food", addEmojiToMessage);
-    let miscEmojis:NodeList | [] = [];
-    getEmojis(miscEmojis, "misc", addEmojiToMessage);
+    //Push the individual spans containing each emoji into an array and memoise the operation
+    const peopleEmojis = useMemo(()=>{
+        let tempArray:NodeList | [] = [];
+        getEmojis(tempArray, "people", addEmojiToMessage);
+        return tempArray;
+    }, []);
+    const natureEmojis = useMemo(()=>{
+        let tempArray:NodeList | [] = [];
+        getEmojis(tempArray, "nature", addEmojiToMessage);
+        return tempArray;
+    }, [])
+    const foodEmojis = useMemo(()=>{
+        let tempArray:NodeList | [] = [];
+        getEmojis(tempArray, "food", addEmojiToMessage);
+        return tempArray;
+    }, [])
+    const miscEmojis = useMemo(()=>{
+        let tempArray:NodeList | [] = [];
+        getEmojis(tempArray, "misc", addEmojiToMessage);
+        return tempArray;
+    }, [])
     
     //Make the window with all the emojis disappear when clicking out of it
     const closeEmojiPicker:()=>void = useContext(EmojiPickerContext).actions;
@@ -94,39 +106,22 @@ export default function EmojiPicker({refs, currentPositionState}: EmojiPickerPro
             let emoji:string;
             let initialPosition:number|null = chatInputRef.current.selectionStart;
             let text:string = chatInputRef.current.value;
-
+            //Convert entity number to a string that can be displayed as a UTF-8 character
+            //Some emojis are the sum of two separate UTF-8 characters, and the else accounts for it
             if (typeof entityNumber === "number"){
                 emoji = String.fromCodePoint(entityNumber);
             } else {
                 emoji = String.fromCodePoint(entityNumber[0]) + String.fromCodePoint(entityNumber[1]);
             }
-
-            if (emoji && currentPosition) {
-                chatInputRef.current.value = text.slice(0, currentPosition) + emoji + text.slice(currentPosition, text.length);
-                setCurrentPosition(currentPosition + emoji.length);
-                setTimeout(()=>{
-                    if (chatInputRef.current) {
-                        chatInputRef.current.focus();
-                        chatInputRef.current.setSelectionRange(currentPosition + emoji.length, currentPosition + emoji.length);
-                    }
-                }, 0);
-            } else if (initialPosition) {
-                setCurrentPosition(initialPosition + emoji.length);
+            if (initialPosition != null) {
+                setCurrentPosition(initialPosition + 2);
                 chatInputRef.current.value = text.slice(0, initialPosition) + emoji + text.slice(initialPosition, text.length);
                 setTimeout(()=>{
                     if (chatInputRef.current) {
                         chatInputRef.current.focus();
-                        chatInputRef.current.setSelectionRange(initialPosition + emoji.length, initialPosition + emoji.length);
-                        }
-                    }, 0);
-            } else {
-                setCurrentPosition(emoji.length);
-                chatInputRef.current.value = text + emoji;
-                setTimeout(()=>{
-                    if (chatInputRef.current) {
-                        chatInputRef.current.focus();
+                        chatInputRef.current.setSelectionRange(initialPosition + 2, initialPosition + 2);
                     }
-                })
+                }, 0);
             }
         }
     }

@@ -212,7 +212,7 @@ export function getEmojis(emojiArray:any[], setName:string, onClickEvent:(entity
             for (let i = 128147; i <= 128152; i++) {
                 emojiArray.push(<span onMouseDown={()=>{onClickEvent(i)}} key={i}>{String.fromCodePoint(i)}</span>);
             }
-            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128517)}} key={128157}>{String.fromCodePoint(128157)}</span>);
+            emojiArray.push(<span onMouseDown={()=>{onClickEvent(128157)}} key={128157}>{String.fromCodePoint(128157)}</span>);
             emojiArray.push(<span onMouseDown={()=>{onClickEvent(128158)}} key={128158}>{String.fromCodePoint(128158)}</span>);
             emojiArray.push(<span onMouseDown={()=>{onClickEvent(128159)}} key={128159}>{String.fromCodePoint(128159)}</span>);
             for (let i = 9800; i <= 9811; i++) {

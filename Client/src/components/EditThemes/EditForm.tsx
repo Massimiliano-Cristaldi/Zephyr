@@ -1,11 +1,14 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import ConfirmPopup from "./ConfirmPopup";
 import { defaultTheme, hexToHslString, getLightnessFromHex, formatColorProperty } from "../../ColorTools";
 import { ContactListRefContext, fonts, IsMobileContext, togglePopup } from "../../utils.tsx";
 import { StyleProperties } from "../../types";
 import "../../css/EditForm.css";
+import { useNavigate } from "react-router-dom";
 
 export default function EditForm(){
+
+    const navigate = useNavigate();
 
     const isMobile = useContext(IsMobileContext);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
@@ -52,10 +55,15 @@ export default function EditForm(){
         }
     }
 
-    function saveTheme(theme:StyleProperties){
-        window.localStorage.setItem("theme", JSON.stringify(theme));
-        window.location.reload();
-    }
+    const updateTheme = useCallback(()=>{
+        window.localStorage.setItem("theme", JSON.stringify(currentTheme));
+        navigate(0);
+    }, [currentTheme])
+
+    const resetTheme = useCallback(()=>{
+        window.localStorage.setItem("theme", JSON.stringify(defaultTheme));
+        navigate(0);
+    }, [defaultTheme])
 
     const excludeTheseProperties = ["iconHoverBg", "favoriteFont", "messageBorderRadius", "recipientReplyBg", "senderReplyBg", "senderMessageDropdownBorder", "recipientMessageDropdownBorder"];
     
@@ -90,13 +98,13 @@ export default function EditForm(){
                     <button onClick={()=>{togglePopup(confirmApplyRef, "show"); togglePopup(confirmResetRef, "hide")}}>
                         Apply changes
                     </button>
-                    <ConfirmPopup popupRef={confirmApplyRef} confirmAction={()=>{saveTheme(currentTheme)}}/>
+                    <ConfirmPopup popupRef={confirmApplyRef} confirmAction={updateTheme}/>
                 </div>
                 <div>
                     <button onClick={()=>{togglePopup(confirmResetRef, "show"); togglePopup(confirmApplyRef, "hide")}}>
                         Reset default theme
                     </button>
-                    <ConfirmPopup popupRef={confirmResetRef} confirmAction={()=>{saveTheme(defaultTheme)}}/>
+                    <ConfirmPopup popupRef={confirmResetRef} confirmAction={resetTheme}/>
                 </div>
             </div>
         </div>

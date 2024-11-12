@@ -5,7 +5,6 @@ import { AuthUserContext, ContactListRefContext, ContactsContext, IsMobileContex
 import { User } from "../../types";
 import ChatToolbar from "./ChatToolbar";
 import ChatWindow from "./ChatWindow";
-import UserNotAdded from "./UserNotAdded";
 
 export default function SelectedContact(){
     
@@ -37,10 +36,10 @@ export default function SelectedContact(){
     //Check if contact is in contact list
     useEffect(()=>{
         const isInContactList = contacts.some((el:User) => el.id === Number(params.contactId));
-        if (!isInContactList) {
+        if (contact.id !== 0 && !isInContactList) {
             throw new Error("There is no contact in your contact list matching this info.");
         }
-    }, [])
+    }, [contact.id])
 
     //Fetch current contact info
     useEffect(()=>{
@@ -53,10 +52,11 @@ export default function SelectedContact(){
                 setContact(response.data[0]);
             } catch (err) {
                 console.error(err);
+                setContact({...contact, id: -1});
             }
         }
         fetchData();
-    }, [params, authUser.id])
+    }, [params.contactId, authUser.id])
 
     return(
         <ViewProfileContext.Provider value={contactNameRef}>

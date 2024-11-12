@@ -1,13 +1,13 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { AuthUserContext, ChatTypeContext, EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput, getFileExt } from "../../utils.tsx";
+import { AuthUserContext, ChatTypeContext, EmojiPickerContext, MessageCountContext, MessageReplyContext, sanitizeMessageInput, getFileExt, FontStylePopupContext } from "../../utils.tsx";
 import { ChatInputProps, UseStateArray } from "../../types";
 import EmojiPicker from "./EmojiPicker";
 import AudioRecorder from "./AudioRecorder.tsx";
 import "../../css/ChatInput.css"
 
-export default function ChatInput({refs, newMessageState, attachmentState, attachmentNameState, selectedTextState, actions}:ChatInputProps){
+export default function ChatInput({refs, newMessageState, attachmentState, attachmentNameState }:ChatInputProps){
 
     const params = useParams();
     const authUser = useContext(AuthUserContext);
@@ -24,7 +24,7 @@ export default function ChatInput({refs, newMessageState, attachmentState, attac
     const [attachmentName, setAttachmentName] = attachmentNameState;
     const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
     const [currentPosition, setCurrentPosition] = useState<number|null>(null);
-    const [selectedText, setSelectedText] = selectedTextState;
+    const [selectedText, setSelectedText]:UseStateArray = useContext(FontStylePopupContext).states;
     const [isSelectingEmoji, setIsSelectingEmoji]:UseStateArray = useContext(EmojiPickerContext).states;
     
     //Cancel replying state when switching to a different chat
@@ -36,11 +36,7 @@ export default function ChatInput({refs, newMessageState, attachmentState, attac
     //Set new message content every time the chat input's value changes
     function handleChatInputChange(e: ChangeEvent<HTMLInputElement>){
         setNewMessage({...newMessage, content: sanitizeMessageInput(e.target.value)});
-        if (currentPosition) {
-            setCurrentPosition(currentPosition + 1);
-        } else {
-            setCurrentPosition(1);
-        }
+        setCurrentPosition(chatInputRef.current.selectionStart);
     }
 
     //Send message and make the reply box disappear
@@ -87,7 +83,7 @@ export default function ChatInput({refs, newMessageState, attachmentState, attac
     }
 
     //Show/hide font style popup upon selecting/deselecting text with clicks
-    const toggleFontStylePopup = actions;
+    const toggleFontStylePopup = useContext(FontStylePopupContext).actions;
 
     //Show/hide/move font style popup upon pressing keys that cause text selection to change
     function handleKeyboardEvents(e:React.KeyboardEvent<HTMLInputElement>){
@@ -154,7 +150,11 @@ export default function ChatInput({refs, newMessageState, attachmentState, attac
                 break;
             }
             input.value = input.value.slice(0, input.selectionStart) + selection + input.value.slice(input.selectionEnd, input.value.length);
-            input.focus();
+            setTimeout(()=>{
+                const newPosition = currentPosition + selectedText.length + 7;
+                chatInputRef.current.setSelectionRange(newPosition, newPosition);
+                input.focus();
+            }, 0)
             setNewMessage({...newMessage, content: input.value});
         }
     }

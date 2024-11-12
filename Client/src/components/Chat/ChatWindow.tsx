@@ -35,7 +35,6 @@ export default function ChatWindow(){
     const [deletedMessageCount, setDeletedMessageCount] = useState<number>(0);
     const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
     const [sessionMessageCount, setSessionMessageCount]:UseStateArray = useContext(MessageCountContext);
-    const [selectedText, setSelectedText]:UseStateArray = states;    
 
     //Fetch messages
     useEffect(()=>{
@@ -76,8 +75,6 @@ export default function ChatWindow(){
             }
         })
     }, [repliedMessage])
-
-    const toggleFontStylePopup:()=>void = actions;
 
     //Display the attachment drag and drop overlay when a file is dragged inside messagesWrapper
     function handleDragEnter(e: React.DragEvent){
@@ -122,8 +119,6 @@ export default function ChatWindow(){
             newMessageState={[newMessage, setNewMessage]}
             attachmentState={[attachment, setAttachment]}
             attachmentNameState={[attachmentName, setAttachmentName]}
-            selectedTextState={[selectedText, setSelectedText]}
-            actions={toggleFontStylePopup}
             />
             </div>
         </MessageReplyContext.Provider>
