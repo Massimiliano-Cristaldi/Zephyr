@@ -1,14 +1,20 @@
 import { useContext } from "react";
-import { ViewProfileContext } from "../../utils.tsx";
+import { ModalsContext, ViewProfileContext } from "../../utils.tsx";
 import { ChatToolbarProps } from "../../types";
 import "../../css/ChatToolbar.css";
 
 export default function ChatToolbar({contact}: ChatToolbarProps){
 
-    const [viewProfileRef, contactNameRef] = useContext(ViewProfileContext);
+    const viewProfileRef = useContext(ModalsContext).refs[3];
+    const contactNameRef = useContext(ViewProfileContext);
+
+    const closeAllModals:()=>void = useContext(ModalsContext).actions;
 
     function showViewProfileModal(){
-        viewProfileRef.current.style.display = "flex";
+        closeAllModals();
+        if (viewProfileRef.current) {
+            viewProfileRef.current.style.display = "flex";
+        }
     }
     
     return(

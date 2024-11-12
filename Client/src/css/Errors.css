@@ -1,0 +1,40 @@
+#genericErrorWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--sidebarWrapperBg);
+}
+
+#genericErrorWrapper>div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 50px);
+    height: calc(100% - 50px);
+    border-radius: 20px;
+    background-color: var(--chatBodyBg);
+    text-align: center;
+    color: rgb(80, 80, 80);
+}
+
+#genericErrorWrapper>div *{
+    color: rgb(80, 80, 80);
+}
+
+#genericErrorWrapper>div>.fa-face-frown{
+    font-size: 12rem;
+}
+
+@media screen and (min-width: 996px) {
+    #genericErrorWrapper>div{
+        width: calc(100% - 100px);
+        height: calc(100% - 100px);
+    }
+
+    #genericErrorWrapper>div>.fa-face-frown{
+        font-size: 18rem;
+    }
+}

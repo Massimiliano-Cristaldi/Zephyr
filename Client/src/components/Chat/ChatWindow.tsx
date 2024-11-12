@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { AuthUserContext, ChatTypeContext, FontStylePopupContext, MessageCountContext, MessageReplyContext } from "../../utils.tsx";
+import { AuthUserContext, ChatTypeContext, FontStylePopupContext, getDefaultGroupMessage, getDefaultMessage, MessageCountContext, MessageReplyContext } from "../../utils.tsx";
 import { GroupMessage, Message, UseStateArray } from "../../types";
 import MessageElement from "./MessageElement";
 import ChatInput from "./ChatInput";
@@ -26,19 +26,9 @@ export default function ChatWindow(){
     const [chatType, setChatType]:UseStateArray = useContext(ChatTypeContext).state;
     const [messages, setMessages] = useState<Message[] | GroupMessage[] | []>();
     const [newMessage, setNewMessage] = useState<Message | GroupMessage>(()=>{
-        return chatType === "individualChat" ? {
-            content: "",
-            attachments: null,
-            recipient_id: Number(params.contactId),
-            sender_id: Number(authUser.id),
-            sender_username: authUser.username
-        } : {
-            content: "",
-            attachments: null,
-            group_id: Number(params.groupId),
-            sender_id: Number(authUser.id),
-            sender_username: authUser.username
-        }
+        return chatType === "individualChat" ? 
+        getDefaultMessage(params, authUser) :
+        getDefaultGroupMessage(params, authUser)
     });
     const [attachment, setAttachment] = useState<FormData | null>(null);
     const [attachmentName, setAttachmentName] = useState<string>("");

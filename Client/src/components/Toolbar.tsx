@@ -1,6 +1,6 @@
 import { useRef, useContext, RefObject, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthIdContext, AuthUserContext } from "../utils.tsx";
+import { AuthIdContext, AuthUserContext, ModalsContext } from "../utils.tsx";
 import { User, UseStateArray } from "../types";
 import EditProfile from "./EditProfile";
 import AddContact from "./AddContact";
@@ -10,16 +10,17 @@ import CreateGroup from "./CreateGroup.tsx";
 
 export default function Toolbar(){
 
-    const authUser = useContext(AuthUserContext);
-    const toolbarOptionsRef = useRef<HTMLUListElement>(null);
-    const toolbarAddRef = useRef<HTMLUListElement>(null);
-    const addContactRef = useRef<HTMLDivElement>(null);
-    const createGroupRef = useRef<HTMLDivElement>(null);
-    const editProfileRef = useRef<HTMLDivElement>(null);
-    const [authId, setAuthId]:UseStateArray = useContext(AuthIdContext);
-    const [users, setUsers] = useState<User[] | []>([]);
     const navigate = useNavigate();
 
+    const authUser = useContext(AuthUserContext);
+
+    const [addContactRef, createGroupRef, editProfileRef, viewProfileRef, groupDetailsWrapperRef] = useContext(ModalsContext).refs;
+    const toolbarOptionsRef = useRef<HTMLUListElement>(null);
+    const toolbarAddRef = useRef<HTMLUListElement>(null);
+
+    const [authId, setAuthId]:UseStateArray = useContext(AuthIdContext);
+    const [users, setUsers] = useState<User[] | []>([]);
+    
     //Fetch all users from database (dev feature, used to test different profiles)
     useEffect(()=>{
         async function fetchData(){
@@ -35,6 +36,8 @@ export default function Toolbar(){
         }
         fetchData();
     }, [])
+
+    const closeAllModals:()=>void = useContext(ModalsContext).actions;
 
     function toggleDropdown(showRef: RefObject<HTMLUListElement>, hideRef: RefObject<HTMLUListElement>){
         if (showRef.current && hideRef.current) {            
@@ -55,6 +58,7 @@ export default function Toolbar(){
     }
 
     function showModal(ref: RefObject<HTMLDivElement>){
+        closeAllModals();
         if (ref.current && toolbarOptionsRef.current && toolbarAddRef.current) {
             ref.current.style.display = "flex";
             toolbarOptionsRef.current.style.display = "none";
@@ -113,9 +117,9 @@ export default function Toolbar(){
                 </ul>
             </li>
         </ul>
-        <AddContact addContactRef={addContactRef}/>
-        <CreateGroup createGroupRef={createGroupRef}/>
-        <EditProfile user={authUser} editProfileRef={editProfileRef}/>
+        <AddContact/>
+        <CreateGroup/>
+        <EditProfile/>
         </>
     )
 }

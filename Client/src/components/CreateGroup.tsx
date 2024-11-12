@@ -1,11 +1,10 @@
 import { useContext, useState, useRef, ChangeEvent } from "react";
 import axios from "axios";
-import { CreateGroupProps } from "../types";
-import { AuthUserContext, closeModal, ContactsContext, getFileExt, IsMobileContext } from "../utils";
+import { AuthUserContext, closeModal, ContactsContext, getFileExt, IsMobileContext, ModalsContext } from "../utils";
 import "../css/CreateGroup.css";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateGroup({createGroupRef}: CreateGroupProps){
+export default function CreateGroup(){
 
     const navigate = useNavigate();
 
@@ -13,6 +12,7 @@ export default function CreateGroup({createGroupRef}: CreateGroupProps){
     const authUser = useContext(AuthUserContext);
     const [contacts, groups] = useContext(ContactsContext);
 
+    const createGroupRef = useContext(ModalsContext).refs[1];
     const titleInputRef = useRef<HTMLInputElement>(null);
     const titleH4Ref = useRef<HTMLHeadingElement>(null);
     const iconRef = useRef<HTMLDivElement>(null);

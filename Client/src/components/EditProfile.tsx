@@ -1,13 +1,15 @@
 import { ChangeEvent, RefObject, useContext, useRef, useState } from "react";
 import axios from "axios";
-import { AuthUserContext, closeModal, IsMobileContext, getFileExt } from "../utils.tsx";
-import { EditProfileProps, User } from "../types";
+import { AuthUserContext, closeModal, IsMobileContext, getFileExt, ModalsContext } from "../utils.tsx";
+import { User } from "../types";
 import "../css/EditProfile.css"
 
-export default function EditProfile({user, editProfileRef}: EditProfileProps){
+export default function EditProfile(){
 
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
+
+    const editProfileRef = useContext(ModalsContext).refs[2];
     const iconRef = useRef<HTMLDivElement>(null);
     const usernameH2Ref = useRef<HTMLHeadingElement>(null);
     const usernameInputRef = useRef<HTMLInputElement>(null);
@@ -42,12 +44,12 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
 
     //Set a new value for user's username or custom_status; change is not applied until the input is blurred
     function changeUserProperty(inputElement: RefObject<any>, staticElement: RefObject<any>, property: keyof User){
-        if (user && inputElement.current && staticElement.current) {
+        if (authUser && inputElement.current && staticElement.current) {
             staticElement.current.style.display = "none";
             inputElement.current.style.display = "block";
             inputElement.current.focus();
-            if (user[property]) {
-                inputElement.current.value = user[property];
+            if (authUser[property]) {
+                inputElement.current.value = authUser[property];
                 inputElement.current.select();
                 setIsChanged(true);
             }
@@ -63,13 +65,13 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         if (inputElement.current && staticElement.current) {
             inputElement.current.style.display = "none";
             staticElement.current.style.display = "block";
-            if (user && staticElement.current && inputElement.current.value){
+            if (authUser && staticElement.current && inputElement.current.value){
                 const newValues = {field: property, 
                     value: inputElement.current.value, 
                     authUserId: authUser.id};
                 axios.post("http://localhost:8800/updateuserinfo", newValues);
                 staticElement.current.innerText = newValues.value;
-                user.username = newValues.value;
+                authUser.username = newValues.value;
             }
         }
     }
@@ -87,7 +89,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
         <div id="editProfileWrapper" ref={editProfileRef}>
             <div id="editProfileModal">
 
-                <div id="currentIcon" style={{backgroundImage: `url(/public${user?.icon_url || "/user.png"})`}} ref={iconRef}>
+                <div id="currentIcon" style={{backgroundImage: `url(/public${authUser?.icon_url || "/user.png"})`}} ref={iconRef}>
                     <label htmlFor="uploadIcon">
                         <i className="fa-solid fa-upload" style={{color: "#868484"}}/>
                     </label>
@@ -105,7 +107,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 onDoubleClick={!isMobile ? ()=>{changeUserProperty(usernameInputRef, usernameH2Ref, "username")} : undefined} 
                 ref={usernameH2Ref}
                 >
-                    {user?.username}
+                    {authUser?.username}
                 </h2>
                 <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>
                     <input type="text"
@@ -122,7 +124,7 @@ export default function EditProfile({user, editProfileRef}: EditProfileProps){
                 onClick={isMobile ? ()=>{changeUserProperty(statusInputRef, statusPRef, "custom_status")} : undefined}
                 onDoubleClick={!isMobile ? ()=>{changeUserProperty(statusInputRef, statusPRef, "custom_status")} : undefined}
                 ref={statusPRef}>
-                    {user?.custom_status || "This user hasn't chosen a status yet"}
+                    {authUser?.custom_status || "This user hasn't chosen a status yet"}
                 </p>
                 <form className="d-flex justify-content-center" onSubmit={(e)=>{e.preventDefault()}}>
                     <input type="text"

@@ -1,6 +1,26 @@
 import { createContext, RefObject } from "react";
 import { User, Group } from "./types";
 
+export function getDefaultMessage(params:any, authUser:any){
+    return {
+        content: "",
+        attachments: null,
+        recipient_id: Number(params.contactId),
+        sender_id: Number(authUser.id),
+        sender_username: authUser.username
+    }
+}
+
+export function getDefaultGroupMessage(params:any, authUser:any){
+    return {
+        content: "",
+        attachments: null,
+        group_id: Number(params.groupId),
+        sender_id: Number(authUser.id),
+        sender_username: authUser.username
+    }
+}
+
 //Expected input: a datetime string in the format given by the current_timestamp() SQL function
 //Expected output: the same date in format dd/mm/yy
 export function getDate(date: string){
@@ -241,3 +261,4 @@ export const MessageReplyContext = createContext<any>([]);
 export const GroupMessageReplyContext = createContext<any>([]);
 export const GroupStateContext = createContext<any>([]);
 export const GroupModalContext = createContext<any>({});
+export const ModalsContext = createContext<any>([]);

@@ -1,12 +1,11 @@
 import { useContext, useRef, RefObject, createRef, FormEvent, useState, ChangeEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { AuthUserContext, ChatTypeContext, GroupStateContext, togglePopup, closeModal, IsMobileContext, GroupModalContext, getFileExt } from "../../utils";
+import { AuthUserContext, ChatTypeContext, GroupStateContext, togglePopup, closeModal, IsMobileContext, GroupModalContext, getFileExt, ModalsContext } from "../../utils";
 import { Group, Participant, UseStateArray } from "../../types";
 import KickUserPopup from "./KickUserPopup";
 import "../../css/GroupDetails.css";
 
-//TODO: Add the possibility to change group title and group icon
 export default function GroupDetails(){
 
     const navigate = useNavigate();
@@ -15,7 +14,8 @@ export default function GroupDetails(){
     const isMobile = useContext(IsMobileContext);
     const group:Group = useContext(GroupModalContext).group;
 
-    const [groupDetailsWrapperRef, groupTitleRef] = useContext(GroupModalContext).refs;
+    const groupDetailsWrapperRef = useContext(ModalsContext).refs[4];
+    const groupTitleRef = useContext(GroupModalContext).refs;
     const titleH2Ref = useRef<HTMLHeadingElement>(null);
     const titleInputRef = useRef<HTMLInputElement>(null);
     const iconRef = useRef<HTMLDivElement>(null);

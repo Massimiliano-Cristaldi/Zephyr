@@ -144,18 +144,6 @@ export interface KickUserPopupProps{
 }
 
 //src
-export interface AddContactProps{
-    addContactRef: RefObject<HTMLDivElement>
-}
-
-export interface CreateGroupProps{
-    createGroupRef: RefObject<HTMLDivElement>
-}
-
-export interface EditProfileProps {
-    user: User | undefined,
-    editProfileRef: RefObject<HTMLDivElement>
-}
 
 export type StyleProperties = {
     [key:string]: string

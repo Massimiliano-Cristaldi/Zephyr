@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext,IsMobileContext, AuthIdContext, EmojiPickerContext, ChatTypeContext, ContactsContext, MessageCountContext } from "../utils.tsx";
+import { ContactListRefContext, AuthUserContext, getCaretCoordinates, FontStylePopupContext,IsMobileContext, AuthIdContext, EmojiPickerContext, ChatTypeContext, ContactsContext, MessageCountContext, ModalsContext } from "../utils.tsx";
 import { User } from "../types";
 import Toolbar from "./Toolbar";
 import Sidebar from "./Sidebar";
@@ -13,6 +13,13 @@ export default function Layout(){
 
     const navigate = useNavigate();
     const params = useParams();
+
+    //Modals
+    const addContactRef = useRef<HTMLDivElement>(null);
+    const createGroupRef = useRef<HTMLDivElement>(null);
+    const editProfileRef = useRef<HTMLDivElement>(null);
+    const viewProfileRef = useRef<HTMLDivElement>(null);
+    const groupDetailsWrapperRef = useRef<HTMLDivElement>(null);
 
     const contactListRef = useRef<HTMLDivElement>(null);
     const chatWrapperRef = useRef<HTMLDivElement>(null);
@@ -94,9 +101,16 @@ export default function Layout(){
         }
     }, [])
 
+    //Check if mobile layout should be used every time the window width changes
+    window.addEventListener('resize', ()=>{
+        setIsMobile(window.innerWidth < 996);
+    })
+
     //Make font style popup dialog appear/disappear when selecting/deselecting text in the chat input
     //The function appears here because the mouseup event should trigger when the mouse button is released anywhere
     function toggleFontStylePopup(){
+        console.log("sasso");
+        
         const input = chatInputRef.current;
         const position = input?.selectionStart;
         const selection = window.getSelection();
@@ -123,15 +137,9 @@ export default function Layout(){
         }
     }
 
-    //Check if mobile layout should be used every time the window width changes
-    window.addEventListener('resize', ()=>{
-        setIsMobile(window.innerWidth < 996);
-    })
-
     //Go back to contact list (on mobile, where opening a chat hides the contact list)
     function backToContacts(){
         if (contactListRef.current && backButtonRef.current && chatWrapperRef.current) {
-            
             contactListRef.current.style.display = "block";
             backButtonRef.current.style.visibility = "hidden";
             if (isMobile){
@@ -151,6 +159,15 @@ export default function Layout(){
         backToContacts();
     }
 
+    function closeAllModals(){
+        const allModals = [addContactRef, createGroupRef, editProfileRef, viewProfileRef, groupDetailsWrapperRef];
+        allModals.forEach((ref)=>{
+            if (ref.current) {
+                ref.current.style.display = "none";
+            }
+        })
+    }
+
     return(
         <AuthIdContext.Provider value={[authId, setAuthId]}>
         <AuthUserContext.Provider value={authUser}>
@@ -161,6 +178,7 @@ export default function Layout(){
         <ChatTypeContext.Provider value={{state: [chatType, setChatType], actions: [backToContacts, changeChatType]}}>
         <MessageCountContext.Provider value={[sessionMessageCount, setSessionMessageCount]}>
         <ContactsContext.Provider value={[contacts, groups]}>
+        <ModalsContext.Provider value={{refs: [addContactRef, createGroupRef, editProfileRef, viewProfileRef, groupDetailsWrapperRef], actions: closeAllModals}}>
             <div className="container-fluid h-100" onMouseUp={()=>{toggleFontStylePopup(); closeEmojiPicker();}}>
                 <div className="row">
                         <Toolbar/>
@@ -172,6 +190,7 @@ export default function Layout(){
                     </div>
                 </div>
             </div>
+        </ModalsContext.Provider>
         </ContactsContext.Provider>
         </MessageCountContext.Provider>
         </ChatTypeContext.Provider>

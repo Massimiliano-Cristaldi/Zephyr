@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
 import "../../css/GroupChatModal.css";
 import { useContext } from "react";
-import { GroupModalContext } from "../../utils";
+import { ModalsContext } from "../../utils";
 
 export default function GroupChatModal(){
 
-    const [groupDetailsWrapperRef, groupTitleRef] = useContext(GroupModalContext).refs;
+    const groupDetailsWrapperRef = useContext(ModalsContext).refs[4];
 
     return(
         <div id="groupDetailsWrapper" ref={groupDetailsWrapperRef}>

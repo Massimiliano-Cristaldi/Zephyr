@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { AuthUserContext, closeModal, IsMobileContext, ViewProfileContext } from "../utils.tsx";
+import { AuthUserContext, closeModal, IsMobileContext, ModalsContext, ViewProfileContext } from "../utils.tsx";
 import { User } from "../types";
 import "../css/ViewProfile.css";
 
@@ -11,7 +11,8 @@ export default function ViewProfile(){
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
 
-    const [viewProfileRef, contactNameRef] = useContext(ViewProfileContext);
+    const viewProfileRef = useContext(ModalsContext).refs[3];
+    const contactNameRef = useContext(ViewProfileContext);
     const usernameH2Ref = useRef<HTMLHeadingElement>(null);
     const usernameInputRef = useRef<HTMLInputElement>(null);
 
@@ -21,6 +22,7 @@ export default function ViewProfile(){
         phone_number: 0, 
         icon_url: "user.png"
     });
+    const [isChanged, setIsChanged] = useState<boolean>(false);
 
     //Fetch user data
     useEffect(()=>{
@@ -36,7 +38,7 @@ export default function ViewProfile(){
             }
         }
         fetchData();
-    }, [params])
+    }, [params.contactId])
 
     let discarding = false;
 
@@ -66,11 +68,13 @@ export default function ViewProfile(){
                     authUserId: authUser.id,
                     contactId: contact.id
                 };
-                axios.post("http://localhost:8800/updatecontactinfo", newValues);
+                axios.post("http://localhost:8800/updatecontactinfo", newValues)
+                .catch((err)=>{console.error(err)});
                 usernameH2Ref.current.innerText = newValues.value;
                 contactNameRef.current.innerText = newValues.value;
                 contact.user_added_as = newValues.value;
                 usernameInputRef.current.value = contact.user_added_as;
+                setIsChanged(true);
             }
         }
     }
@@ -78,12 +82,14 @@ export default function ViewProfile(){
     return(
         <div id="viewProfileWrapper" ref={viewProfileRef}>
             <div id="viewProfileModal">
-                <div id="contactIcon" style={{backgroundImage: `url(${contact.icon_url || "/user.png"})`}}/>
+                <div id="contactIcon" style={{backgroundImage: `url(${contact.icon_url || "/public/user_icons/user.png"})`}}/>
                 <h2
-                {...(isMobile 
-                    ? {onClick: changeContactName, ref: usernameH2Ref} 
-                    : {onDoubleClick: changeContactName, ref: usernameH2Ref})}
-                >{contact.user_added_as}</h2>
+                ref={usernameH2Ref}
+                onClick={isMobile ? changeContactName : undefined} 
+                onDoubleClick={!isMobile ? changeContactName : undefined}
+                >
+                    {contact.user_added_as}
+                </h2>
                 <form onSubmit={(e)=>{e.preventDefault()}}>
                     <input
                     type="text"
@@ -95,7 +101,7 @@ export default function ViewProfile(){
                 <p>{contact.custom_status}</p>
                 <i className="fa-solid fa-xmark closeModal" 
                 style={{color: "rgb(180, 180, 180)"}} 
-                onClick={()=>{closeModal(viewProfileRef, false)}}
+                onClick={()=>{closeModal(viewProfileRef, isChanged)}}
                 />
             </div>
         </div>

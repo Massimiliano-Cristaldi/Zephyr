@@ -1,14 +1,16 @@
 import { FormEvent, useContext, useState } from "react";
-import { AuthUserContext, closeModal } from "../utils.tsx";
-import { AddContactProps, NewContact } from "../types";
+import { AuthUserContext, closeModal, ModalsContext } from "../utils.tsx";
+import { NewContact } from "../types";
 import "../css/AddContact.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function AddContact({addContactRef}:AddContactProps){
+export default function AddContact(){
 
     const authUser = useContext(AuthUserContext);
     const navigate = useNavigate();
+
+    const addContactRef = useContext(ModalsContext).refs[0];
 
     const [newContact, setNewContact] = useState<NewContact>({
         contact_list_owner_id: authUser.id,

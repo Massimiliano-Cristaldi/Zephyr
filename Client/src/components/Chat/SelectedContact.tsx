@@ -13,8 +13,6 @@ export default function SelectedContact(){
     const authUser = useContext(AuthUserContext);
     const isMobile = useContext(IsMobileContext);
     const [contacts, groups] = useContext(ContactsContext);
-    
-    const viewProfileRef = useRef<HTMLDivElement>(null);
     const contactNameRef = useRef<HTMLDivElement>(null);
     const [contactListRef, chatWrapperRef, backButtonRef] = useContext(ContactListRefContext);
 
@@ -23,7 +21,6 @@ export default function SelectedContact(){
         username: "Loading...", 
         phone_number: 0, 
         icon_url: null});
-    const [userIsAdded, setUserIsAdded] = useState(true);
 
     //Hide contact list when a chat is opened if using mobile layout
     useEffect(()=>{
@@ -41,7 +38,7 @@ export default function SelectedContact(){
     useEffect(()=>{
         const isInContactList = contacts.some((el:User) => el.id === Number(params.contactId));
         if (!isInContactList) {
-            setUserIsAdded(false);
+            throw new Error("There is no contact in your contact list matching this info.");
         }
     }, [])
 
@@ -62,8 +59,7 @@ export default function SelectedContact(){
     }, [params, authUser.id])
 
     return(
-        <ViewProfileContext.Provider value={[viewProfileRef, contactNameRef]}>
-            {userIsAdded || <UserNotAdded/>}
+        <ViewProfileContext.Provider value={contactNameRef}>
             <ChatToolbar contact={contact}/>
             <ChatWindow/>
         </ViewProfileContext.Provider>
